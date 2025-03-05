@@ -107,7 +107,6 @@ public sealed class BlockBuilder : IBlockBuilder
         {
             InputBlock inputBlock => IsElementFocused(inputBlock.Element) ? 1 : 0,
             ActionsBlock ab => ab.Elements.OfType<IInputBlockElement>().Count(IsElementFocused),
-            ContextBlock cb => cb.Elements.OfType<IInputBlockElement>().Count(IsElementFocused),
             _ => 0
         };
     }

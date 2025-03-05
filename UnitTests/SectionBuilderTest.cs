@@ -1,7 +1,7 @@
 
 using SlackNet.Blocks;
 
-namespace UnitTests.Extensions.Slack;
+namespace UnitTests;
 
 public class SectionBuilderTest
 {

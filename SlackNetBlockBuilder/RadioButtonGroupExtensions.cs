@@ -18,7 +18,7 @@ public static class RadioButtonGroupExtensions
     /// <returns>The same instance so calls can be chained</returns>
     public static InputElementBuilder<RadioButtonGroup> AddOption(this InputElementBuilder<RadioButtonGroup> builder,
         string value,
-        string text, PlainText description = null) => builder.Set(x =>
+        string text, PlainText? description = null) => builder.Set(x =>
         x.Options.Add(new Option { Text = text, Value = value, Description = description }));
 
     /// <summary>

@@ -1,7 +1,7 @@
 using JetBrains.Annotations;
 using SlackNet.Blocks;
 
-namespace UnitTests.Extensions.Slack;
+namespace UnitTests;
 
 [TestSubject(typeof(ActionsBlockBuilder))]
 public class ActionsBlockBuilderTest
@@ -15,7 +15,8 @@ public class ActionsBlockBuilderTest
         // Add more than MaxElements buttons
         for (int i = 0; i <= ActionsBlockBuilder.MaxElements; i++)
         {
-            builder.AddButton($"button_{i}", button => button.Set(b => b.Text = $"Button {i}"));
+            var index = i;
+            builder.AddButton($"button_{i}", button => button.Set(b => b.Text = $"Button {index}"));
         }
 
         // Act & Assert

@@ -23,7 +23,7 @@ public sealed class ActionsBlockBuilder
     /// </summary>
     private ActionsBlockBuilder()
     {
-        Element = new();
+        _element = new();
     }
     
     /// <summary>
@@ -39,23 +39,23 @@ public sealed class ActionsBlockBuilder
     /// <exception cref="InvalidOperationException">Thrown when the block contains too many elements or the block ID is too long</exception>
     public ActionsBlock Build()
     {
-        if (Element.Elements.Count > MaxElements)
+        if (_element.Elements.Count > MaxElements)
         {
             throw new InvalidOperationException($"An actions block can only contain up to {MaxElements} elements");
         }
         
-        if(Element.BlockId?.Length > MaxBlockIdLength)
+        if(_element.BlockId?.Length > MaxBlockIdLength)
         {
             throw new InvalidOperationException($"The block id can only be up to {MaxBlockIdLength} characters long");
         }
         
-        return Element;
+        return _element;
     }
 
     /// <summary>
     /// The actions block being built
     /// </summary>
-    private readonly ActionsBlock Element;
+    private readonly ActionsBlock _element;
 
     /// <summary>
     /// Sets the block ID for the actions block
@@ -64,7 +64,7 @@ public sealed class ActionsBlockBuilder
     /// <returns>The same instance so calls can be chained</returns>
     public ActionsBlockBuilder WithBlockId(string blockId)
     {
-        Element.BlockId = blockId;
+        _element.BlockId = blockId;
         return this;
     }
 
@@ -81,7 +81,7 @@ public sealed class ActionsBlockBuilder
     {
         element.ActionId = actionId;
         createElement(new ActionElementBuilder<TElement>(element));
-        Element.Elements.Add(element);
+        _element.Elements.Add(element);
 
         return this;
     }
@@ -99,7 +99,7 @@ public sealed class ActionsBlockBuilder
         var element = new TElement();
         element.ActionId = actionId;
         createElement(new ActionElementBuilder<TElement>(element));
-        Element.Elements.Add(element);
+        _element.Elements.Add(element);
 
         return this;
     }
@@ -117,7 +117,7 @@ public sealed class ActionsBlockBuilder
         var element = new TElement();
         element.ActionId = actionId;
         createElement(new InputElementBuilder<TElement>(element));
-        Element.Elements.Add(element);
+        _element.Elements.Add(element);
 
         return this;
     }

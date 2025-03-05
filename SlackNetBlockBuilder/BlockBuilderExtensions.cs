@@ -31,7 +31,7 @@ public static class BlockBuilderExtensions
     /// <param name="callId">The Id of the call</param>
     /// <param name="blockId">The Id of the block</param>
     /// <returns>The same instance so calls can be chained</returns>
-    public static IBlockBuilder AddCall(this IBlockBuilder builder, string callId, string blockId = null)
+    public static IBlockBuilder AddCall(this IBlockBuilder builder, string callId, string? blockId = null)
         => builder.Add<CallBlock>(call =>
             {
                 call.CallId = callId;
@@ -60,7 +60,7 @@ public static class BlockBuilderExtensions
     /// <param name="builder">The build instance</param>
     /// <param name="blockId">Optionally, specify the id of the block, see <see cref="Block.BlockId"/> for more info</param>
     /// <returns>The same instance so calls can be chained</returns>
-    public static IBlockBuilder AddDivider(this IBlockBuilder builder, string blockId = null)
+    public static IBlockBuilder AddDivider(this IBlockBuilder builder, string? blockId = null)
     {
         var divider = new DividerBlock()
             {
@@ -79,7 +79,7 @@ public static class BlockBuilderExtensions
     /// <param name="blockId">The id of the block</param>
     /// <returns>The same instance so calls can be chained</returns>
     public static IBlockBuilder AddFile(this IBlockBuilder builder, string externalId, string source,
-        string blockId = null)
+        string? blockId = null)
         => builder.Add<FileBlock>(file =>
             {
                 file.ExternalId = externalId;
@@ -94,7 +94,7 @@ public static class BlockBuilderExtensions
     /// <param name="text">The plain text content for the header</param>
     /// <param name="blockId">Optionally, specify the id of the block, see <see cref="Block.BlockId"/> for more info</param>
     /// <returns>The same instance so calls can be chained</returns>
-    public static IBlockBuilder AddHeader(this IBlockBuilder builder, PlainText text, string blockId = null)
+    public static IBlockBuilder AddHeader(this IBlockBuilder builder, PlainText text, string? blockId = null)
     {
         var block = new HeaderBlock
             {
@@ -118,8 +118,8 @@ public static class BlockBuilderExtensions
     public static IBlockBuilder AddFileImage(this IBlockBuilder builder,
         string imageUrl,
         string altText,
-        PlainText title = null,
-        string blockId = null)
+        PlainText? title = null,
+        string? blockId = null)
         => builder.Add<ImageBlock>(image =>
             {
                 image.ImageUrl = imageUrl;
@@ -140,8 +140,8 @@ public static class BlockBuilderExtensions
     public static IBlockBuilder AddSlackImage(this IBlockBuilder builder,
         ImageFileReference slackFile,
         string altText,
-        PlainText title = null,
-        string blockId = null)
+        PlainText? title = null,
+        string? blockId = null)
         => builder.Add<ImageBlock>(image =>
             {
                 image.SlackFile = slackFile;
@@ -162,7 +162,7 @@ public static class BlockBuilderExtensions
     public static IBlockBuilder AddInput<TInput>(this IBlockBuilder builder,
         string label,
         Action<InputBlockBuilder<TInput>> createInput)
-        where TInput : IActionElement, IInputBlockElement, new()
+        where TInput : class, IActionElement, IInputBlockElement, new()
     {
         var input = new TInput();
         var inputBuilder = new InputBlockBuilder<TInput>(input, label);
@@ -237,11 +237,11 @@ public static class BlockBuilderExtensions
         string thumbnailUrl,
         string title,
         string altText,
-        string blockId = null,
-        string description = null,
-        string providerIconUrl = null,
-        string providerName = null,
-        string titleUrl = null)
+        string? blockId = null,
+        string? description = null,
+        string? providerIconUrl = null,
+        string? providerName = null,
+        string? titleUrl = null)
         => builder.Add<VideoBlock>(video =>
             {
                 video.VideoUrl = videoUrl;
