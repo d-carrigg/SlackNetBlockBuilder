@@ -17,6 +17,12 @@ public sealed class OptionGroupBuilder
     public OptionGroupBuilder(OptionGroup element)
     {
         Element = element;
+        
+        // Ensure Options collection is initialized
+        if (Element.Options == null)
+        {
+            Element.Options = new List<Option>();
+        }
     }
 
     /// <summary>
@@ -28,7 +34,7 @@ public sealed class OptionGroupBuilder
     /// <returns>The same instance so calls can be chained</returns>
     public OptionGroupBuilder AddOption(string value, string text, PlainText? description = null)
     {
-        Element.Options.Add(new Option { Text = text, Value = value, Description = description });
+        Element.Options.Add(new Option { Text = new PlainText { Text = text }, Value = value, Description = description });
         return this;
     }
 

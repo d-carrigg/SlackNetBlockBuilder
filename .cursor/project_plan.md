@@ -65,12 +65,12 @@
   - [x] Add unit tests for ContextBlockBuilder class
   - [x] Add unit tests for DateTimePickerExtensions class
   - [x] Add unit tests for InputBlockBuilder class
-  - [ ] Add unit tests for remaining builder classes
-    - [ ] Add unit tests for ButtonExtensions class
-    - [ ] Add unit tests for CheckboxGroupExtensions class
-    - [ ] Add unit tests for OverflowMenuExtensions class
-    - [ ] Add unit tests for RadioButtonGroupExtensions class
-    - [ ] Add unit tests for StaticSelectMenuExtensions class
+  - [x] Add unit tests for remaining builder classes
+    - [x] Add unit tests for ButtonExtensions class
+    - [x] Add unit tests for CheckboxGroupExtensions class
+    - [x] Add unit tests for OverflowMenuExtensions class
+    - [x] Add unit tests for RadioButtonGroupExtensions class
+    - [x] Add unit tests for StaticSelectMenuExtensions class
   - [ ] Add integration tests with SlackNet
 - [ ] Add advanced examples
   - [ ] Workflow automation example
