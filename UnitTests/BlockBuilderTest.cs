@@ -1,7 +1,6 @@
 using JetBrains.Annotations;
 
 using SlackNet.Blocks;
-using SlackNetBlockBuilder;
 
 namespace UnitTests.Extensions.Slack;
 

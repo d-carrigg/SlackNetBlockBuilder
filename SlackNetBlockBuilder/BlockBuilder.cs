@@ -1,6 +1,4 @@
-﻿using SlackNet.Blocks;
-
-namespace SlackNetBlockBuilder;
+﻿namespace SlackNet.Blocks;
 
 public interface IBlockBuilder
 {

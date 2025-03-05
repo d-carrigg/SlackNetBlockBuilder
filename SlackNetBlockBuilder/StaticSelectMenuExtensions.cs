@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace SlackNetBlockBuilder;
+namespace SlackNet.Blocks;
 
 [PublicAPI]
 public static class StaticSelectMenuExtensions
