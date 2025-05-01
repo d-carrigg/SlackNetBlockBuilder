@@ -338,7 +338,8 @@ Example:
 
 ```csharp
 var blocks = new BlockBuilder()
-    // throws Each field in a section block can have at most 3000 characters
+    // throws InvalidOperationException
+    // Each field in a section block can have at most 3000 characters
     .AddSection("A string with more than 3000 characters") 
     .Build(); 
 
