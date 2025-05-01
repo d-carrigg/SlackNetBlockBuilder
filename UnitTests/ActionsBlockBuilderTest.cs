@@ -16,7 +16,7 @@ public class ActionsBlockBuilderTest
         for (int i = 0; i <= ActionsBlockBuilder.MaxElements; i++)
         {
             var index = i;
-            builder.AddButton($"button_{i}", button => button.Set(b => b.Text = $"Button {index}"));
+            builder.AddButton($"button_{i}", button => button.Modify(b => b.Text = $"Button {index}"));
         }
 
         // Act & Assert
@@ -42,7 +42,7 @@ public class ActionsBlockBuilderTest
 
         // Act
         builder.AddButton("button_1", button => button
-            .Set(b => b.Text = "Click me")
+            .Modify(b => b.Text = "Click me")
             .ConfirmationDialog(dialog =>
             {
                 dialog.Title = "Confirm";
@@ -68,7 +68,7 @@ public class ActionsBlockBuilderTest
 
         // Act
         builder.AddElement("custom_1", customButton, button =>
-            button.Set(b => b.Style = ButtonStyle.Primary));
+            button.Modify(b => b.Style = ButtonStyle.Primary));
 
         var block = builder.Build();
 
@@ -111,7 +111,7 @@ public class ActionsBlockBuilderTest
 
         // Act
         builder
-            .AddButton("button_1", button => button.Set(b => b.Text = "Button 1"))
+            .AddButton("button_1", button => button.Modify(b => b.Text = "Button 1"))
             .AddDatePicker("date_1", date => date.Set(d => d.InitialDate = DateTime.Parse("2024-01-01")))
             .AddCheckboxGroup("check_1", check => check.AddOption("opt1", "Option 1"));
 

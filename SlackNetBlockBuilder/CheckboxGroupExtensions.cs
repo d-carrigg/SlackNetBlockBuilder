@@ -1,4 +1,4 @@
-﻿using JetBrains.Annotations;
+using JetBrains.Annotations;
 
 namespace SlackNet.Blocks;
 
@@ -32,9 +32,22 @@ public static class CheckboxGroupExtensions
         bool focus = true)
         => builder.Set(x => x.FocusOnLoad = focus);
 
+    /// <summary>
+    /// Pre-selects options in the checkbox group.
+    /// Takes a function that receives the current list of options and returns the list of options that should be initially selected.
+    /// </summary>
+    /// <param name="builder">The builder instance.</param>
+    /// <param name="selector">A function that selects the initial options from the available options.</param>
+    /// <returns>The same instance so calls can be chained.</returns>
     public static InputElementBuilder<CheckboxGroup> InitialOptions(this InputElementBuilder<CheckboxGroup> builder,
         Func<IList<Option>, IList<Option>> selector) => builder.Set(x => x.InitialOptions = selector(x.Options));
 
+    /// <summary>
+    /// Pre-selects options in the checkbox group by their values.
+    /// </summary>
+    /// <param name="builder">The builder instance.</param>
+    /// <param name="initialOptions">The values of the options to select initially.</param>
+    /// <returns>The same instance so calls can be chained.</returns>
     public static InputElementBuilder<CheckboxGroup> InitialOptions(this InputElementBuilder<CheckboxGroup> builder,
         params string[] initialOptions) =>
         builder.InitialOptions(options => options.Where(o => initialOptions.Contains(o.Value)).ToList());

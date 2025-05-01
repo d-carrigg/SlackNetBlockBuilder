@@ -10,6 +10,6 @@ public static class OverflowMenuExtensions
         string text,
         PlainText description = null,
         string url = null)
-        => builder.Set(x =>
+        => builder.Modify(x =>
             x.Options.Add(new OverflowOption { Text = text, Value = value, Description = description, Url = url }));
 }

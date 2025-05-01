@@ -1,5 +1,10 @@
-﻿namespace SlackNet.Blocks;
+using JetBrains.Annotations;
 
+namespace SlackNet.Blocks;
+
+/// <summary>
+/// Defines the contract for a block builder.
+/// </summary>
 public interface IBlockBuilder
 {
     /// <summary>
@@ -67,6 +72,11 @@ public interface IBlockBuilder
 public sealed class BlockBuilder : IBlockBuilder
 {
     private readonly List<Block> _blocks = new();
+    
+    /// <summary>
+    /// Create a new empty block builder instance.
+    /// </summary>
+    [PublicAPI]
     public BlockBuilder()
     {
     }
@@ -76,6 +86,12 @@ public sealed class BlockBuilder : IBlockBuilder
         _blocks = blocks.ToList();
     }
 
+    /// <summary>
+    /// Creates a new block builder instance initialized with an existing collection of blocks.
+    /// Useful for modifying existing block structures.
+    /// </summary>
+    /// <param name="blocks">The initial collection of blocks.</param>
+    /// <returns>A new <see cref="BlockBuilder"/> instance containing the provided blocks.</returns>
     public static BlockBuilder From(IEnumerable<Block> blocks) => new(blocks);
 
 
@@ -91,6 +107,7 @@ public sealed class BlockBuilder : IBlockBuilder
     /// Build the list of blocks
     /// </summary>
     /// <returns>The list of blocks</returns>
+    /// <exception cref="InvalidOperationException">Thrown if more than one element across all blocks has FocusOnLoad set to true.</exception>
     public List<Block> Build()  
     {
         // if more than 1 block has FocusOnLoad, throw an exception
@@ -102,7 +119,13 @@ public sealed class BlockBuilder : IBlockBuilder
         return _blocks;
     }
 
+    /// <summary>
+    /// Calculates the total number of elements across all blocks that have FocusOnLoad set to true. (Internal Helper)
+    /// </summary>
     private int GetFocusedElementsCount() => _blocks.Sum(GetFocusedElementsCount);
+    /// <summary>
+    /// Calculates the number of focused elements within a single block. (Internal Helper)
+    /// </summary>
     private int GetFocusedElementsCount(Block block)
     {
         return block switch 
@@ -114,6 +137,12 @@ public sealed class BlockBuilder : IBlockBuilder
         };
     }
     
+    /// <summary>
+    /// Checks if a specific input block element has FocusOnLoad set to true. (Internal Helper)
+    /// </summary>
+    /// <remarks>
+    /// TODO: Don't do this with a switch, add a marker interface to the elements that have FocusOnLoad
+    /// </remarks>
     private bool IsElementFocused(IInputBlockElement block)
     {
         // TODO: Don't do this, add a marker interface to the elements that have FocusOnLoad
@@ -155,16 +184,31 @@ public sealed class BlockBuilder : IBlockBuilder
     }
 
     
+    /// <summary>
+    /// Removes all blocks that match the specified predicate.
+    /// </summary>
+    /// <param name="predicate">A function to test each block for a condition.</param>
+    /// <returns>The number of blocks removed.</returns>
     public int Remove(Predicate<Block> predicate)
     {
         return _blocks.RemoveAll(predicate);
     }
 
+    /// <summary>
+    /// Removes the first block that matches the specified block ID.
+    /// </summary>
+    /// <param name="blockId">The BlockId of the block to remove.</param>
+    /// <returns>True if a block was removed, false otherwise.</returns>
     public bool Remove(string blockId)
     {
         return Remove(b => b.BlockId == blockId) > 0;
     }
     
+    /// <summary>
+    /// Finds the first <see cref="ActionsBlock"/> and removes the first element within it that matches the predicate.
+    /// </summary>
+    /// <param name="predicate">A function to test each action element for a condition.</param>
+    /// <returns>True if an element was removed, false otherwise.</returns>
     public bool RemoveAction(Predicate<IActionElement> predicate)
     {
         var actionsBlocks = _blocks.OfType<ActionsBlock>();
@@ -183,6 +227,11 @@ public sealed class BlockBuilder : IBlockBuilder
 
         return false;
     }
+    /// <summary>
+    /// Finds the first <see cref="ActionsBlock"/> and removes the first element within it that matches the specified action ID.
+    /// </summary>
+    /// <param name="actionId">The ActionId of the element to remove.</param>
+    /// <returns>True if an element was removed, false otherwise.</returns>
     public bool RemoveAction(string actionId) => RemoveAction(a => a.ActionId == actionId);
 
     /// <inheritdoc />
@@ -192,6 +241,12 @@ public sealed class BlockBuilder : IBlockBuilder
         return this;
     }
     
+    /// <summary>
+    /// Adds a new block of the specified type, configured via an action.
+    /// </summary>
+    /// <typeparam name="TBlock">The type of block to add. Must have a parameterless constructor.</typeparam>
+    /// <param name="modifier">An action that configures the newly created block instance.</param>
+    /// <returns>The same builder instance so calls can be chained.</returns>
     public IBlockBuilder Add<TBlock>(Action<TBlock> modifier) where TBlock : Block, new()
     {
         var element = new TBlock();
