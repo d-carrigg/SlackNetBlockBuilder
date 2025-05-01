@@ -1,5 +1,21 @@
 # Changelog
 
+## 2025-03-05
+
+- Completed performance optimization tasks:
+  - Added performance tests for key builder classes:
+    - BlockBuilder
+    - RichTextBuilder
+    - SectionBuilder
+    - SelectMenuBaseExtensions
+  - Established performance baselines for all builder operations
+  - Verified that all builder classes are performing efficiently (< 0.02ms per operation)
+  - Updated project plan to mark performance optimization tasks as completed
+- Performance test results:
+  - RichTextBuilder: 0.007 ms per iteration
+  - SelectMenuBaseExtensions: 0.013 ms per iteration
+  - BlockBuilder and SectionBuilder also showed excellent performance
+
 ## 2023-03-09
 
 - Completed unit tests for all remaining builder classes:
