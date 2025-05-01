@@ -8,8 +8,12 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-permissions: 
+permissions:
+  contents: read
   issues: write
+  packages: write
+
+
 
 jobs:
   build:
