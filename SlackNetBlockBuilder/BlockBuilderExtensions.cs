@@ -1,5 +1,4 @@
 using JetBrains.Annotations;
-using SlackNet.Interaction;
 
 namespace SlackNet.Blocks;
 
@@ -165,7 +164,7 @@ public static class BlockBuilderExtensions
     public static IBlockBuilder AddInput<TInput>(this IBlockBuilder builder,
         string label,
         Action<InputBlockBuilder<TInput>> createInput)
-        where TInput : IActionElement, IInputBlockElement, new()
+        where TInput : class, IActionElement, IInputBlockElement, new()
     {
         var input = new TInput();
         var inputBuilder = new InputBlockBuilder<TInput>(input, label);

@@ -1,12 +1,20 @@
 using JetBrains.Annotations;
 using SlackNet.Blocks;
 using System.Diagnostics;
+using Xunit.Abstractions;
 
 namespace UnitTests;
 
 [TestSubject(typeof(RichTextBuilder))]
 public class RichTextBuilderTest
 {
+    private readonly ITestOutputHelper _testOutputHelper;
+
+    public RichTextBuilderTest(ITestOutputHelper testOutputHelper)
+    {
+        _testOutputHelper = testOutputHelper;
+    }
+
     [Fact]
     public void Build_WithBlockId_SetsBlockId()
     {
@@ -46,16 +54,17 @@ public class RichTextBuilderTest
         const int iterations = 1000;
         var stopwatch = Stopwatch.StartNew();
         
-        for (int i = 0; i < iterations; i++)
+        for (var i = 0; i < iterations; i++)
         {
             var builder = new RichTextBuilder();
             
             // Add multiple text sections with different formatting
+            var i1 = i;
             builder.AddSection(section => 
             {
                 for (int j = 0; j < 10; j++)
                 {
-                    section.Add(new RichTextText { Text = $"Text section {j} in iteration {i}" });
+                    section.Add(new RichTextText { Text = $"Text section {j} in iteration {i1}" });
                 }
             });
             
@@ -64,8 +73,9 @@ public class RichTextBuilderTest
             {
                 for (int j = 0; j < 5; j++)
                 {
+                    var j1 = j;
                     list.AddSection(section => 
-                        section.Add(new RichTextText { Text = $"List item {j} in iteration {i}" }));
+                        section.Add(new RichTextText { Text = $"List item {j1} in iteration {i1}" }));
                 }
             });
             
@@ -77,7 +87,7 @@ public class RichTextBuilderTest
         
         // Output performance metrics
         var msPerOperation = stopwatch.ElapsedMilliseconds / (double)iterations;
-        Console.WriteLine($"RichTextBuilder operations took {msPerOperation:F6} ms per iteration");
+        _testOutputHelper.WriteLine($"RichTextBuilder operations took {msPerOperation:F6} ms per iteration");
         
         // No specific assertion, this is a baseline measurement
     }

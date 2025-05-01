@@ -1,12 +1,20 @@
 using JetBrains.Annotations;
 using SlackNet.Blocks;
 using System.Diagnostics;
+using Xunit.Abstractions;
 
 namespace UnitTests;
 
 [TestSubject(typeof(SelectMenuBaseExtensions))]
 public class SelectMenuBaseExtensionsTest
 {
+    private readonly ITestOutputHelper _testOutputHelper;
+
+    public SelectMenuBaseExtensionsTest(ITestOutputHelper testOutputHelper)
+    {
+        _testOutputHelper = testOutputHelper;
+    }
+
     [Fact]
     public void StaticSelect_WithInitialOption_SetsCorrectly()
     {
@@ -108,11 +116,13 @@ public class SelectMenuBaseExtensionsTest
             // Add option groups
             for (int j = 0; j < 5; j++)
             {
-                builder.AddOptionGroup($"Group {j}", group =>
+                var j1 = j;
+                builder.AddOptionGroup($"Group {j1}", group =>
                 {
                     for (int k = 0; k < 5; k++)
                     {
-                        group.AddOption($"group_{j}_value_{k}", $"Group {j} Option {k}");
+                        var k1 = k;
+                        group.AddOption($"group_{j1}_value_{k1}", $"Group {j1} Option {k1}");
                     }
                 });
             }
@@ -122,7 +132,7 @@ public class SelectMenuBaseExtensionsTest
         
         // Output performance metrics
         var msPerOperation = stopwatch.ElapsedMilliseconds / (double)iterations;
-        Console.WriteLine($"SelectMenuBaseExtensions operations took {msPerOperation:F6} ms per iteration");
+        _testOutputHelper.WriteLine($"SelectMenuBaseExtensions operations took {msPerOperation:F6} ms per iteration");
         
         // No specific assertion, this is a baseline measurement
     }

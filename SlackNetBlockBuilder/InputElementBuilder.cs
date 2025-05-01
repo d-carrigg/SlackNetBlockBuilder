@@ -6,7 +6,7 @@ namespace SlackNet.Blocks;
 /// </summary>
 /// <typeparam name="TElement">The type of the input element being configured.</typeparam>
 public class InputElementBuilder<TElement>
-    where TElement : IActionElement, IInputBlockElement
+    where TElement : class, IActionElement, IInputBlockElement
 {
     /// <summary>
     /// Gets the input element instance being configured.

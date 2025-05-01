@@ -86,21 +86,23 @@ public class BlockBuilderTest
         for (var i = 0; i < iterations; i++)
         {
             var builder = BlockBuilder.Create();
+            var iLocal = i; // Capture the loop variable
             
             // Add 10 different blocks
             builder.AddDivider();
-            builder.AddHeader(new PlainText($"Header {i}"));
-            builder.AddSection(section => section.Text($"Section text {i}"));
-            builder.AddContext(context => context.AddText($"Context text {i}"));
-            builder.AddActions(actions => actions.AddButton($"Button {i}", $"button-{i}"));
-            builder.AddInput<PlainTextInput>($"Label {i}", input => input.Set(x => x.ActionId = $"input-{i}"));
+            builder.AddHeader(new PlainText($"Header {iLocal}"));
+            builder.AddSection(section => section.Text($"Section text {iLocal}"));
+            builder.AddContext(context => context.AddText($"Context text {iLocal}"));
+            builder.AddActions(actions => actions.AddButton($"Button {iLocal}", $"button-{iLocal}"));
+            builder.AddInput<PlainTextInput>($"Label {iLocal}", input => input.Set(x => x.ActionId = $"input-{iLocal}"));
             builder.AddDivider();
-            builder.AddHeader(new PlainText($"Another Header {i}"));
-            builder.AddSection(section => section.Text($"Another Section text {i}"));
-            builder.AddContext(context => context.AddText($"Another Context text {i}"));
+            builder.AddHeader(new PlainText($"Another Header {iLocal}"));
+            builder.AddSection(section => section.Text($"Another Section text {iLocal}"));
+            builder.AddContext(context => context.AddText($"Another Context text {iLocal}"));
             
             // Build the blocks
             var blocks = builder.Build();
+            Assert.NotEmpty(blocks);
         }
         
         stopwatch.Stop();
