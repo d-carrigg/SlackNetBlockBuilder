@@ -5,6 +5,14 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>SlackNet.Blocks</RootNamespace>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+    
+    <!--Errors/Warnings adjustments-->
+    <PropertyGroup>
+<!--        &lt;!&ndash;Missing xml docs is an error&ndash;&gt;-->
+<!--        <WarningsAsErrors>1591</WarningsAsErrors>-->
+       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
 
     <ItemGroup>
