@@ -55,6 +55,9 @@ await slackApi.Chat.PostMessage(new Message
 
 #### Without SlackNetBlockBuilder (Traditional Approach):
 
+With simple messages, the difference in terms of lines of code is negligible, but you will find that creating a
+message is easier and faster to type. Here is the same example as above without the BlockBuilder:
+
 ```csharp
 using SlackNet;
 using SlackNet.WebApi;
