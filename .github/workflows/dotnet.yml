@@ -12,8 +12,9 @@ permissions:
   contents: read
   issues: write
   packages: write
-
-
+  pull-requests: write
+  actions: write
+  discussions: write
 
 jobs:
   build:
