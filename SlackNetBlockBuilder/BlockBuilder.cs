@@ -141,9 +141,6 @@ public sealed class BlockBuilder : IBlockBuilder
     /// <summary>
     /// Checks if a specific input block element has FocusOnLoad set to true. (Internal Helper)
     /// </summary>
-    /// <remarks>
-    /// TODO: Don't do this with a switch, add a marker interface to the elements that have FocusOnLoad
-    /// </remarks>
     private bool IsElementFocused(IInputBlockElement block)
     {
         // TODO: Don't do this, add a marker interface to the elements that have FocusOnLoad
