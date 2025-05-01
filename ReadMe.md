@@ -1,6 +1,9 @@
 # SlackNetBlockBuilder
 
-A fluent builder extension for [SlackNet](https://github.com/SlackNet/SlackNet) that simplifies creating Slack Block Kit UI elements with a clean, chainable API.
+A fluent builder extension for [SlackNet](https://github.com/SlackNet/SlackNet) that simplifies creating Slack Block Kit
+UI elements with a clean, chainable API.
+
+*This project is not affiliated with Slack or SlackNet.*
 
 ## Installation
 
@@ -10,9 +13,16 @@ Install the package via NuGet:
 dotnet add package SlackNetBlockBuilder
 ```
 
+Visual Studio
+```
+Install-Package SlackNetBlockBuilder
+```
+
+
 ## Getting Started
 
-SlackNetBlockBuilder provides a fluent interface for building Slack Block Kit UIs. It extends the SlackNet library to make creating complex Slack messages more intuitive and maintainable.
+To help get you started with the BlockBuilder, here are some examples that show how to create messages,
+and how that compares to the traditional approach of creating blocks manually.
 
 ### Simple Message Creation
 
@@ -21,6 +31,7 @@ SlackNetBlockBuilder provides a fluent interface for building Slack Block Kit UI
 ```csharp
 using SlackNet;
 using SlackNet.Blocks;
+using SlackNet.WebApi;
 
 // Create a new block builder
 var blocks = BlockBuilder.Create()
@@ -314,34 +325,57 @@ public async Task HandleInteraction(InteractionPayload payload)
 }
 ```
 
-## Advanced Features
+## Validation
 
-- **Block IDs and Action IDs**: Easily set IDs for blocks and actions for interaction handling
-- **Conditional Elements**: Add or remove blocks based on conditions
-- **Rich Text Formatting**: Create complex text layouts with rich text blocks
-- **Context Blocks**: Add contextual information with mixed text and images
-- **Input Validation**: Set validation rules for input elements
+The library includes validation to ensure that the blocks you create are valid according to Slack's Block Kit
+guidelines.
+This was added because I got sick of getting 400 errors from Slack, and then having to manually check the blocks to see
+what was wrong.
+Right now, validation throws InvalidOperationException, but a future release will use a dedicated exception type for
+validation errors.
 
-## Performance
+Example:
 
-SlackNetBlockBuilder is designed to be highly performant. Our performance tests show that builder operations take less than 0.02ms per operation, ensuring that your application remains responsive even when building complex UIs.
+```csharp
+var blocks = new BlockBuilder()
+    // throws Each field in a section block can have at most 3000 characters
+    .AddSection("A string with more than 3000 characters") 
+    .Build(); 
 
-## Why Use SlackNetBlockBuilder?
+```
 
-As you can see from the examples above, SlackNetBlockBuilder significantly reduces the amount of code needed to create Slack Block Kit UIs. The traditional approach requires:
+Constraints on blocks are referenced from [Slack's Block Kit documentation](https://api.slack.com/reference/block-kit).
 
-- More lines of code
-- Deeper nesting of objects
-- Manual creation of all objects and properties
-- More complex code for updating existing messages
+## Further Examples
 
-With SlackNetBlockBuilder, you get:
+I'm working on adding examples to provide a more comprehensive overview of the library's capabilities. Generally
+speaking
+anything that can be done with the SlackNet API Blocks can be done with this library, so if you have any specific use
+cases in mind,
+you can follow these guidelines:
 
-- Clean, fluent API
-- Chainable methods for building complex UIs
-- Simplified updating of existing messages
-- Reduced boilerplate code
-- Better readability and maintainability
+1. Remove blocks with the `Remove` method, modify blocks with `Modify` method, and add new blocks with the `Add` methods.
+   There are many built in extensions for adding blocks (e.g `AddSection`, `AddHeader`, `AddActions`, etc.) but you can
+   also use the generic `Add` method
+   if you need greater control.
+   ```csharp
+    builder.Remove("block_id")
+        .Modify("block_id", block => block
+            .Text("New Text"))
+        .AddSection(section => section
+            .Text("New Section"));
+   ```
+2. Complex blocks that have child elements take a lambda function as a parameter to configure the block.
+   ```csharp
+    builder.AddActions(actions => actions
+        .Button(button => button
+            .Text("Click Me")
+            .ActionId("button_click")
+            .Primary())
+        .Button(button => button
+            .Text("Cancel")
+            .ActionId("cancel_button")));
+   ```
 
 ## License
 
