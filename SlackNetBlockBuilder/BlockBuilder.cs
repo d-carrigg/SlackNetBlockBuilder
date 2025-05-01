@@ -143,7 +143,6 @@ public sealed class BlockBuilder : IBlockBuilder
     /// </summary>
     private bool IsElementFocused(IInputBlockElement block)
     {
-        // TODO: Don't do this, add a marker interface to the elements that have FocusOnLoad
         var isFocused = block switch 
             {
                 // date and time

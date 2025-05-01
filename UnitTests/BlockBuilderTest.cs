@@ -52,6 +52,9 @@ public class BlockBuilderTest
         Assert.True(textInput.FocusOnLoad);
     }
 
+ 
+    
+    
     [Fact]
     public void AddBlock_ChainedCalls_BuildsCorrectly()
     {
@@ -113,4 +116,81 @@ public class BlockBuilderTest
         
         // No specific assertion, this is a baseline measurement
     }
+    
+    [Fact]
+    public void RemoveBlock_ValidBlockId_RemovesBlock()
+    {
+        // Arrange
+        var builder = BlockBuilder.Create();
+        builder.AddHeader("Header", "id_1")
+            .AddHeader("Header 2", "id_2");
+        
+
+        // Act
+        var isRemoved = builder.Remove("id_1");
+        var blocks = builder.Build();
+
+        // Assert
+        Assert.True(isRemoved);
+        Assert.Single(blocks);
+        Assert.Equal("id_2", ((HeaderBlock)blocks[0]).BlockId);
+    }
+    
+    // removing a block that doesn't exist should return false
+    [Fact]
+    public void RemoveBlock_InvalidBlockId_ThrowsException()
+    {
+        // Arrange
+        var builder = BlockBuilder.Create();
+        builder.AddHeader("Header", "id_1")
+            .AddHeader("Header 2", "id_2");
+
+        
+        // Act
+        var isRemoved = builder.Remove("id_3");
+        
+        // Assert
+        Assert.False(isRemoved);
+    }
+    
+    
+    // removing an action that exists should return true
+    [Fact]
+    public void RemoveAction_ValidActionId_RemovesAction()
+    {
+        // Arrange
+        var builder = BlockBuilder.Create();
+        builder.AddActions(actions => actions
+            .AddButton("button_1", "Button 1")
+            .AddButton("button_2", "Button 2"));
+
+        // Act
+        var isRemoved = builder.RemoveAction("button_1");
+        var blocks = builder.Build();
+
+        // Assert
+        Assert.True(isRemoved);
+        Assert.Single(blocks);
+        var actionsBlock = Assert.IsType<ActionsBlock>(blocks[0]);
+        Assert.Single(actionsBlock.Elements);
+    }
+    
+    // removing an action that doesn't exist should return false
+    [Fact]
+    public void RemoveAction_InvalidActionId_ThrowsException()
+    {
+        // Arrange
+        var builder = BlockBuilder.Create();
+        builder.AddActions(actions => actions
+            .AddButton("button_1", "Button 1")
+            .AddButton("button_2", "Button 2"));
+
+        // Act
+        var isRemoved = builder.RemoveAction("button_3");
+        
+        // Assert
+        Assert.False(isRemoved);
+    }
+    
+ 
 }
