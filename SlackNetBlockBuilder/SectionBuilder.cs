@@ -13,14 +13,14 @@ public class SectionBuilder
     /// The maximum number of fields allowed in a section block.
     /// See <see href="https://api.slack.com/reference/block-kit/blocks#section_fields">Slack API documentation</see>.
     /// </summary>
-    public int MaxFields = 10;
-    
+    public const int MaxFields = 10;
+
     /// <summary>
     /// The maximum length allowed for the text in each field.
     /// See <see href="https://api.slack.com/reference/block-kit/blocks#section_fields">Slack API documentation</see>.
     /// </summary>
-    public int MaxFieldsLength = 2000; // Corrected based on Slack docs
-    
+    public const int MaxFieldsLength = 2000; // Corrected based on Slack docs
+
     /// <summary>
     /// The maximum length allowed for a block ID.
     /// </summary>
@@ -121,6 +121,7 @@ public class SectionBuilder
     public SectionBuilder Accessory<TAccessory>(Action<TAccessory> createAccessory)
     where TAccessory : BlockElement, new()
     {
+        ArgumentNullException.ThrowIfNull(createAccessory);
         var accessory = new TAccessory();
         createAccessory(accessory);
         _sectionBlock.Accessory = accessory;

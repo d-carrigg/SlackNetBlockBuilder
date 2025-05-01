@@ -15,7 +15,9 @@ public static class ButtonExtensions
     /// <param name="text">A plain_text object that defines the button's text. Maximum length is 75 characters.</param>
     /// <returns>The same instance so calls can be chained.</returns>
     public static ActionElementBuilder<Button> Text(this ActionElementBuilder<Button> builder, string text)
-        => builder.Modify(x => x.Text = text);
+        => 
+            builder is null ? throw new ArgumentNullException(nameof(builder)) :
+            builder.Modify(x => x.Text = text);
 
     /// <summary>
     /// Sets the URL to open when the button is clicked.
@@ -26,9 +28,24 @@ public static class ButtonExtensions
     /// <returns>The same instance so calls can be chained.</returns>
     public static ActionElementBuilder<Button> Url(this ActionElementBuilder<Button> builder, string url)
     {
+        ArgumentNullException.ThrowIfNull(builder);
+        ArgumentNullException.ThrowIfNull(url);
+        
         builder.Element.Url = url;
         return builder;
     }
+    
+    /// <summary>
+    /// Sets the URL to open when the button is clicked.
+    /// If a URL is provided, the button will not trigger an interaction payload (action_id is ignored).
+    /// </summary>
+    /// <param name="builder">The builder instance.</param>
+    /// <param name="url">A URL to load in the user's browser. Maximum length is 3000 characters.</param>
+    /// <returns>The same instance so calls can be chained.</returns>
+    public static ActionElementBuilder<Button> Url(this ActionElementBuilder<Button> builder, Uri url)
+   =>
+       url is null ? throw new ArgumentNullException(nameof(url)) :
+       builder.Url(url.ToString());
 
     /// <summary>
     /// Sets the value sent with the interaction payload when the button is clicked.
@@ -38,6 +55,7 @@ public static class ButtonExtensions
     /// <returns>The same instance so calls can be chained.</returns>
     public static ActionElementBuilder<Button> Value(this ActionElementBuilder<Button> builder, string value)
     {
+        ArgumentNullException.ThrowIfNull(builder);
         builder.Element.Value = value;
         return builder;
     }
@@ -50,6 +68,7 @@ public static class ButtonExtensions
     /// <returns>The same instance so calls can be chained.</returns>
     public static ActionElementBuilder<Button> Style(this ActionElementBuilder<Button> builder, ButtonStyle style)
     {
+        ArgumentNullException.ThrowIfNull(builder);
         builder.Element.Style = style;
         return builder;
     }
@@ -63,6 +82,7 @@ public static class ButtonExtensions
     public static ActionElementBuilder<Button> AccessibilityLabel(this ActionElementBuilder<Button> builder,
         string label)
     {
+        ArgumentNullException.ThrowIfNull(builder);
         builder.Element.AccessibilityLabel = label;
         return builder;
     }
@@ -82,6 +102,7 @@ public static class ButtonExtensions
         string text,
         ButtonStyle style, string? url = null, string? value = null)
     {
+        ArgumentNullException.ThrowIfNull(builder);
         return builder.AddButton(actionId, button =>
             {
                 button.Element.ActionId = actionId;
@@ -92,6 +113,23 @@ public static class ButtonExtensions
             });
     }
 
+    /// <summary>
+    /// Adds a button to an Actions block with the specified properties.
+    /// </summary>
+    /// <param name="builder">The ActionsBlockBuilder instance.</param>
+    /// <param name="actionId">An identifier for this action. You can use this when you receive an interaction payload to identify the source of the action. Should be unique among all other action_ids used elsewhere by your app. Maximum length is 255 characters.</param>
+    /// <param name="text">A plain_text object that defines the button's text. Maximum length is 75 characters.</param>
+    /// <param name="style">The visual style of the button (Default, Primary, or Danger).</param>
+    /// <param name="url">A URL to load in the user's browser. If provided, action_id is ignored. Max length 3000.</param>
+    /// <param name="value">The value to send with the interaction payload. Max length 2000.</param>
+    /// <returns>The same ActionsBlockBuilder instance so calls can be chained.</returns>
+    public static ActionsBlockBuilder AddButton(this ActionsBlockBuilder builder, string actionId,
+        string text,
+        ButtonStyle style, Uri? url = null, string? value = null)
+    => url is null ? throw new ArgumentNullException(nameof(url)) :
+        builder.AddButton(actionId, text, style, url.ToString(), value);
+    
+    
     /// <summary>
     /// Adds a button with default style to an Actions block.
     /// </summary>
@@ -106,4 +144,5 @@ public static class ButtonExtensions
     {
         return builder.AddButton(actionId, text, ButtonStyle.Default, url, value);
     }
+ 
 }

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 
 namespace SlackNet.Blocks;
@@ -34,6 +35,7 @@ public interface IBlockBuilder
     /// Combine all blocks into a list of blocks
     /// </summary>
     /// <returns>The built list of blocks</returns>
+    [SuppressMessage("Design", "CA1002:Do not expose generic lists")]
     List<Block> Build();
 }
 
@@ -210,6 +212,7 @@ public sealed class BlockBuilder : IBlockBuilder
     /// <returns>True if an element was removed, false otherwise.</returns>
     public bool RemoveAction(Predicate<IActionElement> predicate)
     {
+        ArgumentNullException.ThrowIfNull(predicate);
         var actionsBlocks = _blocks.OfType<ActionsBlock>();
         
  
@@ -248,6 +251,7 @@ public sealed class BlockBuilder : IBlockBuilder
     /// <returns>The same builder instance so calls can be chained.</returns>
     public IBlockBuilder Add<TBlock>(Action<TBlock> modifier) where TBlock : Block, new()
     {
+        ArgumentNullException.ThrowIfNull(modifier);
         var element = new TBlock();
         modifier(element);
         _blocks.Add(element);

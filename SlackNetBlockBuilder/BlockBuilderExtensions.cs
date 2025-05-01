@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using JetBrains.Annotations;
 
 namespace SlackNet.Blocks;
@@ -18,6 +19,8 @@ public static class BlockBuilderExtensions
     public static IBlockBuilder AddActions(this IBlockBuilder builder,
         Action<ActionsBlockBuilder> createActions)
     {
+        ArgumentNullException.ThrowIfNull(builder);
+        ArgumentNullException.ThrowIfNull(createActions);
         var block = ActionsBlockBuilder.Create();
         
         createActions(block);
@@ -33,7 +36,9 @@ public static class BlockBuilderExtensions
     /// <param name="blockId">A unique identifier for this block. Maximum length is 255 characters. If not specified, one will be generated.</param>
     /// <returns>The same instance so calls can be chained</returns>
     public static IBlockBuilder AddCall(this IBlockBuilder builder, string callId, string? blockId = null)
-        => builder.Add<CallBlock>(call =>
+        => 
+            builder is null ? throw new ArgumentNullException(nameof(builder)) :
+            builder.Add<CallBlock>(call =>
             {
                 call.CallId = callId;
                 call.BlockId = blockId;
@@ -50,6 +55,9 @@ public static class BlockBuilderExtensions
     /// <returns>The same builder instance so calls can be chained.</returns>
     public static IBlockBuilder AddContext(this IBlockBuilder builder, Action<ContextBlockBuilder> createContext)
     {
+        ArgumentNullException.ThrowIfNull(builder);
+        ArgumentNullException.ThrowIfNull(createContext);
+        
         var contextBuilder = new ContextBlockBuilder();
         createContext(contextBuilder);
         builder.AddBlock(contextBuilder.Build());
@@ -64,6 +72,7 @@ public static class BlockBuilderExtensions
     /// <returns>The same instance so calls can be chained</returns>
     public static IBlockBuilder AddDivider(this IBlockBuilder builder, string? blockId = null)
     {
+        ArgumentNullException.ThrowIfNull(builder);
         var divider = new DividerBlock()
             {
                 BlockId = blockId
@@ -82,7 +91,9 @@ public static class BlockBuilderExtensions
     /// <returns>The same builder instance so calls can be chained</returns>
     public static IBlockBuilder AddFile(this IBlockBuilder builder, string externalId, string source = "remote",
         string? blockId = null)
-        => builder.Add<FileBlock>(file =>
+        =>
+            builder is null ? throw new ArgumentNullException(nameof(builder)) :
+            builder.Add<FileBlock>(file =>
             {
                 file.ExternalId = externalId;
                 file.Source = source; // Typically "remote"
@@ -98,6 +109,7 @@ public static class BlockBuilderExtensions
     /// <returns>The same builder instance so calls can be chained</returns>
     public static IBlockBuilder AddHeader(this IBlockBuilder builder, PlainText text, string? blockId = null)
     {
+        ArgumentNullException.ThrowIfNull(builder);
         var block = new HeaderBlock
             {
                 Text = text,
@@ -122,13 +134,32 @@ public static class BlockBuilderExtensions
         string altText,
         PlainText? title = null,
         string? blockId = null)
-        => builder.Add<ImageBlock>(image =>
+        => 
+            builder is null ? throw new ArgumentNullException(nameof(builder)) :
+            builder.Add<ImageBlock>(image =>
             {
                 image.ImageUrl = imageUrl;
                 image.AltText = altText;
                 image.BlockId = blockId;
                 image.Title = title;
             });
+    
+    /// <summary>
+    /// Adds an image block from a publicly accessible URL.
+    /// </summary>
+    /// <param name="builder">The builder instance</param>
+    /// <param name="imageUrl">The URL of the image to be displayed. Slack CDN images are not supported.</param>
+    /// <param name="altText">Plain text summary of the image for accessibility. Maximum length 2000 characters.</param>
+    /// <param name="title">An optional plain_text title for the image. Maximum length 2000 characters.</param>
+    /// <param name="blockId">A unique identifier for this block. Maximum length is 255 characters. If not specified, one will be generated.</param>
+    /// <returns>The same instance so calls can be chained</returns>
+    public static IBlockBuilder AddImageFromUrl(this IBlockBuilder builder,
+        Uri imageUrl,
+        string altText,
+        PlainText? title = null,
+        string? blockId = null) => 
+    imageUrl is null ? throw new ArgumentNullException(nameof(imageUrl)) :
+        builder.AddImageFromUrl(imageUrl.ToString(), altText, title, blockId);
 
     /// <summary>
     /// Adds an image block using a file hosted on Slack.
@@ -144,7 +175,9 @@ public static class BlockBuilderExtensions
         string altText,
         PlainText? title = null,
         string? blockId = null)
-        => builder.Add<ImageBlock>(image =>
+        => 
+            builder is null ? throw new ArgumentNullException(nameof(builder)) :
+            builder.Add<ImageBlock>(image =>
             {
                 image.SlackFile = slackFile;
                 image.AltText = altText;
@@ -166,6 +199,8 @@ public static class BlockBuilderExtensions
         Action<InputBlockBuilder<TInput>> createInput)
         where TInput : class, IActionElement, IInputBlockElement, new()
     {
+        ArgumentNullException.ThrowIfNull(builder);
+        ArgumentNullException.ThrowIfNull(createInput);
         var input = new TInput();
         var inputBuilder = new InputBlockBuilder<TInput>(input, label);
         createInput(inputBuilder);
@@ -182,6 +217,8 @@ public static class BlockBuilderExtensions
     /// <returns>The same builder instance so calls can be chained.</returns>
     public static IBlockBuilder AddRichText(this IBlockBuilder builder, Action<RichTextBuilder> createRichText)
     {
+        ArgumentNullException.ThrowIfNull(builder);
+        ArgumentNullException.ThrowIfNull(createRichText);
         var blockBuilder = new RichTextBuilder();
         createRichText(blockBuilder);
         builder.AddBlock(blockBuilder.Build());
@@ -217,6 +254,8 @@ public static class BlockBuilderExtensions
     /// <returns>The same builder instance so calls can be chained.</returns>
     public static IBlockBuilder AddSection(this IBlockBuilder builder, Action<SectionBuilder> createSection)
     {
+        ArgumentNullException.ThrowIfNull(builder);
+        ArgumentNullException.ThrowIfNull(createSection);
         var sectionBuilder = new SectionBuilder();
         createSection(sectionBuilder);
         builder.AddBlock(sectionBuilder.Build());
@@ -238,6 +277,7 @@ public static class BlockBuilderExtensions
     /// <param name="providerName">An optional plain_text name of the video provider. Maximum length 30 characters.</param>
     /// <param name="titleUrl">An optional URL that makes the video title clickable. Must be an HTTPS URL. Requires <c>videoUrl</c> to belong to an <see href="https://api.slack.com/apps/managing#configuring-unfurls">unfurl domain</see> configured for the app.</param>
     /// <returns>The same instance so calls can be chained</returns>
+    [SuppressMessage("Design", "CA1054:URI-like parameters should not be strings")]
     public static IBlockBuilder AddVideo(this IBlockBuilder builder,
         string videoUrl,
         string thumbnailUrl,
@@ -248,7 +288,9 @@ public static class BlockBuilderExtensions
         string? providerIconUrl = null,
         string? providerName = null,
         string? titleUrl = null)
-        => builder.Add<VideoBlock>(video =>
+        => 
+            builder is null ? throw new ArgumentNullException(nameof(builder)) :
+            builder.Add<VideoBlock>(video =>
             {
                 video.VideoUrl = videoUrl;
                 video.ThumbnailUrl = thumbnailUrl;
@@ -261,4 +303,38 @@ public static class BlockBuilderExtensions
                 video.ProviderName = providerName;
                 video.TitleUrl = titleUrl;
             });
+    
+    /// <summary>
+    /// Adds a video block, which embeds a video player from a supported provider.
+    /// </summary>
+    /// <param name="builder">The builder instance</param>
+    /// <param name="videoUrl">The URL of the video to embed. Must be one of the <see href="https://api.slack.com/reference/block-kit/blocks#video_providers">supported video providers</see>.</param>
+    /// <param name="thumbnailUrl">The URL of a thumbnail image for the video.</param>
+    /// <param name="title">A plain_text title for the video. Maximum length 200 characters.</param>
+    /// <param name="altText">A plain_text description of the video for accessibility. Maximum length 2000 characters.</param>
+    /// <param name="blockId">A unique identifier for this block. Maximum length is 255 characters. If not specified, one will be generated.</param>
+    /// <param name="description">An optional plain_text description shown below the title. Maximum length 200 characters.</param>
+    /// <param name="providerIconUrl">An optional URL for an icon representing the video provider.</param>
+    /// <param name="providerName">An optional plain_text name of the video provider. Maximum length 30 characters.</param>
+    /// <param name="titleUrl">An optional URL that makes the video title clickable. Must be an HTTPS URL. Requires <c>videoUrl</c> to belong to an <see href="https://api.slack.com/apps/managing#configuring-unfurls">unfurl domain</see> configured for the app.</param>
+    /// <returns>The same instance so calls can be chained</returns>
+    public static IBlockBuilder AddVideo(this IBlockBuilder builder,
+        Uri videoUrl,
+        Uri thumbnailUrl,
+        string title,
+        string altText,
+        string? blockId = null,
+        string? description = null,
+        Uri? providerIconUrl = null,
+        string? providerName = null,
+        Uri? titleUrl = null)
+    {
+        ArgumentNullException.ThrowIfNull(builder);
+        ArgumentNullException.ThrowIfNull(videoUrl);
+        ArgumentNullException.ThrowIfNull(thumbnailUrl);
+        return builder.AddVideo(videoUrl.ToString(), thumbnailUrl.ToString(), title, altText, blockId, description,
+            providerIconUrl?.ToString(), providerName, titleUrl?.ToString());
+    }
+
+ 
 }

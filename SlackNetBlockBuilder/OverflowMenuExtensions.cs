@@ -22,6 +22,8 @@ public static class OverflowMenuExtensions
         string text,
         PlainText? description = null,
         string? url = null)
-        => builder.Modify(x =>
+        => 
+            builder is null ? throw new ArgumentNullException(nameof(builder)) :
+            builder.Modify(x =>
             x.Options.Add(new OverflowOption { Text = text, Value = value, Description = description, Url = url }));
 }

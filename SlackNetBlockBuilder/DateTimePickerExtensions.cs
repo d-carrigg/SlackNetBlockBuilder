@@ -18,7 +18,9 @@ public static class DateTimePickerExtensions
     /// <param name="initialDate">The initial date to select.</param>
     /// <returns>The same builder instance so calls can be chained.</returns>
     public static InputElementBuilder<DatePicker> InitialDate(this InputElementBuilder<DatePicker> builder,
-        DateTime? initialDate) => builder.Set(x => x.InitialDate = initialDate);
+        DateTime? initialDate) => 
+        builder is null ? throw new ArgumentNullException(nameof(builder)) :
+        builder.Set(x => x.InitialDate = initialDate);
 
 
     /// <summary>
@@ -28,7 +30,9 @@ public static class DateTimePickerExtensions
     /// <param name="placeholder">The placeholder text.</param>
     /// <returns>The same builder instance so calls can be chained.</returns>
     public static InputElementBuilder<DatePicker> Placeholder(this InputElementBuilder<DatePicker> builder,
-        string placeholder) => builder.Set(x => x.Placeholder = placeholder);
+        string placeholder) => 
+        builder is null ? throw new ArgumentNullException(nameof(builder)) :
+        builder.Set(x => x.Placeholder = placeholder);
 
     /// <summary>
     /// Indicates whether the element will be set to autofocus within the view object.
@@ -39,7 +43,9 @@ public static class DateTimePickerExtensions
     /// <returns>The same builder instance so calls can be chained.</returns>
     public static InputElementBuilder<DatePicker> FocusOnLoad(this InputElementBuilder<DatePicker> builder,
         bool focus = true)
-        => builder.Set(x => x.FocusOnLoad = focus);
+        => 
+            builder is null ? throw new ArgumentNullException(nameof(builder)) :
+            builder.Set(x => x.FocusOnLoad = focus);
 
     // === Time Picker ===
 
@@ -51,7 +57,9 @@ public static class DateTimePickerExtensions
     /// <param name="initialTime">The initial time to select.</param>
     /// <returns>The same builder instance so calls can be chained.</returns>
     public static InputElementBuilder<TimePicker> InitialTime(this InputElementBuilder<TimePicker> builder,
-        TimeSpan? initialTime) => builder.Set(x => x.InitialTime = initialTime);
+        TimeSpan? initialTime) =>
+        builder is null ? throw new ArgumentNullException(nameof(builder)) :
+        builder.Set(x => x.InitialTime = initialTime);
 
     /// <summary>
     /// Sets the placeholder text shown on the time picker element. Maximum length 150 characters.
@@ -60,7 +68,9 @@ public static class DateTimePickerExtensions
     /// <param name="placeholder">The placeholder text.</param>
     /// <returns>The same builder instance so calls can be chained.</returns>
     public static InputElementBuilder<TimePicker> Placeholder(this InputElementBuilder<TimePicker> builder,
-        string placeholder) => builder.Set(x => x.Placeholder = placeholder);
+        string placeholder) => 
+        builder is null ? throw new ArgumentNullException(nameof(builder)) :
+        builder.Set(x => x.Placeholder = placeholder);
 
     /// <summary>
     /// Indicates whether the element will be set to autofocus within the view object.
@@ -71,7 +81,9 @@ public static class DateTimePickerExtensions
     /// <returns>The same builder instance so calls can be chained.</returns>
     public static InputElementBuilder<TimePicker> FocusOnLoad(this InputElementBuilder<TimePicker> builder,
         bool focus = true)
-        => builder.Set(x => x.FocusOnLoad = focus);
+        => 
+            builder is null ? throw new ArgumentNullException(nameof(builder)) :
+            builder.Set(x => x.FocusOnLoad = focus);
 
     // === Date Time Picker ===
 
@@ -84,7 +96,9 @@ public static class DateTimePickerExtensions
     /// <returns>The same builder instance so calls can be chained.</returns>
     public static InputElementBuilder<DateTimePicker> InitialDateTime(
         this InputElementBuilder<DateTimePicker> builder,
-        DateTime? initialDateTime) => builder.Set(x => x.InitialDateTime = initialDateTime);
+        DateTime? initialDateTime) =>
+        builder is null ? throw new ArgumentNullException(nameof(builder)) :
+        builder.Set(x => x.InitialDateTime = initialDateTime);
 
     /// <summary>
     /// Indicates whether the element will be set to autofocus within the view object.
@@ -95,5 +109,7 @@ public static class DateTimePickerExtensions
     /// <returns>The same builder instance so calls can be chained.</returns>
     public static InputElementBuilder<DateTimePicker> FocusOnLoad(this InputElementBuilder<DateTimePicker> builder,
         bool focus = true)
-        => builder.Set(x => x.FocusOnLoad = focus);
+        =>
+            builder is null ? throw new ArgumentNullException(nameof(builder)) :
+            builder.Set(x => x.FocusOnLoad = focus);
 }

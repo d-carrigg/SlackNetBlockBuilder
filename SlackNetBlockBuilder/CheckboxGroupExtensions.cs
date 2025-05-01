@@ -19,7 +19,9 @@ public static class CheckboxGroupExtensions
     /// <returns>The same instance so calls can be chained</returns>
     public static InputElementBuilder<CheckboxGroup> AddOption(this InputElementBuilder<CheckboxGroup> builder,
         string value,
-        string text, PlainText? description = null) => builder.Set(x =>
+        string text, PlainText? description = null) => 
+        builder is null ? throw new ArgumentNullException(nameof(builder)) :
+        builder.Set(x =>
         x.Options.Add(new Option { Text = text, Value = value, Description = description }));
 
     /// <summary>
@@ -30,7 +32,9 @@ public static class CheckboxGroupExtensions
     /// <returns>The same instance so calls can be chained</returns>
     public static InputElementBuilder<CheckboxGroup> FocusOnLoad(this InputElementBuilder<CheckboxGroup> builder,
         bool focus = true)
-        => builder.Set(x => x.FocusOnLoad = focus);
+        => 
+            builder is null ? throw new ArgumentNullException(nameof(builder)) :
+            builder.Set(x => x.FocusOnLoad = focus);
 
     /// <summary>
     /// Pre-selects options in the checkbox group.
@@ -40,7 +44,9 @@ public static class CheckboxGroupExtensions
     /// <param name="selector">A function that selects the initial options from the available options.</param>
     /// <returns>The same instance so calls can be chained.</returns>
     public static InputElementBuilder<CheckboxGroup> InitialOptions(this InputElementBuilder<CheckboxGroup> builder,
-        Func<IList<Option>, IList<Option>> selector) => builder.Set(x => x.InitialOptions = selector(x.Options));
+        Func<IList<Option>, IList<Option>> selector) => 
+        builder is null ? throw new ArgumentNullException(nameof(builder)) :
+        builder.Set(x => x.InitialOptions = selector(x.Options));
 
     /// <summary>
     /// Pre-selects options in the checkbox group by their values.

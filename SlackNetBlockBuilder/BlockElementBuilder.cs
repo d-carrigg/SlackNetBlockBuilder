@@ -28,18 +28,11 @@ public sealed class BlockElementBuilder<TBlock> : IBlockBuilder
     /// <param name="modifier">An action that modifies the <see cref="Element"/>.</param>
     public void Modify(Action<TBlock> modifier)
     {
+        ArgumentNullException.ThrowIfNull(modifier);
         modifier(Element);
     }
 
-    /// <summary>
-    /// Creates a new <see cref="BlockElementBuilder{TBlock}"/> instance. (Typically for internal use by other builders).
-    /// </summary>
-    /// <param name="builder">The outer <see cref="IBlockBuilder"/> to wrap.</param>
-    /// <param name="element">The specific element instance to manage.</param>
-    /// <returns>A new <see cref="BlockElementBuilder{TBlock}"/>.</returns>
-    public static BlockElementBuilder<TBlock> Create(IBlockBuilder builder, TBlock element) =>
-        new(builder, element);
-
+ 
     /// <inheritdoc />
     public IBlockBuilder AddBlock(Block block)
     {

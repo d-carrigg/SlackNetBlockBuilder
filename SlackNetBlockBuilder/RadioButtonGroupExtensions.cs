@@ -18,7 +18,9 @@ public static class RadioButtonGroupExtensions
     /// <returns>The same builder instance so calls can be chained.</returns>
     public static InputElementBuilder<RadioButtonGroup> AddOption(this InputElementBuilder<RadioButtonGroup> builder,
         string value,
-        string text, PlainText? description = null) => builder.Set(x =>
+        string text, PlainText? description = null) => 
+        builder is null ? throw new ArgumentNullException(nameof(builder)) :
+        builder.Set(x =>
         x.Options.Add(new Option { Text = text, Value = value, Description = description }));
 
     /// <summary>
@@ -30,7 +32,9 @@ public static class RadioButtonGroupExtensions
     /// <returns>The same builder instance so calls can be chained.</returns>
     public static InputElementBuilder<RadioButtonGroup> InitialOption(
         this InputElementBuilder<RadioButtonGroup> builder,
-        string value) => builder.Set(x => x.InitialOption = x.Options.FirstOrDefault(o => o.Value == value));
+        string value) => 
+        builder is null ? throw new ArgumentNullException(nameof(builder)) :
+        builder.Set(x => x.InitialOption = x.Options.FirstOrDefault(o => o.Value == value));
 
     /// <summary>
     /// Indicates whether the element will be set to autofocus within the view object.
@@ -41,5 +45,7 @@ public static class RadioButtonGroupExtensions
     /// <returns>The same builder instance so calls can be chained.</returns>
     public static InputElementBuilder<RadioButtonGroup> FocusOnLoad(
         this InputElementBuilder<RadioButtonGroup> builder,
-        bool focus = true) => builder.Set(x => x.FocusOnLoad = focus);
+        bool focus = true) => 
+        builder is null ? throw new ArgumentNullException(nameof(builder)) :
+        builder.Set(x => x.FocusOnLoad = focus);
 }

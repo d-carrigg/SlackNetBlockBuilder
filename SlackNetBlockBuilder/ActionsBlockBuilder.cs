@@ -36,7 +36,7 @@ public sealed class ActionsBlockBuilder
     /// <returns>The constructed <see cref="ActionsBlock"/>.</returns>
     /// <exception cref="InvalidOperationException">
     /// Thrown if the block contains more than <see cref="MaxElements"/> elements
-    /// or if the <see cref="ActionsBlock.BlockId"/> exceeds <see cref="MaxBlockIdLength"/> characters.
+    /// or if the <see cref="Block.BlockId"/> exceeds <see cref="MaxBlockIdLength"/> characters.
     /// </exception>
     public ActionsBlock Build()
     {
@@ -79,6 +79,8 @@ public sealed class ActionsBlockBuilder
     public ActionsBlockBuilder AddElement<TElement>(string actionId, TElement element,
         Action<ActionElementBuilder<TElement>> createElement) where TElement : ActionElement
     {
+        ArgumentNullException.ThrowIfNull(element);
+        ArgumentNullException.ThrowIfNull(createElement);
         element.ActionId = actionId;
         createElement(new ActionElementBuilder<TElement>(element));
         _element.Elements.Add(element);
@@ -97,8 +99,11 @@ public sealed class ActionsBlockBuilder
     public ActionsBlockBuilder AddElement<TElement>(string actionId,
         Action<ActionElementBuilder<TElement>> createElement) where TElement : ActionElement, new()
     {
-        var element = new TElement();
-        element.ActionId = actionId;
+        ArgumentNullException.ThrowIfNull(createElement);
+        var element = new TElement
+        {
+            ActionId = actionId
+        };
         createElement(new ActionElementBuilder<TElement>(element));
         _element.Elements.Add(element);
 
@@ -116,6 +121,7 @@ public sealed class ActionsBlockBuilder
     public ActionsBlockBuilder AddElement<TElement>(string actionId,
         Action<InputElementBuilder<TElement>> createElement) where TElement : ActionElement, IInputBlockElement, new()
     {
+        ArgumentNullException.ThrowIfNull(createElement);
         var element = new TElement();
         element.ActionId = actionId;
         createElement(new InputElementBuilder<TElement>(element));

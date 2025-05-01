@@ -10,9 +10,17 @@
     
     <!--Errors/Warnings adjustments-->
     <PropertyGroup>
-<!--        &lt;!&ndash;Missing xml docs is an error&ndash;&gt;-->
-<!--        <WarningsAsErrors>1591</WarningsAsErrors>-->
        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <Nullable>enable</Nullable>
+        <!-- Enable more warning waves -->
+        <AnalysisLevel>latest</AnalysisLevel>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+
+        <!-- Enable .NET analyzers -->
+        <EnableNETAnalyzers>true</EnableNETAnalyzers>
+        <AnalysisMode>All</AnalysisMode>
+        
+        <NoWarn>CA1054</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>

@@ -1,3 +1,5 @@
+using System.Collections.ObjectModel;
+
 namespace SlackNet.Blocks;
 
 /// <summary>
@@ -33,6 +35,7 @@ public class RichTextBuilder
     /// <returns>The same builder instance so calls can be chained.</returns>
     public RichTextBuilder AddSection(Action<RichTextSectionElementBuilder> creationSection)
     {
+        ArgumentNullException.ThrowIfNull(creationSection);
         var builder = new RichTextSectionElementBuilder();
         creationSection(builder);
         _richTextBlock.Elements.Add(new RichTextSection()
@@ -51,6 +54,7 @@ public class RichTextBuilder
     /// <returns>The same builder instance so calls can be chained.</returns>
     public RichTextBuilder AddTextList(RichTextListStyle style, Action<RichTextListBuilder> builder)
     {
+        ArgumentNullException.ThrowIfNull(builder);
         var listBuilder = new RichTextListBuilder(style);
         builder(listBuilder);
 
@@ -67,6 +71,7 @@ public class RichTextBuilder
     /// <returns>The same builder instance so calls can be chained.</returns>
     public RichTextBuilder AddPreformattedText(Action<RichTextSectionElementBuilder> createContent, int border = default)
     {
+        ArgumentNullException.ThrowIfNull(createContent);
         var builder = new RichTextSectionElementBuilder();
         createContent(builder);
         _richTextBlock.Elements.Add(new RichTextPreformatted()
@@ -105,6 +110,7 @@ public class RichTextBuilder
     /// <returns>The same builder instance so calls can be chained.</returns>
     public RichTextBuilder AddQuote(Action<RichTextSectionElementBuilder> createContent, int border = default)
     {
+        ArgumentNullException.ThrowIfNull(createContent);
         var builder = new RichTextSectionElementBuilder();
         createContent(builder);
         _richTextBlock.Elements.Add(new RichTextQuote()
@@ -138,10 +144,11 @@ public class RichTextBuilder
 public sealed class RichTextSectionElementBuilder
 {
     private readonly List<RichTextSectionElement> _elements = new();
+
     /// <summary>
     /// Returns the list of configured rich text section elements.
     /// </summary>
-    public List<RichTextSectionElement> Build() => _elements;
+    public Collection<RichTextSectionElement> Build() => new(_elements);
 
     /// <summary>
     /// Adds a <see cref="RichTextSectionElement"/> to the list.
@@ -182,6 +189,7 @@ public sealed class RichTextListBuilder
     /// <returns>The same builder instance so calls can be chained.</returns>
     public RichTextListBuilder AddSection(Action<RichTextSectionElementBuilder> creationSection)
     {
+        ArgumentNullException.ThrowIfNull(creationSection);
         var builder = new RichTextSectionElementBuilder();
         creationSection(builder);
         _list.Elements.Add(new RichTextSection()

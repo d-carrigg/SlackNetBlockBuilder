@@ -29,6 +29,7 @@ public sealed class ActionElementBuilder<TElement>
     /// <returns>The same instance so calls can be chained</returns>
     public ActionElementBuilder<TElement> ConfirmationDialog(Action<ConfirmationDialog> createDialog)
     {
+        ArgumentNullException.ThrowIfNull(createDialog);
         Element.Confirm = new ConfirmationDialog();
         createDialog(Element.Confirm);
         return this;
@@ -43,6 +44,7 @@ public sealed class ActionElementBuilder<TElement>
     /// <returns>The same instance so calls can be chained.</returns>
     public ActionElementBuilder<TElement> Modify(Action<TElement> modifier)
     {
+        ArgumentNullException.ThrowIfNull(modifier);
         modifier(Element);
         return this;
     }

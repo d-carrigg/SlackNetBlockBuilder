@@ -29,6 +29,7 @@ public class InputElementBuilder<TElement>
     /// <returns>The same builder instance so calls can be chained.</returns>
     public InputElementBuilder<TElement> Set(Action<TElement> modifier)
     {
+        ArgumentNullException.ThrowIfNull(modifier);
         modifier(Element);
         return this;
     }

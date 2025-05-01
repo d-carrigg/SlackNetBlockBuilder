@@ -71,6 +71,7 @@ public class ContextBlockBuilder
         string imageUrl,
         string altText)
     {
+        ArgumentNullException.ThrowIfNull(imageUrl);
         _contextBlock.Elements.Add(new Image()
             {
                 ImageUrl = imageUrl,
@@ -78,6 +79,18 @@ public class ContextBlockBuilder
             });
         return this;
     }
+    
+    /// <summary>
+    /// Adds an image element from a publicly accessible URL to the context block.
+    /// </summary>
+    /// <param name="imageUrl">The URL of the image to be displayed. Slack CDN images are not supported.</param>
+    /// <param name="altText">Plain text summary of the image for accessibility. Maximum length 2000 characters.</param>
+    /// <returns>The same builder instance so calls can be chained.</returns>
+    public ContextBlockBuilder AddImageFromUrl(
+        Uri imageUrl,
+        string altText) => 
+        imageUrl is null ? throw new ArgumentNullException(nameof(imageUrl)) :
+        AddImageFromUrl(imageUrl.ToString(), altText);
 
 
     /// <summary>
