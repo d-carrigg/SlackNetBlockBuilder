@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
@@ -6,6 +6,18 @@
         <Nullable>enable</Nullable>
         <RootNamespace>SlackNet.Blocks</RootNamespace>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
+
+        <!-- NuGet Package specific properties -->
+        <Version>0.0.1-alpha</Version> <!-- Or your desired starting version -->
+        <Authors>Darin Carrigg</Authors>
+        <Description>A fluent builder library for creating Slack Block Kit layouts using SlackNet.</Description>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression> <!-- Ensure you have a LICENSE file or adjust -->
+        <PackageProjectUrl>https://github.com/d-carrigg/SlackNetBlockBuilder</PackageProjectUrl> <!-- Replace with your actual repo URL if different -->
+        <RepositoryUrl>https://github.com/d-carrigg/SlackNetBlockBuilder.git</RepositoryUrl> <!-- Replace with your actual repo URL if different -->
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>slack;block kit;blocks;builder;SlackNet</PackageTags>
+        <PackageReadmeFile>../README.md</PackageReadmeFile> <!-- Assumes README.md is in the root, adjust path relative to csproj if needed -->
+
     </PropertyGroup>
     
     <!--Errors/Warnings adjustments-->
