@@ -109,6 +109,10 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write # Needed to create GitHub releases
+    concurrency:
+      group: 'publish-${{ github.ref_name }}'
+      cancel-in-progress: true
+
 
     steps:
     - name: Download NuGet package artifact

@@ -16,7 +16,7 @@
         <RepositoryUrl>https://github.com/d-carrigg/SlackNetBlockBuilder.git</RepositoryUrl> <!-- Replace with your actual repo URL if different -->
         <RepositoryType>git</RepositoryType>
         <PackageTags>slack;block kit;blocks;builder;SlackNet</PackageTags>
-        <PackageReadmeFile>README.md</PackageReadmeFile> <!-- Assumes README.md is in the root, adjust path relative to csproj if needed -->
+        <PackageReadmeFile>../README.md</PackageReadmeFile> <!-- Assumes README.md is in the root, adjust path relative to csproj if needed -->
 
     </PropertyGroup>
     
