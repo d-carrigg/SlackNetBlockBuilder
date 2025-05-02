@@ -5,6 +5,22 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>SlackNet.Blocks</RootNamespace>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+    
+    <!--Errors/Warnings adjustments-->
+    <PropertyGroup>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <!-- Enable more warning waves -->
+        <AnalysisLevel>latest</AnalysisLevel>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+
+        <!-- Enable .NET analyzers -->
+        <EnableNETAnalyzers>true</EnableNETAnalyzers>
+        <AnalysisMode>All</AnalysisMode>
+
+        <!-- CA1054: SlackNetBlockBuilder uses string-based URIs for ASP.NET routing (~/{...}), not full System.Uri instances -->
+        <NoWarn>CA1054</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>

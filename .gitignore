@@ -7,3 +7,6 @@ CoverageReport/
 .idea/
 TestResults/
 .cursor/
+*.DotSettings
+*.DotSettings.user
+Coverage/

@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using JetBrains.Annotations;
 using SlackNet.Blocks;
-using Xunit;
 using Xunit.Abstractions;
 
 namespace UnitTests;
@@ -82,7 +81,6 @@ public class SectionBuilderTest
     public void Performance_AddingManyTextFields()
     {
         // Arrange
-        var builder = new SectionBuilder();
         var stopwatch = new Stopwatch();
         const int iterations = 1000;
         

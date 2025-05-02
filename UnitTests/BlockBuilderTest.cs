@@ -52,6 +52,9 @@ public class BlockBuilderTest
         Assert.True(textInput.FocusOnLoad);
     }
 
+ 
+    
+    
     [Fact]
     public void AddBlock_ChainedCalls_BuildsCorrectly()
     {
@@ -86,21 +89,23 @@ public class BlockBuilderTest
         for (var i = 0; i < iterations; i++)
         {
             var builder = BlockBuilder.Create();
+            var iLocal = i; // Capture the loop variable
             
             // Add 10 different blocks
             builder.AddDivider();
-            builder.AddHeader(new PlainText($"Header {i}"));
-            builder.AddSection(section => section.Text($"Section text {i}"));
-            builder.AddContext(context => context.AddText($"Context text {i}"));
-            builder.AddActions(actions => actions.AddButton($"Button {i}", $"button-{i}"));
-            builder.AddInput<PlainTextInput>($"Label {i}", input => input.Set(x => x.ActionId = $"input-{i}"));
+            builder.AddHeader(new PlainText($"Header {iLocal}"));
+            builder.AddSection(section => section.Text($"Section text {iLocal}"));
+            builder.AddContext(context => context.AddText($"Context text {iLocal}"));
+            builder.AddActions(actions => actions.AddButton($"Button {iLocal}", $"button-{iLocal}"));
+            builder.AddInput<PlainTextInput>($"Label {iLocal}", input => input.Set(x => x.ActionId = $"input-{iLocal}"));
             builder.AddDivider();
-            builder.AddHeader(new PlainText($"Another Header {i}"));
-            builder.AddSection(section => section.Text($"Another Section text {i}"));
-            builder.AddContext(context => context.AddText($"Another Context text {i}"));
+            builder.AddHeader(new PlainText($"Another Header {iLocal}"));
+            builder.AddSection(section => section.Text($"Another Section text {iLocal}"));
+            builder.AddContext(context => context.AddText($"Another Context text {iLocal}"));
             
             // Build the blocks
             var blocks = builder.Build();
+            Assert.NotEmpty(blocks);
         }
         
         stopwatch.Stop();
@@ -111,4 +116,81 @@ public class BlockBuilderTest
         
         // No specific assertion, this is a baseline measurement
     }
+    
+    [Fact]
+    public void RemoveBlock_ValidBlockId_RemovesBlock()
+    {
+        // Arrange
+        var builder = BlockBuilder.Create();
+        builder.AddHeader("Header", "id_1")
+            .AddHeader("Header 2", "id_2");
+        
+
+        // Act
+        var isRemoved = builder.Remove("id_1");
+        var blocks = builder.Build();
+
+        // Assert
+        Assert.True(isRemoved);
+        Assert.Single(blocks);
+        Assert.Equal("id_2", ((HeaderBlock)blocks[0]).BlockId);
+    }
+    
+    // removing a block that doesn't exist should return false
+    [Fact]
+    public void RemoveBlock_InvalidBlockId_ReturnsFalse()
+    {
+        // Arrange
+        var builder = BlockBuilder.Create();
+        builder.AddHeader("Header", "id_1")
+            .AddHeader("Header 2", "id_2");
+
+        
+        // Act
+        var isRemoved = builder.Remove("id_3");
+        
+        // Assert
+        Assert.False(isRemoved);
+    }
+    
+    
+    // removing an action that exists should return true
+    [Fact]
+    public void RemoveAction_ValidActionId_RemovesAction()
+    {
+        // Arrange
+        var builder = BlockBuilder.Create();
+        builder.AddActions(actions => actions
+            .AddButton("button_1", "Button 1")
+            .AddButton("button_2", "Button 2"));
+
+        // Act
+        var isRemoved = builder.RemoveAction("button_1");
+        var blocks = builder.Build();
+
+        // Assert
+        Assert.True(isRemoved);
+        Assert.Single(blocks);
+        var actionsBlock = Assert.IsType<ActionsBlock>(blocks[0]);
+        Assert.Single(actionsBlock.Elements);
+    }
+    
+    // removing an action that doesn't exist should return false
+    [Fact]
+    public void RemoveAction_InvalidActionId_ReturnsFalse()
+    {
+        // Arrange
+        var builder = BlockBuilder.Create();
+        builder.AddActions(actions => actions
+            .AddButton("button_1", "Button 1")
+            .AddButton("button_2", "Button 2"));
+
+        // Act
+        var isRemoved = builder.RemoveAction("button_3");
+        
+        // Assert
+        Assert.False(isRemoved);
+    }
+    
+ 
 }
