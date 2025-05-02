@@ -71,7 +71,7 @@ public static class SelectMenuBaseExtensions
     public static InputElementBuilder<TElement> AddOptionGroup<TElement>(this InputElementBuilder<TElement> builder,
         string label, Action<OptionGroupBuilder> groupBuilder) where TElement : StaticSelectMenuBase
     {
-        var group = new OptionGroup { Label = label };
+        var group = new OptionGroup { Label = new PlainText { Text = label } };
         groupBuilder(new OptionGroupBuilder(group));
         return builder.Set(x => x.OptionGroups.Add(group));
     }

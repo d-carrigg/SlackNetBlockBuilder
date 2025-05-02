@@ -1,5 +1,17 @@
 # Changelog
 
+## 2023-03-09
+
+- Completed unit tests for all remaining builder classes:
+  - Added unit tests for ButtonExtensions
+  - Added unit tests for CheckboxGroupExtensions
+  - Added unit tests for OverflowMenuExtensions
+  - Added unit tests for RadioButtonGroupExtensions
+  - Fixed issues with OptionGroupBuilder to properly initialize Options collection
+  - Fixed issues with SelectMenuBaseExtensions to properly initialize Label property
+- Updated project plan to mark all unit test tasks as completed
+- All 63 unit tests are now passing
+
 ## 2023-03-08
 
 - Improved test coverage for the SlackNetBlockBuilder library:
