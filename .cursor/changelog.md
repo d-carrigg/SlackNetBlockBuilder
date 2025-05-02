@@ -1,5 +1,25 @@
 # Changelog
 
+## 2023-03-08
+
+- Improved test coverage for the SlackNetBlockBuilder library:
+  - Added unit tests for ContextBlockBuilder
+  - Added unit tests for DateTimePickerExtensions
+  - Added unit tests for InputBlockBuilder
+  - Updated project plan to track test coverage progress
+  - Organized test structure to match the library's architecture
+- Identified remaining builder classes that need test coverage
+
+## 2023-03-07
+
+- Added comprehensive examples to the documentation:
+  - Created modal dialog example showing how to build and handle modal dialogs
+  - Created message updating example demonstrating various techniques for updating messages
+  - Created interactive message handling example showing how to handle user interactions
+- Updated project plan to mark completed example tasks
+- Added new advanced examples and performance optimization tasks to the project plan
+- Completed all planned documentation examples
+
 ## 2023-03-06
 
 - Completed all documentation tasks in the initial project plan

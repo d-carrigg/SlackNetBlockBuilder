@@ -1,8 +1,7 @@
 using JetBrains.Annotations;
-
 using SlackNet.Blocks;
 
-namespace UnitTests.Extensions.Slack;
+namespace UnitTests;
 
 [TestSubject(typeof(BlockBuilder))]
 public class BlockBuilderTest

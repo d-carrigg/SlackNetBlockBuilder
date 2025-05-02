@@ -6,7 +6,7 @@ namespace SlackNet.Blocks;
 /// <typeparam name="TElement">The type of input element to build</typeparam>
 public class InputElementBuilder<TElement>
     // : ActionElementBuilderBase<TElement>
-    where TElement : IActionElement, IInputBlockElement
+    where TElement : class, IActionElement, IInputBlockElement
 {
     /// <summary>
     /// Gets the input element being built
@@ -22,22 +22,7 @@ public class InputElementBuilder<TElement>
         Element = element;
     }
 
-
-    // public ActionElementBuilder(TElement element) : base(element)
-    // {
-    // }
-
-    /// <summary>
-    /// Adds a confirmation dialog to the element that will be displayed when the element is activated
-    /// </summary>
-    /// <param name="createDialog">An action which configures the dialog</param>
-    /// <returns>The same instance so calls can be chained</returns>
-    // public InputElementBuilder<TElement> ConfirmationDialog(Action<ConfirmationDialog> createDialog)
-    // {
-    //     Element.Confirm = new ConfirmationDialog();
-    //     createDialog(Element.Confirm);
-    //     return this;
-    // }
+    
 
     /// <summary>
     /// Sets a property on the element using the provided modifier action

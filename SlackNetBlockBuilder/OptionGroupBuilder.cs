@@ -26,7 +26,7 @@ public sealed class OptionGroupBuilder
     /// <param name="text">The text to display for the option</param>
     /// <param name="description">Optional description for the option</param>
     /// <returns>The same instance so calls can be chained</returns>
-    public OptionGroupBuilder AddOption(string value, string text, PlainText description = null)
+    public OptionGroupBuilder AddOption(string value, string text, PlainText? description = null)
     {
         Element.Options.Add(new Option { Text = text, Value = value, Description = description });
         return this;

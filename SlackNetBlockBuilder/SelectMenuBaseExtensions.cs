@@ -43,7 +43,7 @@ public static class SelectMenuBaseExtensions
     /// <returns>The same instance so calls can be chained</returns>
     public static InputElementBuilder<TElement> AddOption<TElement>(this InputElementBuilder<TElement> builder,
         string value,
-        string text, PlainText description = null) where TElement : StaticSelectMenuBase =>
+        string text, PlainText? description = null) where TElement : StaticSelectMenuBase =>
         builder.Set(x =>
             x.Options.Add(new Option { Text = text, Value = value, Description = description }));
 

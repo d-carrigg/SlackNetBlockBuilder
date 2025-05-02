@@ -32,6 +32,9 @@
     - [x] Button extensions API reference
   - [x] Create examples
     - [x] Interactive form example
+    - [x] Modal dialog example
+    - [x] Message updating example
+    - [x] Interactive message handling example
   - [x] Create advanced usage documentation
     - [x] Rich text formatting guide
 - [x] Update documentation to reflect namespace changes (all builder classes in SlackNet.Blocks namespace)
@@ -50,13 +53,30 @@
 - [ ] Set up CI/CD pipeline
   - [ ] Configure GitHub Actions for build and test
   - [ ] Set up automatic NuGet package publishing
-- [ ] Add more examples
-  - [ ] Modal dialog example
-  - [ ] Message updating example
-  - [ ] Interactive message handling example
 - [ ] Create additional API documentation
   - [ ] Document remaining extension methods
   - [ ] Add more component documentation
 - [ ] Improve test coverage
-  - [ ] Add unit tests for all builder classes
-  - [ ] Add integration tests with SlackNet 
+  - [x] Add unit tests for BlockBuilder class
+  - [x] Add unit tests for ActionsBlockBuilder class
+  - [x] Add unit tests for RichTextBuilder class
+  - [x] Add unit tests for SectionBuilder class
+  - [x] Add unit tests for SelectMenuBaseExtensions class
+  - [x] Add unit tests for ContextBlockBuilder class
+  - [x] Add unit tests for DateTimePickerExtensions class
+  - [x] Add unit tests for InputBlockBuilder class
+  - [ ] Add unit tests for remaining builder classes
+    - [ ] Add unit tests for ButtonExtensions class
+    - [ ] Add unit tests for CheckboxGroupExtensions class
+    - [ ] Add unit tests for OverflowMenuExtensions class
+    - [ ] Add unit tests for RadioButtonGroupExtensions class
+    - [ ] Add unit tests for StaticSelectMenuExtensions class
+  - [ ] Add integration tests with SlackNet
+- [ ] Add advanced examples
+  - [ ] Workflow automation example
+  - [ ] Multi-step form example
+  - [ ] Complex layout example
+- [ ] Performance optimization
+  - [ ] Benchmark builder operations
+  - [ ] Optimize memory usage
+  - [ ] Reduce allocations where possible 
