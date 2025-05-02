@@ -90,12 +90,10 @@ jobs:
 
     # Copy README to src directory for packing: Only run for tags
     - name: Copy README for NuGet pack
-      if: startsWith(github.ref, 'refs/tags/v')
       run: cp ${{ github.workspace }}/ReadMe.md ${{ github.workspace }}/src/
 
-    # Pack step: Only run for tags
+    # Pack step: Run always to ensure no errors in the pack step
     - name: Pack NuGet package
-      if: startsWith(github.ref, 'refs/tags/v')
       run: dotnet pack --configuration Release --no-build --output ./artifacts
 
     # Upload Package Artifact: Only run for tags
