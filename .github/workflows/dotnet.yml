@@ -88,6 +88,11 @@ jobs:
         # NOTE: using trx_files instead of files due to https://github.com/EnricoMi/publish-unit-test-result-action/issues/424
         trx_files: "${{ github.workspace }}/**/*.trx"
 
+    # Copy README to src directory for packing: Only run for tags
+    - name: Copy README for NuGet pack
+      if: startsWith(github.ref, 'refs/tags/v')
+      run: cp ${{ github.workspace }}/README.md ${{ github.workspace }}/src/
+
     # Pack step: Only run for tags
     - name: Pack NuGet package
       if: startsWith(github.ref, 'refs/tags/v')

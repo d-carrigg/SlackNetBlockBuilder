@@ -10,3 +10,5 @@ TestResults/
 *.DotSettings
 *.DotSettings.user
 Coverage/
+# Ignore readme file in the src directory
+src/ReadMe.md
