@@ -358,7 +358,7 @@ anything that can be done with the SlackNet API Blocks can be done with this lib
 cases in mind,
 you can follow these guidelines:
 
-1. Remove blocks with the `Remove` method, modify blocks with `Modify` method, and add new blocks with the `Add` methods.
+1. Remove blocks with the `Remove` method, set block properties with the `Set` method, and add new blocks with the `Add` methods.
    There are many built in extensions for adding blocks (e.g `AddSection`, `AddHeader`, `AddActions`, etc.) but you can
    also use the generic `Add` method
    if you need greater control.
