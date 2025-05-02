@@ -12,7 +12,7 @@ public class SectionBuilder
     /// <summary>
     /// Max length of each field in the section
     /// </summary>
-    public int MaxFieldsLength = 2000;
+    public int MaxFieldsLength = 3000;
     
     public const int MaxBlockIdLength = 255;
 

@@ -13,7 +13,7 @@ public sealed class BlockElementBuilder<TBlock> : IBlockBuilder
 
     public TBlock Element { get; }
 
-    public void ModifyElement(Action<TBlock> modifier)
+    public void Modify(Action<TBlock> modifier)
     {
         modifier(Element);
     }
