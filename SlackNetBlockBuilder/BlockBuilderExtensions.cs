@@ -139,6 +139,8 @@ public static class BlockBuilderExtensions
         string? blockId = null)
         => 
             builder is null ? throw new ArgumentNullException(nameof(builder)) :
+            string.IsNullOrEmpty(imageUrl) ? throw new ArgumentNullException(nameof(imageUrl)) :
+            string.IsNullOrWhiteSpace(altText) ? throw new ArgumentException("Alt text cannot be null or whitespace.", nameof(altText)) :
             builder.Add<ImageBlock>(image =>
             {
                 image.ImageUrl = imageUrl;
@@ -161,7 +163,8 @@ public static class BlockBuilderExtensions
         string altText,
         PlainText? title = null,
         string? blockId = null) => 
-    imageUrl is null ? throw new ArgumentNullException(nameof(imageUrl)) :
+        imageUrl is null ? throw new ArgumentNullException(nameof(imageUrl)) :
+        string.IsNullOrWhiteSpace(altText) ? throw new ArgumentException("Alt text cannot be null or whitespace.", nameof(altText)) :
         builder.AddImageFromUrl(imageUrl.ToString(), altText, title, blockId);
 
     /// <summary>

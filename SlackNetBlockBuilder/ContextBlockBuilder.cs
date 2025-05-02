@@ -25,6 +25,7 @@ public class ContextBlockBuilder
     /// <returns>The same builder instance so calls can be chained.</returns>
     public ContextBlockBuilder BlockId(string blockId)
     {
+        ArgumentNullException.ThrowIfNull(blockId);
         _contextBlock.BlockId = blockId;
         return this;
     }

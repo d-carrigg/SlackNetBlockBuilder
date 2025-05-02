@@ -127,7 +127,9 @@ public static class ButtonExtensions
     public static ActionsBlockBuilder AddButton(this ActionsBlockBuilder builder, string actionId,
         string text,
         ButtonStyle style, Uri? url = null, string? value = null)
-    => url is null ? throw new ArgumentNullException(nameof(url)) :
+    =>
+        builder is null ? throw new ArgumentNullException(nameof(builder)) :
+        url is null ? throw new ArgumentNullException(nameof(url)) :
         builder.AddButton(actionId, text, style, url.ToString(), value);
     
     
