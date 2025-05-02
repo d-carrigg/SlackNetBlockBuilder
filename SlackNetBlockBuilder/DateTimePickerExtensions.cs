@@ -1,7 +1,6 @@
 ﻿using JetBrains.Annotations;
-using SlackNet.Blocks;
 
-namespace SlackNetBlockBuilder;
+namespace SlackNet.Blocks;
  
 [PublicAPI]
 public static class DateTimePickerExtensions

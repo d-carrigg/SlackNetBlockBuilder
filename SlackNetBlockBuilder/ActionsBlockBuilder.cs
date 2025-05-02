@@ -1,7 +1,6 @@
 ﻿using JetBrains.Annotations;
-using SlackNet.Blocks;
 
-namespace SlackNetBlockBuilder;
+namespace SlackNet.Blocks;
 
 /// <summary>
 /// Provides a fluent interface for building <see cref="ActionsBlock"/>
