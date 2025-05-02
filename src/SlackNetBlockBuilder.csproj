@@ -39,5 +39,9 @@
       <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" />
       <PackageReference Include="SlackNet" Version="0.15.5" />
     </ItemGroup>
-
+    
+    <!--Only include this file if it exists-->
+    <ItemGroup Condition="Exists('ReadMe.md')">
+        <None Include="ReadMe.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
 </Project>
