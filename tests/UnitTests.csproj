@@ -7,6 +7,7 @@
 
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
+        <RootNamespace>UnitTests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -24,7 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\SlackNetBlockBuilder\SlackNetBlockBuilder.csproj" />
+      <ProjectReference Include="..\src\SlackNetBlockBuilder.csproj" />
     </ItemGroup>
 
 </Project>
