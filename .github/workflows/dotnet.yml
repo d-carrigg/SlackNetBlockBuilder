@@ -90,7 +90,7 @@ jobs:
 
     # Copy README to src directory for packing: Only run for tags
     - name: Copy README for NuGet pack
-      run: cp ${{ github.workspace }}/ReadMe.md ${{ github.workspace }}/src/
+      run: cp ${{ github.workspace }}/ReadMe.md ${{ github.workspace }}/src/ReadMe.md
 
     # Pack step: Run always to ensure no errors in the pack step
     - name: Pack NuGet package
