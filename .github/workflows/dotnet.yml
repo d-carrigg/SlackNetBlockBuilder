@@ -30,6 +30,10 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
+        
+    # Copy README to src directory for packing
+    - name: Copy README for NuGet pack
+      run: cp ${{ github.workspace }}/ReadMe.md ${{ github.workspace }}/src/ReadMe.md
 
     # Run tests for all triggers (push, pull_request, tag)
     - name: "Restore/Build/Test"
@@ -87,10 +91,6 @@ jobs:
       with:
         # NOTE: using trx_files instead of files due to https://github.com/EnricoMi/publish-unit-test-result-action/issues/424
         trx_files: "${{ github.workspace }}/**/*.trx"
-
-    # Copy README to src directory for packing: Only run for tags
-    - name: Copy README for NuGet pack
-      run: cp ${{ github.workspace }}/ReadMe.md ${{ github.workspace }}/src/ReadMe.md
 
     # Pack step: Run always to ensure no errors in the pack step
     - name: Pack NuGet package
