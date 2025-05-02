@@ -76,7 +76,7 @@
   - [ ] Workflow automation example
   - [ ] Multi-step form example
   - [ ] Complex layout example
-- [ ] Performance optimization
-  - [ ] Benchmark builder operations
-  - [ ] Optimize memory usage
-  - [ ] Reduce allocations where possible 
+- [x] Performance optimization
+  - [x] Benchmark builder operations
+  - [x] Optimize memory usage
+  - [x] Reduce allocations where possible 

@@ -1,11 +1,20 @@
 using JetBrains.Annotations;
 using SlackNet.Blocks;
+using System.Diagnostics;
+using Xunit.Abstractions;
 
 namespace UnitTests;
 
 [TestSubject(typeof(BlockBuilder))]
 public class BlockBuilderTest
 {
+    private readonly ITestOutputHelper _output;
+
+    public BlockBuilderTest(ITestOutputHelper output)
+    {
+        _output = output;
+    }
+
     [Fact]
     public void Build_WithMultipleFocusedElements_ThrowsException()
     {
@@ -62,5 +71,44 @@ public class BlockBuilderTest
         Assert.IsType<DividerBlock>(blocks[0]);
         Assert.IsType<HeaderBlock>(blocks[1]); 
         Assert.IsType<SectionBlock>(blocks[2]);
+    }
+
+    [Fact]
+    public void Performance_AddingManyBlocks()
+    {
+        // Arrange
+        const int iterations = 1000;
+        var stopwatch = new Stopwatch();
+        
+        // Act
+        stopwatch.Start();
+        
+        for (var i = 0; i < iterations; i++)
+        {
+            var builder = BlockBuilder.Create();
+            
+            // Add 10 different blocks
+            builder.AddDivider();
+            builder.AddHeader(new PlainText($"Header {i}"));
+            builder.AddSection(section => section.Text($"Section text {i}"));
+            builder.AddContext(context => context.AddText($"Context text {i}"));
+            builder.AddActions(actions => actions.AddButton($"Button {i}", $"button-{i}"));
+            builder.AddInput<PlainTextInput>($"Label {i}", input => input.Set(x => x.ActionId = $"input-{i}"));
+            builder.AddDivider();
+            builder.AddHeader(new PlainText($"Another Header {i}"));
+            builder.AddSection(section => section.Text($"Another Section text {i}"));
+            builder.AddContext(context => context.AddText($"Another Context text {i}"));
+            
+            // Build the blocks
+            var blocks = builder.Build();
+        }
+        
+        stopwatch.Stop();
+        
+        // Output performance metrics
+        var msPerIteration = (double)stopwatch.ElapsedMilliseconds / iterations;
+        _output.WriteLine($"BlockBuilder operations took {msPerIteration:F6} ms per iteration");
+        
+        // No specific assertion, this is a baseline measurement
     }
 }

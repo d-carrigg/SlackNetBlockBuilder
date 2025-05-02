@@ -1,7 +1,10 @@
+using JetBrains.Annotations;
 using SlackNet.Blocks;
+using System.Diagnostics;
 
 namespace UnitTests;
 
+[TestSubject(typeof(SelectMenuBaseExtensions))]
 public class SelectMenuBaseExtensionsTest
 {
     [Fact]
@@ -52,5 +55,75 @@ public class SelectMenuBaseExtensionsTest
 
         // Assert
         Assert.Equal(5, builder.Element.MaxSelectedItems);
+    }
+
+    [Fact]
+    public void Placeholder_SetsPlaceholderText()
+    {
+        // Arrange
+        var menu = new StaticSelectMenu();
+        var builder = new InputElementBuilder<StaticSelectMenu>(menu);
+        
+        // Act
+        var result = builder.Placeholder("Select an option");
+        
+        // Assert
+        Assert.Equal("Select an option", menu.Placeholder.Text);
+        Assert.Same(builder, result);
+    }
+    
+    [Fact]
+    public void FocusOnLoad_SetsFocusProperty()
+    {
+        // Arrange
+        var menu = new StaticSelectMenu();
+        var builder = new InputElementBuilder<StaticSelectMenu>(menu);
+        
+        // Act
+        var result = builder.FocusOnLoad();
+        
+        // Assert
+        Assert.True(menu.FocusOnLoad);
+        Assert.Same(builder, result);
+    }
+    
+    [Fact]
+    public void Performance_AddingManyOptions()
+    {
+        // Arrange
+        const int iterations = 1000;
+        var stopwatch = Stopwatch.StartNew();
+        
+        for (int i = 0; i < iterations; i++)
+        {
+            var menu = new StaticSelectMenu();
+            var builder = new InputElementBuilder<StaticSelectMenu>(menu);
+            
+            // Add multiple options
+            for (int j = 0; j < 20; j++)
+            {
+                builder.AddOption($"value_{j}", $"Option {j} in iteration {i}");
+            }
+            
+            // Add option groups
+            for (int j = 0; j < 5; j++)
+            {
+                builder.AddOptionGroup($"Group {j}", group =>
+                {
+                    for (int k = 0; k < 5; k++)
+                    {
+                        group.AddOption($"group_{j}_value_{k}", $"Group {j} Option {k}");
+                    }
+                });
+            }
+        }
+        
+        stopwatch.Stop();
+        
+        // Output performance metrics
+        var msPerOperation = stopwatch.ElapsedMilliseconds / (double)iterations;
+        Console.WriteLine($"SelectMenuBaseExtensions operations took {msPerOperation:F6} ms per iteration");
+        
+        // No specific assertion, this is a baseline measurement
     }
 } 
