@@ -20,7 +20,11 @@ public class RichTextBuilder
     /// Sets a unique identifier for this rich text block.
     /// </summary>
     /// <param name="blockId">The block ID. Maximum length is <see cref="MaxIdLength"/> characters.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+    /// Sets the unique identifier for the rich text block.
+    /// </summary>
+    /// <param name="blockId">The unique block identifier to assign.</param>
+    /// <returns>The same builder instance for fluent chaining.</returns>
     public RichTextBuilder BlockId(string blockId)
     {
         _richTextBlock.BlockId = blockId;
@@ -32,7 +36,12 @@ public class RichTextBuilder
     /// Sections are the basic container for text and other elements within rich text.
     /// </summary>
     /// <param name="creationSection">An action that configures the section's elements using a <see cref="RichTextSectionElementBuilder"/>.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+    /// Adds a section element to the rich text block, configured using the provided builder action.
+    /// </summary>
+    /// <param name="creationSection">An action that configures the section's content using a <see cref="RichTextSectionElementBuilder"/>.</param>
+    /// <returns>The same builder instance for fluent chaining.</returns>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="creationSection"/> is null.</exception>
     public RichTextBuilder AddSection(Action<RichTextSectionElementBuilder> creationSection)
     {
         ArgumentNullException.ThrowIfNull(creationSection);
@@ -51,7 +60,12 @@ public class RichTextBuilder
     /// </summary>
     /// <param name="style">The style of the list (e.g., bulleted or numbered).</param>
     /// <param name="builder">An action that configures the list items and properties using a <see cref="RichTextListBuilder"/>.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+    /// Adds a rich text list element with the specified style, configured using the provided builder action.
+    /// </summary>
+    /// <param name="style">The visual style of the list (e.g., ordered or unordered).</param>
+    /// <param name="builder">An action that configures the list's content and properties.</param>
+    /// <returns>The same builder instance for fluent chaining.</returns>
     public RichTextBuilder AddTextList(RichTextListStyle style, Action<RichTextListBuilder> builder)
     {
         ArgumentNullException.ThrowIfNull(builder);
@@ -68,7 +82,12 @@ public class RichTextBuilder
     /// </summary>
     /// <param name="createContent">An action that configures the content elements using a <see cref="RichTextSectionElementBuilder"/>.</param>
     /// <param name="border">Optional border style attribute (usually 0 or 1).</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+    /// Adds a preformatted text block to the rich text, configured via a section element builder.
+    /// </summary>
+    /// <param name="createContent">An action that configures the content of the preformatted block using a section element builder.</param>
+    /// <param name="border">Optional border style for the preformatted block.</param>
+    /// <returns>The same builder instance for fluent chaining.</returns>
     public RichTextBuilder AddPreformattedText(Action<RichTextSectionElementBuilder> createContent, int border = default)
     {
         ArgumentNullException.ThrowIfNull(createContent);
@@ -87,7 +106,13 @@ public class RichTextBuilder
     /// </summary>
     /// <param name="text">The plain text content for the preformatted block.</param>
     /// <param name="border">Optional border style attribute (usually 0 or 1).</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+    /// Adds a preformatted text block containing the specified plain text to the rich text block.
+    /// </summary>
+    /// <param name="text">The plain text to display in the preformatted block.</param>
+    /// <param name="border">Optional border style for the preformatted block.</param>
+    /// <returns>The same builder instance for fluent chaining.</returns>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="text"/> is null or empty.</exception>
     public RichTextBuilder AddPreformattedText(string text, int border = default)
     {
         if (string.IsNullOrEmpty(text))
@@ -109,7 +134,12 @@ public class RichTextBuilder
     /// </summary>
     /// <param name="createContent">An action that configures the content elements of the quote using a <see cref="RichTextSectionElementBuilder"/>.</param>
     /// <param name="border">Optional border style attribute (usually 0 or 1).</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+    /// Adds a quote element to the rich text block, configured with the specified content and optional border style.
+    /// </summary>
+    /// <param name="createContent">An action that configures the content of the quote using a section element builder.</param>
+    /// <param name="border">Optional border style for the quote element.</param>
+    /// <returns>The same builder instance for fluent chaining.</returns>
     public RichTextBuilder AddQuote(Action<RichTextSectionElementBuilder> createContent, int border = default)
     {
         ArgumentNullException.ThrowIfNull(createContent);
@@ -127,7 +157,13 @@ public class RichTextBuilder
     /// Builds the configured <see cref="RichTextBlock"/>.
     /// </summary>
     /// <returns>The configured <see cref="RichTextBlock"/> instance.</returns>
-    /// <exception cref="InvalidOperationException">Thrown if the configured block ID exceeds <see cref="MaxIdLength"/> characters.</exception>
+    /// <summary>
+    /// Finalizes and returns the constructed <see cref="RichTextBlock"/> instance.
+    /// </summary>
+    /// <returns>The configured <see cref="RichTextBlock"/>.</returns>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown if the configured block ID exceeds <see cref="MaxIdLength"/> characters.
+    /// </exception>
     public RichTextBlock Build()
     {
         if (_richTextBlock.BlockId?.Length > MaxIdLength)
@@ -149,7 +185,9 @@ public sealed class RichTextSectionElementBuilder
 
     /// <summary>
     /// Returns the list of configured rich text section elements.
-    /// </summary>
+    /// <summary>
+/// Returns a read-only collection of the configured rich text section elements.
+/// </summary>
     public Collection<RichTextSectionElement> Build() => new(_elements);
 
     /// <summary>
@@ -157,7 +195,12 @@ public sealed class RichTextSectionElementBuilder
     /// </summary>
     /// <typeparam name="TElement">The type of the element to add, must inherit from <see cref="RichTextSectionElement"/>.</typeparam>
     /// <param name="element">The element instance to add.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+    /// Adds a section element to the builder and returns the builder for chaining.
+    /// </summary>
+    /// <typeparam name="TElement">The type of section element to add.</typeparam>
+    /// <param name="element">The section element to add.</param>
+    /// <returns>The current builder instance for fluent chaining.</returns>
     public RichTextSectionElementBuilder Add<TElement>(TElement element) where TElement : RichTextSectionElement
     {
         _elements.Add(element);
@@ -175,7 +218,10 @@ public sealed class RichTextListBuilder
     /// <summary>
     /// Initializes a new instance of the <see cref="RichTextListBuilder"/> class.
     /// </summary>
-    /// <param name="style">The visual style of the list (e.g., bulleted or numbered).</param>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RichTextListBuilder"/> class with the specified list style.
+    /// </summary>
+    /// <param name="style">The visual style to apply to the list.</param>
     public RichTextListBuilder(RichTextListStyle style)
     {
         _list = new RichTextList()
@@ -188,7 +234,11 @@ public sealed class RichTextListBuilder
     /// Adds a list item as a <see cref="RichTextSection"/> element to the list.
     /// </summary>
     /// <param name="creationSection">An action that configures the list item's content using a <see cref="RichTextSectionElementBuilder"/>.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+    /// Adds a new section to the list, configured using the provided builder action.
+    /// </summary>
+    /// <param name="creationSection">An action that configures the section's elements.</param>
+    /// <returns>The same builder instance for fluent chaining.</returns>
     public RichTextListBuilder AddSection(Action<RichTextSectionElementBuilder> creationSection)
     {
         ArgumentNullException.ThrowIfNull(creationSection);
@@ -205,6 +255,10 @@ public sealed class RichTextListBuilder
     /// Sets the indentation level for the list.
     /// </summary>
     /// <param name="indent">The indentation level (integer).</param>
+    /// <summary>
+    /// Sets the indentation level for the rich text list.
+    /// </summary>
+    /// <param name="indent">The number of indentation levels to apply to the list.</param>
     /// <returns>The same builder instance so calls can be chained.</returns>
     public RichTextListBuilder Indent(int indent)
     {
@@ -216,7 +270,11 @@ public sealed class RichTextListBuilder
     /// Sets the starting number for an ordered list.
     /// </summary>
     /// <param name="offset">The starting number (integer).</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+    /// Sets the starting number for an ordered list.
+    /// </summary>
+    /// <param name="offset">The starting number for the list items.</param>
+    /// <returns>The same builder instance for method chaining.</returns>
     public RichTextListBuilder Offset(int offset)
     {
         _list.Offset = offset;
@@ -227,7 +285,11 @@ public sealed class RichTextListBuilder
     /// Sets the border style for the list.
     /// </summary>
     /// <param name="border">The border style attribute (usually 0 or 1).</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+    /// Sets the border style for the rich text list.
+    /// </summary>
+    /// <param name="border">The border style value to apply.</param>
+    /// <returns>The same builder instance for fluent chaining.</returns>
     public RichTextListBuilder Border(int border)
     {
         _list.Border = border;
@@ -236,6 +298,8 @@ public sealed class RichTextListBuilder
 
     /// <summary>
     /// Returns the configured <see cref="RichTextList"/> instance.
-    /// </summary>
+    /// <summary>
+/// Returns the configured <see cref="RichTextList"/> instance built by this builder.
+/// </summary>
     public RichTextList Build() => _list;
 }

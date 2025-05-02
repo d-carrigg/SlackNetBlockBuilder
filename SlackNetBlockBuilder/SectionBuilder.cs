@@ -28,6 +28,8 @@ public class SectionBuilder
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SectionBuilder"/> class.
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SectionBuilder"/> class for constructing a Slack section block.
     /// </summary>
     public SectionBuilder()
     {
@@ -42,7 +44,12 @@ public class SectionBuilder
     /// Maximum length 3000 characters.
     /// </summary>
     /// <param name="text">The plain text content.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+    /// Sets the main text content of the section as plain text.
+    /// </summary>
+    /// <param name="text">The plain text to display in the section.</param>
+    /// <returns>The same builder instance for method chaining.</returns>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="text"/> is null.</exception>
     public SectionBuilder Text(string text)
     {
         ArgumentNullException.ThrowIfNull(text);
@@ -58,7 +65,12 @@ public class SectionBuilder
     /// </summary>
     /// <param name="text">The Markdown formatted text content.</param>
     /// <param name="verbatim">Whether to disable formatting detection for URLs, channels, users, etc. Defaults to false.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+    /// Sets the main text content of the section block using Markdown formatting.
+    /// </summary>
+    /// <param name="text">The Markdown-formatted text to display.</param>
+    /// <param name="verbatim">If true, disables automatic formatting detection and preserves the text as-is.</param>
+    /// <returns>The same builder instance for method chaining.</returns>
     public SectionBuilder Markdown(string text, bool verbatim = false)
     {
         _sectionBlock.Text = new Markdown()
@@ -77,7 +89,11 @@ public class SectionBuilder
     /// Use <see cref="AddTextField"/> or <see cref="AddMarkdownField"/> for adding fields individually.
     /// </summary>
     /// <param name="fields">An array of <see cref="TextObject"/> instances representing the fields.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+    /// Sets the fields of the section block to the specified array of text objects.
+    /// </summary>
+    /// <param name="fields">An array of <see cref="TextObject"/> instances to use as fields in the section block.</param>
+    /// <returns>The same builder instance for method chaining.</returns>
     public SectionBuilder Fields(params TextObject[] fields)
     {
         _sectionBlock.Fields = fields;
@@ -88,7 +104,11 @@ public class SectionBuilder
     /// Adds a plain text field to the section's fields list.
     /// </summary>
     /// <param name="text">The plain text content for the field.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+    /// Adds a plain text field to the section's fields collection.
+    /// </summary>
+    /// <param name="text">The plain text content for the new field.</param>
+    /// <returns>The same builder instance for method chaining.</returns>
     public SectionBuilder AddTextField(string text)
     {
         _sectionBlock.Fields.Add(text);
@@ -101,7 +121,12 @@ public class SectionBuilder
     /// </summary>
     /// <param name="text">The Markdown formatted text content for the field.</param>
     /// <param name="verbatim">Whether to disable formatting detection. Defaults to false.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+    /// Adds a Markdown-formatted field to the section's fields collection.
+    /// </summary>
+    /// <param name="text">The Markdown text for the field. Cannot be null.</param>
+    /// <param name="verbatim">If true, disables automatic formatting detection in the field.</param>
+    /// <returns>The same builder instance for method chaining.</returns>
     public SectionBuilder AddMarkdownField(string text, bool verbatim = false)
     {
         ArgumentNullException.ThrowIfNull(text);
@@ -119,7 +144,13 @@ public class SectionBuilder
     /// </summary>
     /// <typeparam name="TAccessory">The type of the accessory element (e.g., <see cref="Button"/>).</typeparam>
     /// <param name="createAccessory">An action that configures the accessory element.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+    /// Adds and configures an accessory element for the section block using the provided configuration action.
+    /// </summary>
+    /// <typeparam name="TAccessory">The type of accessory element to add.</typeparam>
+    /// <param name="createAccessory">An action to configure the accessory element.</param>
+    /// <returns>The same builder instance for method chaining.</returns>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="createAccessory"/> is null.</exception>
     public SectionBuilder Accessory<TAccessory>(Action<TAccessory> createAccessory)
     where TAccessory : BlockElement, new()
     {
@@ -135,7 +166,11 @@ public class SectionBuilder
     /// Only one accessory element is allowed per section.
     /// </summary>
     /// <param name="accessory">The accessory element instance.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+    /// Sets the accessory element for the section block.
+    /// </summary>
+    /// <param name="accessory">The accessory element to attach to the section.</param>
+    /// <returns>The same builder instance for method chaining.</returns>
     public SectionBuilder Accessory(BlockElement accessory)
     {
         _sectionBlock.Accessory = accessory;
@@ -147,7 +182,16 @@ public class SectionBuilder
     /// </summary>
     /// <returns>The configured <see cref="SectionBlock"/> instance.</returns>
     /// <exception cref="InvalidOperationException">Thrown if the configured block ID exceeds <see cref="MaxBlockIdLength"/> characters.</exception>
-    /// <exception cref="ArgumentException">Thrown if the number of fields exceeds <see cref="MaxFields"/> or if any field's text exceeds <see cref="MaxFieldsLength"/> characters.</exception>
+    /// <summary>
+    /// Validates and returns the configured <see cref="SectionBlock"/>, ensuring all Slack API constraints are met.
+    /// </summary>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown if the block ID exceeds <see cref="MaxBlockIdLength"/> characters.
+    /// </exception>
+    /// <exception cref="ArgumentException">
+    /// Thrown if the number of fields exceeds <see cref="MaxFields"/> or if any field's text exceeds <see cref="MaxFieldsLength"/> characters.
+    /// </exception>
+    /// <returns>The fully configured <see cref="SectionBlock"/> instance.</returns>
     public SectionBlock Build()
     {
                 

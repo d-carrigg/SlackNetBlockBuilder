@@ -13,7 +13,11 @@ public static class ButtonExtensions
     /// </summary>
     /// <param name="builder">The builder instance.</param>
     /// <param name="text">A plain_text object that defines the button's text. Maximum length is 75 characters.</param>
-    /// <returns>The same instance so calls can be chained.</returns>
+    /// <summary>
+            /// Sets the display text for a button element.
+            /// </summary>
+            /// <param name="text">The text to display on the button.</param>
+            /// <returns>The same builder instance for method chaining.</returns>
     public static ActionElementBuilder<Button> Text(this ActionElementBuilder<Button> builder, string text)
         => 
             builder is null ? throw new ArgumentNullException(nameof(builder)) :
@@ -26,6 +30,10 @@ public static class ButtonExtensions
     /// </summary>
     /// <param name="builder">The builder instance.</param>
     /// <param name="url">A URL to load in the user's browser. Maximum length is 3000 characters.</param>
+    /// <summary>
+    /// Sets the URL to open when the button is clicked.
+    /// </summary>
+    /// <param name="url">The URL to open when the button is clicked.</param>
     /// <returns>The same instance so calls can be chained.</returns>
     public static ActionElementBuilder<Button> Url(this ActionElementBuilder<Button> builder, string url)
     {
@@ -42,7 +50,11 @@ public static class ButtonExtensions
     /// </summary>
     /// <param name="builder">The builder instance.</param>
     /// <param name="url">A URL to load in the user's browser. Maximum length is 3000 characters.</param>
-    /// <returns>The same instance so calls can be chained.</returns>
+    /// <summary>
+       /// Sets the URL to open when the button is clicked, using a <see cref="Uri"/>.
+       /// </summary>
+       /// <param name="url">The URL to open when the button is clicked.</param>
+       /// <returns>The same builder instance for method chaining.</returns>
     public static ActionElementBuilder<Button> Url(this ActionElementBuilder<Button> builder, Uri url)
    =>
        url is null ? throw new ArgumentNullException(nameof(url)) :
@@ -53,6 +65,10 @@ public static class ButtonExtensions
     /// </summary>
     /// <param name="builder">The builder instance.</param>
     /// <param name="value">The value to send. Maximum length is 2000 characters.</param>
+    /// <summary>
+    /// Sets the value sent with the interaction payload when the button is clicked.
+    /// </summary>
+    /// <param name="value">The value to associate with the button interaction.</param>
     /// <returns>The same instance so calls can be chained.</returns>
     public static ActionElementBuilder<Button> Value(this ActionElementBuilder<Button> builder, string value)
     {
@@ -66,7 +82,11 @@ public static class ButtonExtensions
     /// </summary>
     /// <param name="builder">The builder instance.</param>
     /// <param name="style">The style to apply (Default, Primary, or Danger).</param>
-    /// <returns>The same instance so calls can be chained.</returns>
+    /// <summary>
+    /// Sets the visual style of the button (default, primary, or danger).
+    /// </summary>
+    /// <param name="style">The style to apply to the button.</param>
+    /// <returns>The same builder instance for method chaining.</returns>
     public static ActionElementBuilder<Button> Style(this ActionElementBuilder<Button> builder, ButtonStyle style)
     {
         ArgumentNullException.ThrowIfNull(builder);
@@ -79,7 +99,11 @@ public static class ButtonExtensions
     /// </summary>
     /// <param name="builder">The builder instance.</param>
     /// <param name="label">The accessibility label. Used by screen readers. Maximum length is 75 characters.</param>
-    /// <returns>The same instance so calls can be chained.</returns>
+    /// <summary>
+    /// Sets an accessibility label for the button to improve screen reader support.
+    /// </summary>
+    /// <param name="label">The accessibility label to assign to the button.</param>
+    /// <returns>The same builder instance for method chaining.</returns>
     public static ActionElementBuilder<Button> AccessibilityLabel(this ActionElementBuilder<Button> builder,
         string label)
     {
@@ -98,7 +122,15 @@ public static class ButtonExtensions
     /// <param name="style">The visual style of the button (Default, Primary, or Danger).</param>
     /// <param name="url">A URL to load in the user's browser. If provided, action_id is ignored. Max length 3000.</param>
     /// <param name="value">The value to send with the interaction payload. Max length 2000.</param>
-    /// <returns>The same ActionsBlockBuilder instance so calls can be chained.</returns>
+    /// <summary>
+    /// Adds a button with the specified action ID, text, style, URL, and value to the actions block.
+    /// </summary>
+    /// <param name="actionId">The unique identifier for the button action.</param>
+    /// <param name="text">The text displayed on the button.</param>
+    /// <param name="style">The visual style of the button.</param>
+    /// <param name="url">The URL to open when the button is clicked. If set, the button does not trigger an interaction payload.</param>
+    /// <param name="value">The value sent with the interaction payload when the button is clicked.</param>
+    /// <returns>The same ActionsBlockBuilder instance for method chaining.</returns>
     public static ActionsBlockBuilder AddButton(this ActionsBlockBuilder builder, string actionId,
         string text,
         ButtonStyle style, string? url = null, string? value = null)
@@ -123,13 +155,20 @@ public static class ButtonExtensions
     /// <param name="style">The visual style of the button (Default, Primary, or Danger).</param>
     /// <param name="url">A URL to load in the user's browser. If provided, action_id is ignored. Max length 3000.</param>
     /// <param name="value">The value to send with the interaction payload. Max length 2000.</param>
-    /// <returns>The same ActionsBlockBuilder instance so calls can be chained.</returns>
+    /// <summary>
+        /// Adds a button with the specified action ID, text, style, URL, and value to the actions block builder.
+        /// </summary>
+        /// <param name="actionId">The unique identifier for the button action.</param>
+        /// <param name="text">The text displayed on the button.</param>
+        /// <param name="style">The visual style of the button.</param>
+        /// <param name="url">The URL to open when the button is clicked. Must not be null.</param>
+        /// <param name="value">The value sent with the interaction payload when the button is clicked.</param>
+        /// <returns>The same ActionsBlockBuilder instance for method chaining.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="url"/> is null.</exception>
     public static ActionsBlockBuilder AddButton(this ActionsBlockBuilder builder, string actionId,
         string text,
         ButtonStyle style, Uri? url = null, string? value = null)
-    =>
-        builder is null ? throw new ArgumentNullException(nameof(builder)) :
-        url is null ? throw new ArgumentNullException(nameof(url)) :
+    => url is null ? throw new ArgumentNullException(nameof(url)) :
         builder.AddButton(actionId, text, style, url.ToString(), value);
     
     
@@ -141,7 +180,14 @@ public static class ButtonExtensions
     /// <param name="text">A plain_text object that defines the button's text. Max length 75.</param>
     /// <param name="url">A URL to load in the user's browser. If provided, action_id is ignored. Max length 3000.</param>
     /// <param name="value">The value to send with the interaction payload. Max length 2000.</param>
-    /// <returns>The same ActionsBlockBuilder instance so calls can be chained.</returns>
+    /// <summary>
+    /// Adds a button with the specified action ID and text to the actions block, using the default button style.
+    /// </summary>
+    /// <param name="actionId">The unique identifier for the button action.</param>
+    /// <param name="text">The text displayed on the button.</param>
+    /// <param name="url">Optional URL to open when the button is clicked.</param>
+    /// <param name="value">Optional value sent with the interaction payload when the button is clicked.</param>
+    /// <returns>The same ActionsBlockBuilder instance for method chaining.</returns>
     public static ActionsBlockBuilder AddButton(this ActionsBlockBuilder builder, string actionId, string text,
         string? url = null, string? value = null)
     {

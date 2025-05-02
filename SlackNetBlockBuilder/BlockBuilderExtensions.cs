@@ -15,7 +15,11 @@ public static class BlockBuilderExtensions
     /// </summary>
     /// <param name="builder">The builder instance</param>
     /// <param name="createActions">An action that configures the <see cref="ActionsBlock"/> using an <see cref="ActionsBlockBuilder"/>.</param>
-    /// <returns>The same instance so calls can be chained</returns>
+    /// <summary>
+    /// Adds an Actions block to the builder, allowing configuration of interactive elements such as buttons or menus.
+    /// </summary>
+    /// <param name="createActions">A delegate to configure the actions within the block.</param>
+    /// <returns>The same <see cref="IBlockBuilder"/> instance for method chaining.</returns>
     public static IBlockBuilder AddActions(this IBlockBuilder builder,
         Action<ActionsBlockBuilder> createActions)
     {
@@ -34,7 +38,14 @@ public static class BlockBuilderExtensions
     /// <param name="builder">The builder instance</param>
     /// <param name="callId">The Id of the call</param>
     /// <param name="blockId">A unique identifier for this block. Maximum length is 255 characters. If not specified, one will be generated.</param>
-    /// <returns>The same instance so calls can be chained</returns>
+    /// <summary>
+            /// Adds a Slack Call block referencing a call by its unique ID.
+            /// </summary>
+            /// <param name="callId">The unique identifier for the call (maximum 255 characters).</param>
+            /// <param name="blockId">An optional unique identifier for this block.</param>
+            /// <returns>The same <see cref="IBlockBuilder"/> instance for chaining.</returns>
+            /// <exception cref="ArgumentNullException">Thrown if <paramref name="builder"/> or <paramref name="callId"/> is null.</exception>
+            /// <exception cref="ArgumentException">Thrown if <paramref name="callId"/> exceeds 255 characters.</exception>
     public static IBlockBuilder AddCall(this IBlockBuilder builder, string callId, string? blockId = null)
         => 
             builder is null ? throw new ArgumentNullException(nameof(builder)) :
@@ -54,7 +65,11 @@ public static class BlockBuilderExtensions
     /// </summary>
     /// <param name="builder">The block builder instance.</param>
     /// <param name="createContext">An action that configures the <see cref="ContextBlock"/> using a <see cref="ContextBlockBuilder"/>.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+    /// Adds a context block to the builder, allowing display of secondary information such as images or text.
+    /// </summary>
+    /// <param name="createContext">An action to configure the context block's content.</param>
+    /// <returns>The same builder instance for method chaining.</returns>
     public static IBlockBuilder AddContext(this IBlockBuilder builder, Action<ContextBlockBuilder> createContext)
     {
         ArgumentNullException.ThrowIfNull(builder);
@@ -71,7 +86,11 @@ public static class BlockBuilderExtensions
     /// </summary>
     /// <param name="builder">The build instance</param>
     /// <param name="blockId">A unique identifier for this block. Maximum length is 255 characters. If not specified, one will be generated.</param>
-    /// <returns>The same instance so calls can be chained</returns>
+    /// <summary>
+    /// Adds a divider block to visually separate content within a Slack Block Kit layout.
+    /// </summary>
+    /// <param name="blockId">An optional unique identifier for the divider block.</param>
+    /// <returns>The same <see cref="IBlockBuilder"/> instance for method chaining.</returns>
     public static IBlockBuilder AddDivider(this IBlockBuilder builder, string? blockId = null)
     {
         ArgumentNullException.ThrowIfNull(builder);
@@ -90,7 +109,14 @@ public static class BlockBuilderExtensions
     /// <param name="externalId">The external ID of the remote file. This ID is assigned by the uploading app.</param>
     /// <param name="source">Always "remote" for remote files.</param>
     /// <param name="blockId">A unique identifier for this block. Maximum length is 255 characters. If not specified, one will be generated.</param>
-    /// <returns>The same builder instance so calls can be chained</returns>
+    /// <summary>
+            /// Adds a file block to display a remote file in the Slack message.
+            /// </summary>
+            /// <param name="externalId">The external unique identifier for the file to display.</param>
+            /// <param name="source">The source of the file, typically "remote".</param>
+            /// <param name="blockId">An optional unique identifier for this block.</param>
+            /// <returns>The same builder instance for method chaining.</returns>
+            /// <exception cref="ArgumentNullException">Thrown if <paramref name="builder"/> is null.</exception>
     public static IBlockBuilder AddFile(this IBlockBuilder builder, string externalId, string source = "remote",
         string? blockId = null)
         =>
@@ -108,7 +134,12 @@ public static class BlockBuilderExtensions
     /// <param name="builder">The builder instance</param>
     /// <param name="text">A plain_text text object for the header. Maximum length 150 characters.</param>
     /// <param name="blockId">A unique identifier for this block. Maximum length is 255 characters. If not specified, one will be generated.</param>
-    /// <returns>The same builder instance so calls can be chained</returns>
+    /// <summary>
+    /// Adds a header block with the specified plain text to the block builder.
+    /// </summary>
+    /// <param name="text">The plain text to display as the header.</param>
+    /// <param name="blockId">An optional unique identifier for the block.</param>
+    /// <returns>The same builder instance for method chaining.</returns>
     public static IBlockBuilder AddHeader(this IBlockBuilder builder, PlainText text, string? blockId = null)
     {
         ArgumentNullException.ThrowIfNull(builder);
@@ -131,7 +162,14 @@ public static class BlockBuilderExtensions
     /// <param name="altText">Plain text summary of the image for accessibility. Maximum length 2000 characters.</param>
     /// <param name="title">An optional plain_text title for the image. Maximum length 2000 characters.</param>
     /// <param name="blockId">A unique identifier for this block. Maximum length is 255 characters. If not specified, one will be generated.</param>
-    /// <returns>The same instance so calls can be chained</returns>
+    /// <summary>
+            /// Adds an image block to the builder using a public image URL.
+            /// </summary>
+            /// <param name="imageUrl">The URL of the image to display.</param>
+            /// <param name="altText">A plain-text summary of the image for accessibility.</param>
+            /// <param name="title">Optional title displayed above the image.</param>
+            /// <param name="blockId">Optional unique identifier for the block.</param>
+            /// <returns>The same <see cref="IBlockBuilder"/> instance for chaining.</returns>
     public static IBlockBuilder AddImageFromUrl(this IBlockBuilder builder,
         string imageUrl,
         string altText,
@@ -139,8 +177,6 @@ public static class BlockBuilderExtensions
         string? blockId = null)
         => 
             builder is null ? throw new ArgumentNullException(nameof(builder)) :
-            string.IsNullOrEmpty(imageUrl) ? throw new ArgumentNullException(nameof(imageUrl)) :
-            string.IsNullOrWhiteSpace(altText) ? throw new ArgumentException("Alt text cannot be null or whitespace.", nameof(altText)) :
             builder.Add<ImageBlock>(image =>
             {
                 image.ImageUrl = imageUrl;
@@ -157,14 +193,20 @@ public static class BlockBuilderExtensions
     /// <param name="altText">Plain text summary of the image for accessibility. Maximum length 2000 characters.</param>
     /// <param name="title">An optional plain_text title for the image. Maximum length 2000 characters.</param>
     /// <param name="blockId">A unique identifier for this block. Maximum length is 255 characters. If not specified, one will be generated.</param>
-    /// <returns>The same instance so calls can be chained</returns>
+    /// <summary>
+        /// Adds an image block to the builder using a public image URL.
+        /// </summary>
+        /// <param name="imageUrl">The URI of the image to display. Must not be null.</param>
+        /// <param name="altText">A plain-text description of the image for accessibility.</param>
+        /// <param name="title">Optional title displayed above the image.</param>
+        /// <param name="blockId">An optional unique identifier for this block.</param>
+        /// <returns>The same <see cref="IBlockBuilder"/> instance for chaining.</returns>
     public static IBlockBuilder AddImageFromUrl(this IBlockBuilder builder,
         Uri imageUrl,
         string altText,
         PlainText? title = null,
         string? blockId = null) => 
-        imageUrl is null ? throw new ArgumentNullException(nameof(imageUrl)) :
-        string.IsNullOrWhiteSpace(altText) ? throw new ArgumentException("Alt text cannot be null or whitespace.", nameof(altText)) :
+    imageUrl is null ? throw new ArgumentNullException(nameof(imageUrl)) :
         builder.AddImageFromUrl(imageUrl.ToString(), altText, title, blockId);
 
     /// <summary>
@@ -175,7 +217,15 @@ public static class BlockBuilderExtensions
     /// <param name="altText">Plain text summary of the image for accessibility. Maximum length 2000 characters.</param>
     /// <param name="title">An optional plain_text title for the image. Maximum length 2000 characters.</param>
     /// <param name="blockId">A unique identifier for this block. Maximum length is 255 characters. If not specified, one will be generated.</param>
-    /// <returns>The same instance so calls can be chained</returns>
+    /// <summary>
+            /// Adds an image block referencing a Slack-hosted file to the block builder.
+            /// </summary>
+            /// <param name="slackFile">The Slack file reference to display as an image.</param>
+            /// <param name="altText">Alternative text for the image, used for accessibility.</param>
+            /// <param name="title">Optional title displayed above the image.</param>
+            /// <param name="blockId">Optional unique identifier for the block.</param>
+            /// <returns>The same <see cref="IBlockBuilder"/> instance for chaining.</returns>
+            /// <exception cref="ArgumentNullException">Thrown if <paramref name="builder"/> is null.</exception>
     public static IBlockBuilder AddImageFromSlackFile(this IBlockBuilder builder,
         ImageFileReference slackFile,
         string altText,
@@ -199,7 +249,15 @@ public static class BlockBuilderExtensions
     /// <param name="label">A plain_text label for the input element. Maximum length 2000 characters.</param>
     /// <param name="createInput">An action that configures the input element (e.g., <see cref="PlainTextInput"/>) using an <see cref="InputBlockBuilder{TElement}"/>.</param>
     /// <typeparam name="TInput">The type of input element to add (e.g., <see cref="PlainTextInput"/>, <see cref="DatePicker"/>).</typeparam>
-    /// <returns>The same instance so calls can be chained</returns>
+    /// <summary>
+    /// Adds an input block with a specified label and configurable input element to the block builder.
+    /// </summary>
+    /// <param name="label">The label for the input block. Must not be null or whitespace.</param>
+    /// <param name="createInput">An action to configure the input element within the block.</param>
+    /// <typeparam name="TInput">The type of input element to include in the block.</typeparam>
+    /// <returns>The same <see cref="IBlockBuilder"/> instance for method chaining.</returns>
+    /// <exception cref="ArgumentException">Thrown if <paramref name="label"/> is null or whitespace.</exception>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="builder"/> or <paramref name="createInput"/> is null.</exception>
     public static IBlockBuilder AddInput<TInput>(this IBlockBuilder builder,
         string label,
         Action<InputBlockBuilder<TInput>> createInput)
@@ -222,7 +280,11 @@ public static class BlockBuilderExtensions
     /// </summary>
     /// <param name="builder">The block builder instance.</param>
     /// <param name="createRichText">An action that configures the rich text content using a <see cref="RichTextBuilder"/>.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+    /// Adds a rich text block to the builder, allowing advanced formatting and layout using a <see cref="RichTextBuilder"/>.
+    /// </summary>
+    /// <param name="createRichText">An action to configure the rich text content.</param>
+    /// <returns>The same builder instance for method chaining.</returns>
     public static IBlockBuilder AddRichText(this IBlockBuilder builder, Action<RichTextBuilder> createRichText)
     {
         ArgumentNullException.ThrowIfNull(builder);
@@ -239,7 +301,11 @@ public static class BlockBuilderExtensions
     /// </summary>
     /// <param name="builder">The block builder instance.</param>
     /// <param name="text">The markdown text for the section. Maximum length 3000 characters.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+        /// Adds a section block with the specified markdown text to the builder.
+        /// </summary>
+        /// <param name="text">The markdown text to display in the section block.</param>
+        /// <returns>The same builder instance for method chaining.</returns>
     public static IBlockBuilder AddSection(this IBlockBuilder builder, string text) =>
         builder.AddSection(section => section.Markdown(text));
     
@@ -248,7 +314,11 @@ public static class BlockBuilderExtensions
     /// </summary>
     /// <param name="builder">The block builder instance.</param>
     /// <param name="text">The plain text for the section. Maximum length 3000 characters.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+        /// Adds a section block with plain text to the builder.
+        /// </summary>
+        /// <param name="text">The plain text content for the section block.</param>
+        /// <returns>The same builder instance for method chaining.</returns>
     public static IBlockBuilder AddPlainTextSection(this IBlockBuilder builder, string text) =>
         builder.AddSection(section => section.Text(text));
 
@@ -259,7 +329,11 @@ public static class BlockBuilderExtensions
     /// </summary>
     /// <param name="builder">The block builder instance.</param>
     /// <param name="createSection">An action that configures the <see cref="SectionBlock"/> using a <see cref="SectionBuilder"/>.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+    /// Adds a section block to the builder, allowing flexible configuration of text, fields, and accessory elements.
+    /// </summary>
+    /// <param name="createSection">An action to configure the section block's content and layout.</param>
+    /// <returns>The same builder instance for method chaining.</returns>
     public static IBlockBuilder AddSection(this IBlockBuilder builder, Action<SectionBuilder> createSection)
     {
         ArgumentNullException.ThrowIfNull(builder);
@@ -284,7 +358,21 @@ public static class BlockBuilderExtensions
     /// <param name="providerIconUrl">An optional URL for an icon representing the video provider.</param>
     /// <param name="providerName">An optional plain_text name of the video provider. Maximum length 30 characters.</param>
     /// <param name="titleUrl">An optional URL that makes the video title clickable. Must be an HTTPS URL. Requires <c>videoUrl</c> to belong to an <see href="https://api.slack.com/apps/managing#configuring-unfurls">unfurl domain</see> configured for the app.</param>
-    /// <returns>The same instance so calls can be chained</returns>
+    /// <summary>
+            /// Adds a video block to the builder, embedding a video player from a supported provider with the specified URLs, title, and alt text.
+            /// </summary>
+            /// <param name="videoUrl">The URL of the video to embed. Must not be null or whitespace.</param>
+            /// <param name="thumbnailUrl">The URL of the video's thumbnail image. Must not be null or whitespace.</param>
+            /// <param name="title">The title of the video. Must not be null or whitespace.</param>
+            /// <param name="altText">Alternative text for the video, used for accessibility. Must not be null or whitespace.</param>
+            /// <param name="blockId">A unique identifier for this block. Optional.</param>
+            /// <param name="description">A description of the video. Optional.</param>
+            /// <param name="providerIconUrl">URL of the provider's icon. Optional.</param>
+            /// <param name="providerName">Name of the video provider. Optional.</param>
+            /// <param name="titleUrl">URL to link the title. Optional.</param>
+            /// <returns>The same <see cref="IBlockBuilder"/> instance for chaining.</returns>
+            /// <exception cref="ArgumentNullException">Thrown if <paramref name="builder"/> is null.</exception>
+            /// <exception cref="ArgumentException">Thrown if <paramref name="videoUrl"/>, <paramref name="thumbnailUrl"/>, <paramref name="title"/>, or <paramref name="altText"/> is null or whitespace.</exception>
     [SuppressMessage("Design", "CA1054:URI-like parameters should not be strings")]
     public static IBlockBuilder AddVideo(this IBlockBuilder builder,
         string videoUrl,
@@ -330,7 +418,19 @@ public static class BlockBuilderExtensions
     /// <param name="providerIconUrl">An optional URL for an icon representing the video provider.</param>
     /// <param name="providerName">An optional plain_text name of the video provider. Maximum length 30 characters.</param>
     /// <param name="titleUrl">An optional URL that makes the video title clickable. Must be an HTTPS URL. Requires <c>videoUrl</c> to belong to an <see href="https://api.slack.com/apps/managing#configuring-unfurls">unfurl domain</see> configured for the app.</param>
-    /// <returns>The same instance so calls can be chained</returns>
+    /// <summary>
+    /// Adds a video block to the builder, embedding a video player from a supported provider using <see cref="Uri"/> parameters.
+    /// </summary>
+    /// <param name="videoUrl">The URL of the video to embed. Must be a valid, supported video provider URL.</param>
+    /// <param name="thumbnailUrl">The URL of the video's thumbnail image.</param>
+    /// <param name="title">The title of the video.</param>
+    /// <param name="altText">Alternative text for the video, used for accessibility.</param>
+    /// <param name="blockId">A unique identifier for this block (optional).</param>
+    /// <param name="description">A description of the video (optional).</param>
+    /// <param name="providerIconUrl">The URL of the provider's icon image (optional).</param>
+    /// <param name="providerName">The name of the video provider (optional).</param>
+    /// <param name="titleUrl">A URL to link the video title to (optional).</param>
+    /// <returns>The same <see cref="IBlockBuilder"/> instance for chaining.</returns>
     public static IBlockBuilder AddVideo(this IBlockBuilder builder,
         Uri videoUrl,
         Uri thumbnailUrl,

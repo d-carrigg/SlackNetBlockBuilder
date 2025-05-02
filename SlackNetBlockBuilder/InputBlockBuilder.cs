@@ -17,7 +17,11 @@ public sealed class InputBlockBuilder<TElement> : InputElementBuilder<TElement>
     /// Initializes a new instance of the <see cref="InputBlockBuilder{TElement}"/> class.
     /// </summary>
     /// <param name="element">The input element to be placed within the block.</param>
-    /// <param name="label">A label shown above the input element. Maximum length 2000 characters.</param>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="InputBlockBuilder{TElement}"/> class with the specified input element and label.
+    /// </summary>
+    /// <param name="element">The input element to include in the input block.</param>
+    /// <param name="label">The label displayed above the input element. Maximum length is 2000 characters.</param>
     public InputBlockBuilder(TElement element, string label) : base(element)
     {
         ParentBlock = new InputBlock()
@@ -32,7 +36,11 @@ public sealed class InputBlockBuilder<TElement> : InputElementBuilder<TElement>
     /// Maximum length 255 characters.
     /// </summary>
     /// <param name="blockId">The block ID.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+    /// Sets a unique identifier for the input block.
+    /// </summary>
+    /// <param name="blockId">A string identifier for the block (maximum 255 characters).</param>
+    /// <returns>The same builder instance for method chaining.</returns>
     public InputElementBuilder<TElement> BlockId(string blockId)
     {
         ParentBlock.BlockId = blockId;
@@ -45,7 +53,11 @@ public sealed class InputBlockBuilder<TElement> : InputElementBuilder<TElement>
     /// Defaults to false.
     /// </summary>
     /// <param name="dispatch">True to dispatch actions.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+    /// Sets whether the input block should dispatch interaction payloads when actions occur.
+    /// </summary>
+    /// <param name="dispatch">If true, enables dispatching of interaction payloads; otherwise, disables it. Defaults to true.</param>
+    /// <returns>The same builder instance for method chaining.</returns>
     public InputElementBuilder<TElement> DispatchAction(bool dispatch = true)
     {
         ParentBlock.DispatchAction = dispatch;
@@ -57,7 +69,11 @@ public sealed class InputBlockBuilder<TElement> : InputElementBuilder<TElement>
     /// Maximum length 2000 characters.
     /// </summary>
     /// <param name="hint">The hint text.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+    /// Sets the hint text displayed below the input element in the input block.
+    /// </summary>
+    /// <param name="hint">The hint text to display, up to 2000 characters.</param>
+    /// <returns>The same builder instance for method chaining.</returns>
     public InputElementBuilder<TElement> Hint(string hint)
     {
         ParentBlock.Hint = hint;
@@ -68,7 +84,11 @@ public sealed class InputBlockBuilder<TElement> : InputElementBuilder<TElement>
     /// Sets whether the input element is optional. Defaults to false.
     /// </summary>
     /// <param name="optional">True if the input is optional.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+    /// Marks the input element as optional or required within the input block.
+    /// </summary>
+    /// <param name="optional">If true, the input element is optional; otherwise, it is required. Defaults to true.</param>
+    /// <returns>The same builder instance for method chaining.</returns>
     public InputElementBuilder<TElement> Optional(bool optional = true)
     {
         ParentBlock.Optional = optional;

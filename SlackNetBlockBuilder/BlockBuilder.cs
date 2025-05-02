@@ -34,7 +34,10 @@ public interface IBlockBuilder
     /// <summary>
     /// Combine all blocks into a list of blocks
     /// </summary>
-    /// <returns>The built list of blocks</returns>
+    /// <summary>
+    /// Builds and returns the list of added blocks.
+    /// </summary>
+    /// <returns>The list of blocks that have been added to the builder.</returns>
     [SuppressMessage("Design", "CA1002:Do not expose generic lists")]
     List<Block> Build();
 }
@@ -77,12 +80,18 @@ public sealed class BlockBuilder : IBlockBuilder
     
     /// <summary>
     /// Create a new empty block builder instance.
+    /// <summary>
+    /// Initializes a new, empty instance of the <see cref="BlockBuilder"/> class for constructing Slack message blocks.
     /// </summary>
     [PublicAPI]
     public BlockBuilder()
     {
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="BlockBuilder"/> class with a predefined collection of blocks.
+    /// </summary>
+    /// <param name="blocks">The collection of blocks to initialize the builder with.</param>
     private BlockBuilder(IEnumerable<Block> blocks)
     {
         _blocks = blocks.ToList();
@@ -93,7 +102,12 @@ public sealed class BlockBuilder : IBlockBuilder
     /// Useful for modifying existing block structures.
     /// </summary>
     /// <param name="blocks">The initial collection of blocks.</param>
-    /// <returns>A new <see cref="BlockBuilder"/> instance containing the provided blocks.</returns>
+    /// <summary>
+        /// Creates a new <see cref="BlockBuilder"/> initialized with the specified collection of blocks.
+        /// </summary>
+        /// <param name="blocks">The collection of blocks to initialize the builder with.</param>
+        /// <returns>A new <see cref="BlockBuilder"/> instance containing the provided blocks.</returns>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="blocks"/> is null.</exception>
     public static BlockBuilder From(IEnumerable<Block> blocks) => 
         blocks is null ? throw new ArgumentNullException(nameof(blocks)) :
         new(blocks);
@@ -111,7 +125,13 @@ public sealed class BlockBuilder : IBlockBuilder
     /// Build the list of blocks
     /// </summary>
     /// <returns>The list of blocks</returns>
-    /// <exception cref="InvalidOperationException">Thrown if more than one element across all blocks has FocusOnLoad set to true.</exception>
+    /// <summary>
+    /// Finalizes and returns the list of added blocks, ensuring that at most one element across all blocks has <c>FocusOnLoad</c> set to true.
+    /// </summary>
+    /// <returns>The list of constructed blocks.</returns>
+    /// <exception cref="InvalidOperationException">
+    /// Thrown if more than one element across all blocks has <c>FocusOnLoad</c> set to true.
+    /// </exception>
     public List<Block> Build()  
     {
         // if more than 1 block has FocusOnLoad, throw an exception
@@ -125,11 +145,17 @@ public sealed class BlockBuilder : IBlockBuilder
 
     /// <summary>
     /// Calculates the total number of elements across all blocks that have FocusOnLoad set to true. (Internal Helper)
-    /// </summary>
+    /// <summary>
+/// Counts the total number of input elements with FocusOnLoad enabled across all blocks in the builder.
+/// </summary>
     private int GetFocusedElementsCount() => _blocks.Sum(GetFocusedElementsCount);
     /// <summary>
     /// Calculates the number of focused elements within a single block. (Internal Helper)
+    /// <summary>
+    /// Counts the number of input elements with FocusOnLoad enabled within the specified block.
     /// </summary>
+    /// <param name="block">The block to inspect for focused input elements.</param>
+    /// <returns>The number of input elements in the block that have FocusOnLoad set to true.</returns>
     private int GetFocusedElementsCount(Block block)
     {
         return block switch 
@@ -142,7 +168,11 @@ public sealed class BlockBuilder : IBlockBuilder
     
     /// <summary>
     /// Checks if a specific input block element has FocusOnLoad set to true. (Internal Helper)
+    /// <summary>
+    /// Determines whether the specified input block element has the FocusOnLoad property set to true.
     /// </summary>
+    /// <param name="block">The input block element to check.</param>
+    /// <returns>True if the element's FocusOnLoad property is true; otherwise, false.</returns>
     private bool IsElementFocused(IInputBlockElement block)
     {
         var isFocused = block switch 
@@ -187,6 +217,10 @@ public sealed class BlockBuilder : IBlockBuilder
     /// Removes all blocks that match the specified predicate.
     /// </summary>
     /// <param name="predicate">A function to test each block for a condition.</param>
+    /// <summary>
+    /// Removes all blocks that match the specified predicate.
+    /// </summary>
+    /// <param name="predicate">A function to test each block for a condition.</param>
     /// <returns>The number of blocks removed.</returns>
     public int Remove(Predicate<Block> predicate)
     {
@@ -197,7 +231,11 @@ public sealed class BlockBuilder : IBlockBuilder
     /// Removes the first block that matches the specified block ID.
     /// </summary>
     /// <param name="blockId">The BlockId of the block to remove.</param>
-    /// <returns>True if a block was removed, false otherwise.</returns>
+    /// <summary>
+    /// Removes the first block with the specified block ID.
+    /// </summary>
+    /// <param name="blockId">The ID of the block to remove.</param>
+    /// <returns>True if a block was removed; otherwise, false.</returns>
     public bool Remove(string blockId)
     {
         return Remove(b => b.BlockId == blockId) > 0;
@@ -207,7 +245,12 @@ public sealed class BlockBuilder : IBlockBuilder
     /// Finds the first <see cref="ActionsBlock"/> and removes the first element within it that matches the predicate.
     /// </summary>
     /// <param name="predicate">A function to test each action element for a condition.</param>
-    /// <returns>True if an element was removed, false otherwise.</returns>
+    /// <summary>
+    /// Removes the first action element from the first <see cref="ActionsBlock"/> that matches the specified predicate.
+    /// </summary>
+    /// <param name="predicate">A function to test each action element for a condition.</param>
+    /// <returns>True if an element was removed; otherwise, false.</returns>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="predicate"/> is null.</exception>
     public bool RemoveAction(Predicate<IActionElement> predicate)
     {
         ArgumentNullException.ThrowIfNull(predicate);
@@ -231,10 +274,18 @@ public sealed class BlockBuilder : IBlockBuilder
     /// Finds the first <see cref="ActionsBlock"/> and removes the first element within it that matches the specified action ID.
     /// </summary>
     /// <param name="actionId">The ActionId of the element to remove.</param>
-    /// <returns>True if an element was removed, false otherwise.</returns>
+    /// <summary>
+/// Removes the first action element with the specified action ID from the first <c>ActionsBlock</c>.
+/// </summary>
+/// <param name="actionId">The action ID of the element to remove.</param>
+/// <returns>True if an element was removed; otherwise, false.</returns>
     public bool RemoveAction(string actionId) => RemoveAction(a => a.ActionId == actionId);
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Adds a block to the builder.
+    /// </summary>
+    /// <param name="block">The block to add. Must not be null.</param>
+    /// <returns>The current builder instance for method chaining.</returns>
     public IBlockBuilder AddBlock(Block block)
     {
         ArgumentNullException.ThrowIfNull(block);
@@ -247,7 +298,13 @@ public sealed class BlockBuilder : IBlockBuilder
     /// </summary>
     /// <typeparam name="TBlock">The type of block to add. Must have a parameterless constructor.</typeparam>
     /// <param name="modifier">An action that configures the newly created block instance.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+    /// Creates a new block of the specified type, applies the provided modifier action, adds it to the builder, and returns the builder instance for chaining.
+    /// </summary>
+    /// <typeparam name="TBlock">The type of block to create and add.</typeparam>
+    /// <param name="modifier">An action to configure the new block before it is added.</param>
+    /// <returns>The same builder instance for fluent chaining.</returns>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="modifier"/> is null.</exception>
     public IBlockBuilder Add<TBlock>(Action<TBlock> modifier) where TBlock : Block, new()
     {
         ArgumentNullException.ThrowIfNull(modifier);
@@ -257,7 +314,11 @@ public sealed class BlockBuilder : IBlockBuilder
         return this;
     }
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Adds multiple blocks to the builder.
+    /// </summary>
+    /// <param name="blocks">The collection of blocks to add.</param>
+    /// <returns>The current builder instance for method chaining.</returns>
     public IBlockBuilder AddBlocks(IEnumerable<Block> blocks)
     {
         ArgumentNullException.ThrowIfNull(blocks);

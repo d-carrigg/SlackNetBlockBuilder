@@ -16,7 +16,11 @@ public static class DateTimePickerExtensions
     /// </summary>
     /// <param name="builder">The builder instance.</param>
     /// <param name="initialDate">The initial date to select.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+        /// Sets the initially selected date for the date picker input element.
+        /// </summary>
+        /// <param name="initialDate">The date to preselect, or null for no initial selection.</param>
+        /// <returns>The same builder instance for method chaining.</returns>
     public static InputElementBuilder<DatePicker> InitialDate(this InputElementBuilder<DatePicker> builder,
         DateTime? initialDate) => 
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
@@ -28,7 +32,11 @@ public static class DateTimePickerExtensions
     /// </summary>
     /// <param name="builder">The builder instance.</param>
     /// <param name="placeholder">The placeholder text.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+        /// Sets the placeholder text for a Slack date picker input element.
+        /// </summary>
+        /// <param name="placeholder">The placeholder text to display (maximum 150 characters).</param>
+        /// <returns>The same builder instance for method chaining.</returns>
     public static InputElementBuilder<DatePicker> Placeholder(this InputElementBuilder<DatePicker> builder,
         string placeholder) => 
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
@@ -41,7 +49,11 @@ public static class DateTimePickerExtensions
     /// </summary>
     /// <param name="builder">The builder instance.</param>
     /// <param name="focus">True to focus on load.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+            /// Sets whether the date picker input element should automatically receive focus when the view loads.
+            /// </summary>
+            /// <param name="focus">If true, the element will be focused on load; otherwise, it will not.</param>
+            /// <returns>The same builder instance for method chaining.</returns>
     public static InputElementBuilder<DatePicker> FocusOnLoad(this InputElementBuilder<DatePicker> builder,
         bool focus = true)
         => 
@@ -56,7 +68,11 @@ public static class DateTimePickerExtensions
     /// </summary>
     /// <param name="builder">The builder instance.</param>
     /// <param name="initialTime">The initial time to select.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+        /// Sets the initially selected time for a Slack time picker input element.
+        /// </summary>
+        /// <param name="initialTime">The initial time to display, in 24-hour format ("HH:mm").</param>
+        /// <returns>The same builder instance for method chaining.</returns>
     public static InputElementBuilder<TimePicker> InitialTime(this InputElementBuilder<TimePicker> builder,
         TimeSpan? initialTime) =>
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
@@ -67,7 +83,11 @@ public static class DateTimePickerExtensions
     /// </summary>
     /// <param name="builder">The builder instance.</param>
     /// <param name="placeholder">The placeholder text.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+        /// Sets the placeholder text for a Slack time picker input element.
+        /// </summary>
+        /// <param name="placeholder">The placeholder text to display (maximum 150 characters).</param>
+        /// <returns>The same builder instance for method chaining.</returns>
     public static InputElementBuilder<TimePicker> Placeholder(this InputElementBuilder<TimePicker> builder,
         string placeholder) => 
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
@@ -79,7 +99,11 @@ public static class DateTimePickerExtensions
     /// </summary>
     /// <param name="builder">The builder instance.</param>
     /// <param name="focus">True to focus on load.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+            /// Sets whether the time picker input element should automatically receive focus when the view loads.
+            /// </summary>
+            /// <param name="focus">If true, the element will be focused on load; otherwise, it will not.</param>
+            /// <returns>The same builder instance for method chaining.</returns>
     public static InputElementBuilder<TimePicker> FocusOnLoad(this InputElementBuilder<TimePicker> builder,
         bool focus = true)
         => 
@@ -94,7 +118,11 @@ public static class DateTimePickerExtensions
     /// </summary>
     /// <param name="builder">The builder instance.</param>
     /// <param name="initialDateTime">The initial date and time to select.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+        /// Sets the initially selected date and time for a Slack DateTimePicker input element.
+        /// </summary>
+        /// <param name="initialDateTime">The initial date and time to display, or null for no default selection.</param>
+        /// <returns>The same builder instance for method chaining.</returns>
     public static InputElementBuilder<DateTimePicker> InitialDateTime(
         this InputElementBuilder<DateTimePicker> builder,
         DateTime? initialDateTime) =>
@@ -107,7 +135,11 @@ public static class DateTimePickerExtensions
     /// </summary>
     /// <param name="builder">The builder instance.</param>
     /// <param name="focus">True to focus on load.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+            /// Sets whether the date and time picker element should automatically receive focus when the view loads.
+            /// </summary>
+            /// <param name="focus">If true, the element will be focused on load. Defaults to true.</param>
+            /// <returns>The same builder instance for method chaining.</returns>
     public static InputElementBuilder<DateTimePicker> FocusOnLoad(this InputElementBuilder<DateTimePicker> builder,
         bool focus = true)
         =>

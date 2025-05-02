@@ -15,7 +15,10 @@ public sealed class ActionElementBuilder<TElement>
     /// <summary>
     /// Initializes a new instance of the <see cref="ActionElementBuilder{TElement}"/> class.
     /// </summary>
-    /// <param name="element">The action element to wrap.</param>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ActionElementBuilder{TElement}"/> class for building and configuring the specified action element.
+    /// </summary>
+    /// <param name="element">The action element to be wrapped and configured by the builder.</param>
     public ActionElementBuilder(TElement element)
     {
         Element = element;
@@ -26,7 +29,11 @@ public sealed class ActionElementBuilder<TElement>
     /// Adds a confirmation dialog to the element that will be displayed when the element is activated
     /// </summary>
     /// <param name="createDialog">An action which configures the dialog</param>
-    /// <returns>The same instance so calls can be chained</returns>
+    /// <summary>
+    /// Adds and configures a confirmation dialog for the action element.
+    /// </summary>
+    /// <param name="createDialog">A delegate to configure the confirmation dialog.</param>
+    /// <returns>The current builder instance for method chaining.</returns>
     public ActionElementBuilder<TElement> ConfirmationDialog(Action<ConfirmationDialog> createDialog)
     {
         ArgumentNullException.ThrowIfNull(createDialog);
@@ -41,7 +48,11 @@ public sealed class ActionElementBuilder<TElement>
     /// This is primarily intended for use by extension methods.
     /// </summary>
     /// <param name="modifier">An action that modifies the element.</param>
-    /// <returns>The same instance so calls can be chained.</returns>
+    /// <summary>
+    /// Applies a custom modification to the underlying action element.
+    /// </summary>
+    /// <param name="modifier">A delegate that modifies the wrapped action element.</param>
+    /// <returns>The current builder instance for method chaining.</returns>
     public ActionElementBuilder<TElement> Set(Action<TElement> modifier)
     {
         ArgumentNullException.ThrowIfNull(modifier);
@@ -53,7 +64,11 @@ public sealed class ActionElementBuilder<TElement>
     /// Sets the Action ID for this element.
     /// </summary>
     /// <param name="actionId">An identifier for this action. You can use this when you receive an interaction payload to identify the source of the action. Should be unique among all other action_ids used elsewhere by your app. Maximum length is 255 characters.</param>
-    /// <returns>The same instance so calls can be chained.</returns>
+    /// <summary>
+    /// Sets the unique action identifier for the underlying element.
+    /// </summary>
+    /// <param name="actionId">A string identifier for the action (maximum 255 characters).</param>
+    /// <returns>The current builder instance for method chaining.</returns>
     public ActionElementBuilder<TElement> ActionId(string actionId)
     {
         Element.ActionId = actionId;

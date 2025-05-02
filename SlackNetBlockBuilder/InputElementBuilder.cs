@@ -16,7 +16,11 @@ public class InputElementBuilder<TElement>
     /// <summary>
     /// Initializes a new instance of the <see cref="InputElementBuilder{TElement}"/> class.
     /// </summary>
-    /// <param name="element">The input element instance to configure.</param>
+    /// <summary>
+    /// Initializes a new instance of the <see cref="InputElementBuilder{TElement}"/> class for configuring the specified input element.
+    /// </summary>
+    /// <param name="element">The input element to be configured. Must not be null.</param>
+    /// <exception cref="ArgumentNullException">Thrown if <paramref name="element"/> is null.</exception>
     public InputElementBuilder(TElement element)
     {
         ArgumentNullException.ThrowIfNull(element);
@@ -27,7 +31,11 @@ public class InputElementBuilder<TElement>
     /// Allows applying custom modifications to the underlying <see cref="Element"/>.
     /// </summary>
     /// <param name="modifier">An action that modifies the <see cref="Element"/>.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+    /// Applies a custom modification to the input element being built.
+    /// </summary>
+    /// <param name="modifier">An action that modifies the underlying input element.</param>
+    /// <returns>The same builder instance for method chaining.</returns>
     public InputElementBuilder<TElement> Set(Action<TElement> modifier)
     {
         ArgumentNullException.ThrowIfNull(modifier);
@@ -40,7 +48,11 @@ public class InputElementBuilder<TElement>
     /// Maximum length 255 characters.
     /// </summary>
     /// <param name="actionId">The action ID.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
+    /// <summary>
+    /// Sets the action ID for the input element.
+    /// </summary>
+    /// <param name="actionId">A unique identifier for this action within the block, up to 255 characters.</param>
+    /// <returns>The same builder instance for method chaining.</returns>
     public InputElementBuilder<TElement> ActionId(string actionId)
     {
         Element.ActionId = actionId;
