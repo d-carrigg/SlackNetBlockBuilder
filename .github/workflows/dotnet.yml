@@ -92,6 +92,10 @@ jobs:
         # NOTE: using trx_files instead of files due to https://github.com/EnricoMi/publish-unit-test-result-action/issues/424
         trx_files: "${{ github.workspace }}/**/*.trx"
 
+    # ls the src dir to confirm the README.md is there
+    - name: List src directory
+      run: ls -la ${{ github.workspace }}/src
+
     # Pack step: Run always to ensure no errors in the pack step
     - name: Pack NuGet package
       run: dotnet pack --configuration Release --no-build --output ./artifacts
