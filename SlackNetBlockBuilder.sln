@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlackNetBlockBuilder", "SlackNetBlockBuilder\SlackNetBlockBuilder.csproj", "{9E5ED4BC-5C36-44E2-8E9C-003681C394BB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlackNetBlockBuilder", "src\SlackNetBlockBuilder.csproj", "{9E5ED4BC-5C36-44E2-8E9C-003681C394BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{3E772EDE-E3EC-4F58-AAA5-536D22C9BB18}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tests", "tests\UnitTests.csproj", "{3E772EDE-E3EC-4F58-AAA5-536D22C9BB18}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3ED4618A-6F15-4A9B-8570-307C55755A65}"
 	ProjectSection(SolutionItems) = preProject
