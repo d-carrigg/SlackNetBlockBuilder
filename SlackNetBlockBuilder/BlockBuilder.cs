@@ -200,6 +200,8 @@ public sealed class BlockBuilder : IBlockBuilder
     /// <returns>True if a block was removed, false otherwise.</returns>
     public bool Remove(string blockId)
     {
+        if(string.IsNullOrEmpty(blockId))
+            throw new ArgumentException("BlockId cannot be null or empty", nameof(blockId));
         return Remove(b => b.BlockId == blockId) > 0;
     }
     

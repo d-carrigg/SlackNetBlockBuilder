@@ -129,8 +129,7 @@ public static class ButtonExtensions
         ButtonStyle style, Uri? url = null, string? value = null)
     =>
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
-        url is null ? throw new ArgumentNullException(nameof(url)) :
-        builder.AddButton(actionId, text, style, url.ToString(), value);
+        builder.AddButton(actionId, text, style, url?.ToString(), value);
     
     
     /// <summary>
