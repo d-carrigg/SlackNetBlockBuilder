@@ -90,6 +90,8 @@ public class RichTextBuilder
     /// <returns>The same builder instance so calls can be chained.</returns>
     public RichTextBuilder AddPreformattedText(string text, int border = default)
     {
+        if (string.IsNullOrEmpty(text))
+            throw new ArgumentNullException(nameof(text), "Text cannot be null or empty.");
  
         _richTextBlock.Elements.Add(new RichTextPreformatted()
         {

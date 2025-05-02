@@ -20,6 +20,11 @@ public sealed class ActionsBlockBuilder
     /// </summary>
     public const int MaxBlockIdLength = 255;
     
+    /// <summary>
+    /// The maximum length allowed for an action ID.
+    /// </summary>
+    public const int MaxActionIdLength = 255;
+    
     
     private ActionsBlockBuilder()
     {
@@ -48,6 +53,14 @@ public sealed class ActionsBlockBuilder
         if(_element.BlockId?.Length > MaxBlockIdLength)
         {
             throw new InvalidOperationException($"The block id can only be up to {MaxBlockIdLength} characters long");
+        }
+        
+        foreach (var element in _element.Elements)
+        {
+            if (element.ActionId?.Length > MaxActionIdLength)
+            {
+                throw new InvalidOperationException($"The action id can only be up to {MaxActionIdLength} characters long");
+            }
         }
         
         return _element;
@@ -122,8 +135,7 @@ public sealed class ActionsBlockBuilder
         Action<InputElementBuilder<TElement>> createElement) where TElement : ActionElement, IInputBlockElement, new()
     {
         ArgumentNullException.ThrowIfNull(createElement);
-        var element = new TElement();
-        element.ActionId = actionId;
+        var element = new TElement { ActionId = actionId };
         createElement(new InputElementBuilder<TElement>(element));
         _element.Elements.Add(element);
 

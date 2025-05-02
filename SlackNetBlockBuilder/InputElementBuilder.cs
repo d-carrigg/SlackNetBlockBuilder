@@ -19,6 +19,7 @@ public class InputElementBuilder<TElement>
     /// <param name="element">The input element instance to configure.</param>
     public InputElementBuilder(TElement element)
     {
+        ArgumentNullException.ThrowIfNull(element);
         Element = element;
     }
     

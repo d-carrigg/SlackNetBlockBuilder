@@ -138,7 +138,7 @@ public class BlockBuilderTest
     
     // removing a block that doesn't exist should return false
     [Fact]
-    public void RemoveBlock_InvalidBlockId_ThrowsException()
+    public void RemoveBlock_InvalidBlockId_ReturnsFalse()
     {
         // Arrange
         var builder = BlockBuilder.Create();
@@ -177,7 +177,7 @@ public class BlockBuilderTest
     
     // removing an action that doesn't exist should return false
     [Fact]
-    public void RemoveAction_InvalidActionId_ThrowsException()
+    public void RemoveAction_InvalidActionId_ReturnsFalse()
     {
         // Arrange
         var builder = BlockBuilder.Create();

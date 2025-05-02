@@ -10,8 +10,7 @@
     
     <!--Errors/Warnings adjustments-->
     <PropertyGroup>
-       <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <Nullable>enable</Nullable>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <!-- Enable more warning waves -->
         <AnalysisLevel>latest</AnalysisLevel>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
@@ -19,7 +18,8 @@
         <!-- Enable .NET analyzers -->
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <AnalysisMode>All</AnalysisMode>
-        
+
+        <!-- CA1054: SlackNetBlockBuilder uses string-based URIs for ASP.NET routing (~/{...}), not full System.Uri instances -->
         <NoWarn>CA1054</NoWarn>
     </PropertyGroup>
 

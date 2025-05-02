@@ -1,4 +1,4 @@
-# exit on error
+#!/bin/bash
 set -e
 
 dotnet test --configuration Release --verbosity normal --logger trx --collect:"XPlat Code Coverage" 

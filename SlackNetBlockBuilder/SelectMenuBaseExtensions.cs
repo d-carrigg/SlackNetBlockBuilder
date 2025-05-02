@@ -131,6 +131,18 @@ public static class SelectMenuBaseExtensions
         builder.InitialOptions(options => options.Where(o => initialOptions.Contains(o.Value)).ToList());
 
     /// <summary>
+    /// Sets the initially selected options in a <see cref="StaticMultiSelectMenu"/> by their values.
+    /// </summary>
+    /// <param name="builder">The builder for a <see cref="StaticMultiSelectMenu"/>.</param>
+    /// <param name="initialOptions">The value strings of the options to select initially.</param>
+    /// <returns>The same builder instance so calls can be chained.</returns>
+    public static InputElementBuilder<StaticMultiSelectMenu> InitialOptions(
+        this InputElementBuilder<StaticMultiSelectMenu> builder,
+        params string[] initialOptions) =>
+        builder.InitialOptions(options =>
+            options.Where(o => initialOptions.Contains(o.Value)).ToList());
+    
+    /// <summary>
     /// Specifies the maximum number of items that can be selected in a <see cref="StaticMultiSelectMenu"/>.
     /// Minimum number is 1.
     /// </summary>
@@ -144,16 +156,7 @@ public static class SelectMenuBaseExtensions
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
         builder.Set(x => x.MaxSelectedItems = maxItems);
 
-    /// <summary>
-    /// Sets the initially selected options in a <see cref="StaticMultiSelectMenu"/> by their values.
-    /// </summary>
-    /// <param name="builder">The builder for a <see cref="StaticMultiSelectMenu"/>.</param>
-    /// <param name="initialOptions">The value strings of the options to select initially.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
-    public static InputElementBuilder<StaticMultiSelectMenu> InitialOptions(
-        this InputElementBuilder<StaticMultiSelectMenu> builder,
-        params string[] initialOptions) =>
-        builder.InitialOptions(options => options.Where(o => initialOptions.Contains(o.Value)).ToList());
+  
 
 
     // User Select menu

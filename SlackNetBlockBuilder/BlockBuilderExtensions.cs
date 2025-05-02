@@ -38,6 +38,8 @@ public static class BlockBuilderExtensions
     public static IBlockBuilder AddCall(this IBlockBuilder builder, string callId, string? blockId = null)
         => 
             builder is null ? throw new ArgumentNullException(nameof(builder)) :
+            callId is null ? throw new ArgumentNullException(nameof(callId)) :
+            callId.Length > 255 ? throw new ArgumentException("Call ID must be 255 characters or less.",nameof(callId)) :
             builder.Add<CallBlock>(call =>
             {
                 call.CallId = callId;
@@ -110,6 +112,7 @@ public static class BlockBuilderExtensions
     public static IBlockBuilder AddHeader(this IBlockBuilder builder, PlainText text, string? blockId = null)
     {
         ArgumentNullException.ThrowIfNull(builder);
+        ArgumentNullException.ThrowIfNull(text);
         var block = new HeaderBlock
             {
                 Text = text,
@@ -199,6 +202,8 @@ public static class BlockBuilderExtensions
         Action<InputBlockBuilder<TInput>> createInput)
         where TInput : class, IActionElement, IInputBlockElement, new()
     {
+        if(string.IsNullOrWhiteSpace(label))
+            throw new ArgumentException("Label cannot be null or whitespace.", nameof(label));
         ArgumentNullException.ThrowIfNull(builder);
         ArgumentNullException.ThrowIfNull(createInput);
         var input = new TInput();
@@ -290,6 +295,11 @@ public static class BlockBuilderExtensions
         string? titleUrl = null)
         => 
             builder is null ? throw new ArgumentNullException(nameof(builder)) :
+            // validate videoUrl and thumbnailUrl, title, altText
+            string.IsNullOrWhiteSpace(videoUrl) ? throw new ArgumentException("Video URL cannot be null or whitespace.", nameof(videoUrl)) :
+            string.IsNullOrWhiteSpace(thumbnailUrl) ? throw new ArgumentException("Thumbnail URL cannot be null or whitespace.", nameof(thumbnailUrl)) :
+            string.IsNullOrWhiteSpace(title) ? throw new ArgumentException("Title cannot be null or whitespace.", nameof(title)) :
+            string.IsNullOrWhiteSpace(altText) ? throw new ArgumentException("Alt text cannot be null or whitespace.", nameof(altText)) :
             builder.Add<VideoBlock>(video =>
             {
                 video.VideoUrl = videoUrl;

@@ -94,7 +94,9 @@ public sealed class BlockBuilder : IBlockBuilder
     /// </summary>
     /// <param name="blocks">The initial collection of blocks.</param>
     /// <returns>A new <see cref="BlockBuilder"/> instance containing the provided blocks.</returns>
-    public static BlockBuilder From(IEnumerable<Block> blocks) => new(blocks);
+    public static BlockBuilder From(IEnumerable<Block> blocks) => 
+        blocks is null ? throw new ArgumentNullException(nameof(blocks)) :
+        new(blocks);
 
 
     /// <summary>
@@ -235,6 +237,7 @@ public sealed class BlockBuilder : IBlockBuilder
     /// <inheritdoc />
     public IBlockBuilder AddBlock(Block block)
     {
+        ArgumentNullException.ThrowIfNull(block);
         _blocks.Add(block);
         return this;
     }
@@ -257,6 +260,7 @@ public sealed class BlockBuilder : IBlockBuilder
     /// <inheritdoc />
     public IBlockBuilder AddBlocks(IEnumerable<Block> blocks)
     {
+        ArgumentNullException.ThrowIfNull(blocks);
         _blocks.AddRange(blocks);
         return this;
     }

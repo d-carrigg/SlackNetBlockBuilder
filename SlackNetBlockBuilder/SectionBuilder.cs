@@ -45,6 +45,7 @@ public class SectionBuilder
     /// <returns>The same builder instance so calls can be chained.</returns>
     public SectionBuilder Text(string text)
     {
+        ArgumentNullException.ThrowIfNull(text);
         _sectionBlock.Text = text;
         return this;
     }
@@ -103,6 +104,7 @@ public class SectionBuilder
     /// <returns>The same builder instance so calls can be chained.</returns>
     public SectionBuilder AddMarkdownField(string text, bool verbatim = false)
     {
+        ArgumentNullException.ThrowIfNull(text);
         _sectionBlock.Fields.Add(new Markdown()
             {
                 Text = text,
@@ -153,13 +155,14 @@ public class SectionBuilder
         {
             throw new InvalidOperationException($"The block id can only be up to {MaxBlockIdLength} characters long");
         }
-        if (_sectionBlock.Fields.Count > MaxFields)
+        var fields = _sectionBlock.Fields ?? [];
+        if (fields.Count > MaxFields)
         {
             throw new ArgumentException($"Section block can have at most {MaxFields} fields");
         }
         
         // Corrected validation based on Slack docs: field length applies to text
-        if (_sectionBlock.Fields.Any(f => (f is PlainText pt ? pt.Text.Length : (f is Markdown md ? md.Text.Length : 0)) > MaxFieldsLength))
+        if (fields.Any(f => (f is PlainText pt ? pt.Text.Length : (f is Markdown md ? md.Text.Length : 0)) > MaxFieldsLength))
         {
             throw new ArgumentException($"Each field's text in a section block can have at most {MaxFieldsLength} characters");
         }

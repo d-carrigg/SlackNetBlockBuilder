@@ -17,7 +17,8 @@ public static class ButtonExtensions
     public static ActionElementBuilder<Button> Text(this ActionElementBuilder<Button> builder, string text)
         => 
             builder is null ? throw new ArgumentNullException(nameof(builder)) :
-            builder.Modify(x => x.Text = text);
+            string.IsNullOrEmpty(text) ? throw new ArgumentNullException(nameof(text)) :
+            builder.Set(x => x.Text = text);
 
     /// <summary>
     /// Sets the URL to open when the button is clicked.
@@ -142,6 +143,9 @@ public static class ButtonExtensions
     public static ActionsBlockBuilder AddButton(this ActionsBlockBuilder builder, string actionId, string text,
         string? url = null, string? value = null)
     {
+        ArgumentNullException.ThrowIfNull(builder);
+        ArgumentNullException.ThrowIfNull(actionId);
+        ArgumentNullException.ThrowIfNull(text);
         return builder.AddButton(actionId, text, ButtonStyle.Default, url, value);
     }
  

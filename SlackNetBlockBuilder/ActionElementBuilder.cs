@@ -42,7 +42,7 @@ public sealed class ActionElementBuilder<TElement>
     /// </summary>
     /// <param name="modifier">An action that modifies the element.</param>
     /// <returns>The same instance so calls can be chained.</returns>
-    public ActionElementBuilder<TElement> Modify(Action<TElement> modifier)
+    public ActionElementBuilder<TElement> Set(Action<TElement> modifier)
     {
         ArgumentNullException.ThrowIfNull(modifier);
         modifier(Element);

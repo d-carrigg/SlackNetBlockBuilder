@@ -37,6 +37,7 @@ public class ContextBlockBuilder
     /// <returns>The same builder instance so calls can be chained.</returns>
     public ContextBlockBuilder AddText(string text, bool emoji = true)
     {
+        ArgumentNullException.ThrowIfNull(text);
         _contextBlock.Elements.Add(new PlainText()
             {
                 Text = text,
@@ -53,6 +54,7 @@ public class ContextBlockBuilder
     /// <returns>The same builder instance so calls can be chained.</returns>
     public ContextBlockBuilder AddMarkdown(string text, bool verbatim = false)
     {
+        ArgumentNullException.ThrowIfNull(text);
         _contextBlock.Elements.Add(new Markdown()
             {
                 Text = text,
@@ -103,6 +105,8 @@ public class ContextBlockBuilder
         ImageFileReference slackFile,
         string altText)
     {
+        ArgumentNullException.ThrowIfNull(slackFile);
+        ArgumentNullException.ThrowIfNull(altText);
         _contextBlock.Elements.Add(new Image()
             {
                 SlackFile = slackFile,
@@ -129,6 +133,12 @@ public class ContextBlockBuilder
         if(_contextBlock.BlockId?.Length > MaxBlockIdLength)
         {
             throw new InvalidOperationException($"The block id can only be up to {MaxBlockIdLength} characters long");
+        }
+        
+        // at least 1 element is required
+        if (_contextBlock.Elements.Count == 0)
+        {
+            throw new InvalidOperationException("At least one element is required in a context block");
         }
         
         return _contextBlock;

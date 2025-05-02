@@ -32,6 +32,7 @@ public static class DateTimePickerExtensions
     public static InputElementBuilder<DatePicker> Placeholder(this InputElementBuilder<DatePicker> builder,
         string placeholder) => 
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
+        string.IsNullOrEmpty(placeholder) ? throw new ArgumentNullException(nameof(placeholder)) :
         builder.Set(x => x.Placeholder = placeholder);
 
     /// <summary>
