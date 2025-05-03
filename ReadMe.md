@@ -7,7 +7,7 @@ UI elements with a clean, chainable API.
 
 ## Installation
 
-![NuGet](https://img.shields.io/nuget/vpre/SlackNetBlockBuilder)
+[![NuGet](https://img.shields.io/nuget/vpre/SlackNetBlockBuilder)](https://www.nuget.org/packages/SlackNetBlockBuilder/)
 
 
 Install the package via NuGet:
