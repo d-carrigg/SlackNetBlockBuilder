@@ -22,7 +22,7 @@ public class MessageHandler : IEventHandler<MessageEvent>
         builder.AddSection("This is an updated message")
             .AddActions(actions =>
             {
-                actions.AddButton("button_1_id", "Button 1",
+                actions.AddButton("button_1_id", "See us on GitHub",
                     "https://github.com/d-carrigg/SlackNetBlockBuilder");
             });
         var blocks = builder.Build();

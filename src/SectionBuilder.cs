@@ -58,14 +58,16 @@ public class SectionBuilder
     /// </summary>
     /// <param name="text">The Markdown formatted text content.</param>
     /// <param name="verbatim">Whether to disable formatting detection for URLs, channels, users, etc. Defaults to false.</param>
+    /// <param name="expand">Whether to expand the section. Defaults to false.</param>
     /// <returns>The same builder instance so calls can be chained.</returns>
-    public SectionBuilder Markdown(string text, bool verbatim = false)
+    public SectionBuilder Markdown(string text, bool verbatim = false, bool expand = false)
     {
         _sectionBlock.Text = new Markdown()
             {
                 Text = text,
-                Verbatim = verbatim
+                Verbatim = verbatim,
             };
+        _sectionBlock.Expand = expand;
         return this;
     }
     
@@ -139,6 +141,17 @@ public class SectionBuilder
     public SectionBuilder Accessory(BlockElement accessory)
     {
         _sectionBlock.Accessory = accessory;
+        return this;
+    }
+    
+    /// <summary>
+    /// Whether the section should be expanded or not. Useful for AI assistant messages.
+    /// </summary>
+    /// <param name="expand">True to expand the section, false to collapse it.</param>
+    /// <returns>The same builder instance so calls can be chained.</returns>
+    public SectionBuilder Expand(bool expand = true)
+    {
+        _sectionBlock.Expand = expand;
         return this;
     }
 
