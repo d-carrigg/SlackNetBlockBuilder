@@ -8,17 +8,17 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
         <!-- NuGet Package specific properties -->
-        <Version>0.5.0-beta</Version> <!-- Or your desired starting version -->
+        <Version>0.5.0-beta</Version> 
         <Authors>Darin Carrigg</Authors>
         <Description>A fluent builder library for creating Slack Block Kit layouts using SlackNet.</Description>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression> <!-- Ensure you have a LICENSE file or adjust -->
-        <PackageProjectUrl>https://github.com/d-carrigg/SlackNetBlockBuilder</PackageProjectUrl> <!-- Replace with your actual repo URL if different -->
-        <RepositoryUrl>https://github.com/d-carrigg/SlackNetBlockBuilder.git</RepositoryUrl> <!-- Replace with your actual repo URL if different -->
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/d-carrigg/SlackNetBlockBuilder.git</RepositoryUrl> 
         <RepositoryType>git</RepositoryType>
         <PackageTags>slack;block kit;blocks;builder;SlackNet</PackageTags>
         <PackageReadmeFile>ReadMe.md</PackageReadmeFile>
         <Copyright>Darin Carrigg (c) 2025</Copyright>
-        <PackageLicenseUrl>https://github.com/d-carrigg/SlackNetBlockBuilder?tab=MIT-1-ov-file#readme</PackageLicenseUrl> <!-- Copied from root during build -->
+        <!-- Copied from root during build -->
+        <PackageLicenseUrl>https://github.com/d-carrigg/SlackNetBlockBuilder?tab=MIT-1-ov-file#readme</PackageLicenseUrl>
 
     </PropertyGroup>
     
