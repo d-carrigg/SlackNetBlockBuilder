@@ -490,22 +490,6 @@ public class SectionBuilderTest
     }
     
     [Fact]
-    public void Build_WithBlockIdTooLong_ThrowsInvalidOperationException()
-    {
-        // Arrange
-        var builder = new SectionBuilder();
-        var longBlockId = new string('A', SectionBuilder.MaxBlockIdLength + 1);
-        
-        // Act
-        builder.Text("Test");
-        // Note: SectionBuilder doesn't have a BlockId method, so this test may need adjustment
-        // based on the actual implementation
-        
-        // For now, we'll test the validation in the Build method if it exists
-        // This test may need to be removed if BlockId is not supported by SectionBuilder
-    }
-    
-    [Fact]
     public void Build_WithTooManyFields_ThrowsArgumentException()
     {
         // Arrange

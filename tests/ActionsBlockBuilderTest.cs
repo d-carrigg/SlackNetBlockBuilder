@@ -417,4 +417,37 @@ public class ActionsBlockBuilderTest
         Assert.IsType<ChannelMultiSelectMenu>(result.Elements[8]);
         Assert.Equal("multi_channel_1", result.Elements[8].ActionId);
     }
+
+    [Fact]
+    public void Build_WithActionIdTooLong_ThrowsInvalidOperationException()
+    {
+        // Arrange
+        var builder = ActionsBlockBuilder.Create();
+        var longActionId = new string('a', ActionsBlockBuilder.MaxActionIdLength + 1); // 256 characters
+        
+        // Act
+        builder.AddButton(longActionId, button => button.Set(b => b.Text = "Click me"));
+        
+        // Assert
+        var exception = Assert.Throws<InvalidOperationException>(() => builder.Build());
+        Assert.Equal($"The action id can only be up to {ActionsBlockBuilder.MaxActionIdLength} characters long", exception.Message);
+    }
+    
+    [Fact]
+    public void Build_WithActionIdAtMaxLength_BuildsSuccessfully()
+    {
+        // Arrange
+        var builder = ActionsBlockBuilder.Create();
+        var maxLengthActionId = new string('a', ActionsBlockBuilder.MaxActionIdLength); // 255 characters
+        
+        // Act
+        builder.AddButton(maxLengthActionId, button => button.Set(b => b.Text = "Click me"));
+        var actionsBlock = builder.Build();
+        
+        // Assert
+        Assert.Single(actionsBlock.Elements);
+        var button = Assert.IsType<Button>(actionsBlock.Elements[0]);
+        Assert.Equal(maxLengthActionId, button.ActionId);
+        Assert.Equal("Click me", button.Text.Text);
+    }
 }
