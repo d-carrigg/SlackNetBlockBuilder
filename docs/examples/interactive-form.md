@@ -7,8 +7,7 @@ var blocks = BlockBuilder.Create()
     .AddHeader("Request Form")
     .AddInput<PlainTextInput>("Title", input => input
         .ActionId("title_input")
-        .Placeholder("Enter title")
-        .Required())
+        .Placeholder("Enter title"))
     .AddInput<PlainTextInput>("Description", input => input
         .ActionId("description_input")
         .Multiline()

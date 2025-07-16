@@ -7,8 +7,7 @@ Example of building blocks for use in modal dialogs.
 var modalBlocks = BlockBuilder.Create()
     .AddInput<PlainTextInput>("Title", input => input
         .ActionId("title_input")
-        .Placeholder("Enter task title")
-        .Required())
+        .Placeholder("Enter task title"))
     .AddInput<PlainTextInput>("Description", input => input
         .ActionId("description_input")
         .Multiline()
@@ -25,9 +24,9 @@ var modalBlocks = BlockBuilder.Create()
 var modalView = new ModalView
 {
     Type = "modal",
-    Title = new PlainText("Create Task"),
-    Submit = new PlainText("Create"),
-    Close = new PlainText("Cancel"),
+    Title = "Create Task",
+    Submit = "Create",
+    Close = "Cancel",
     CallbackId = "task_creation_modal",
     Blocks = modalBlocks
 };
