@@ -30,6 +30,16 @@ public interface IBlockBuilder
     /// <param name="blocks">The blocks to add</param>
     /// <returns>The same instance so calls can be chained</returns>
     IBlockBuilder AddBlocks(IEnumerable<Block> blocks);
+    
+    
+    
+    /// <summary>
+    /// Sets all blocks that match the specified predicate using the specified modifier.
+    /// </summary>
+    /// <param name="predicate">A function to test each block for a condition.</param>
+    /// <param name="modifier"> n action to modify the block if it matches the predicate.</param>
+    /// <returns></returns>
+    IBlockBuilder Modify(Predicate<Block> predicate, Action<Block> modifier);
 
     /// <summary>
     /// Removes all blocks that match the specified predicate.
@@ -164,7 +174,21 @@ public sealed class BlockBuilder : IBlockBuilder
         _blocks.AddRange(blocks);
         return this;
     }
-    
+
+    /// <inheritdoc />
+    public IBlockBuilder Modify(Predicate<Block> predicate, Action<Block> modifier)
+    {
+        ArgumentNullException.ThrowIfNull(predicate);
+        ArgumentNullException.ThrowIfNull(modifier);
+        
+        foreach (var block in _blocks.Where(b => predicate(b)))
+        {
+            modifier(block);
+        }
+        
+        return this;
+    }
+
     /// <inheritdoc />
     public IBlockBuilder Remove(Predicate<Block> predicate)
     {
