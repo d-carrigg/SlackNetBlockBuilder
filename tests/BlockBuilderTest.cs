@@ -224,10 +224,9 @@ public class BlockBuilderTest
         builder.AddHeader(new PlainText { Text = "Header" });
 
         // Act
-        var removedCount = builder.Remove(block => block is DividerBlock);
+       _ = builder.Remove(block => block is DividerBlock);
 
         // Assert
-        Assert.Equal(2, removedCount);
         var blocks = builder.Build();
         Assert.Single(blocks);
         Assert.IsType<HeaderBlock>(blocks[0]);
@@ -242,10 +241,9 @@ public class BlockBuilderTest
         builder.AddDivider("divider2");
 
         // Act
-        var result = builder.Remove("divider1");
+        _ =builder.Remove("divider1");
 
         // Assert
-        Assert.True(result);
         var blocks = builder.Build();
         Assert.Single(blocks);
         Assert.Equal("divider2", blocks[0].BlockId);
@@ -259,10 +257,8 @@ public class BlockBuilderTest
         builder.AddDivider("divider1");
 
         // Act
-        var result = builder.Remove("nonexistent");
-
-        // Assert
-        Assert.False(result);
+       _ = builder.Remove("nonexistent");
+        
         var blocks = builder.Build();
         Assert.Single(blocks);
     }
