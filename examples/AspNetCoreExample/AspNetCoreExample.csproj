@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="SlackNet.AspNetCore" Version="0.16.1" />
+      <PackageReference Include="SlackNet.AspNetCore" Version="0.16.2" />
     </ItemGroup>
 
 </Project>
