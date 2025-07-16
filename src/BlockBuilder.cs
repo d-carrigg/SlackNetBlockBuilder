@@ -134,7 +134,7 @@ public sealed class BlockBuilder : IBlockBuilder
             throw new InvalidOperationException("Only one block can have FocusOnLoad set to true");
         }
         
-        return _blocks;
+        return _blocks.ToList();
     }
     
         

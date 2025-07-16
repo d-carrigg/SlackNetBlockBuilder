@@ -1,7 +1,10 @@
+using JetBrains.Annotations;
+
 namespace SlackNet.Blocks;
 /// <summary>
 /// Extension methods for <see cref="InputElementBuilder{TElement}"/> to provide additional configuration options.
 /// </summary>
+[PublicAPI]
 public static class InputBuilderExtensions
 {
     /// <summary>

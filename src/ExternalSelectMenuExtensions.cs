@@ -9,7 +9,7 @@ namespace SlackNet.Blocks;
 public static class ExternalSelectMenuExtensions
 {
     /// <summary>
-    /// Specifies the maximum number of items that can be selected in a <see cref="StaticMultiSelectMenu"/>.
+    /// Specifies the maximum number of items that can be selected in a <see cref="ExternalMultiSelectMenu"/>.
     /// Minimum number is 1.
     /// </summary>
     /// <typeparam name="TElement">The type of the static multi-select menu element.</typeparam>
