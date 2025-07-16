@@ -188,7 +188,6 @@ public sealed class BlockBuilder : IBlockBuilder
                 if(predicate(subBlock))
                 {
                     var wasRemoved = actionsBlock.Elements.Remove(subBlock);
-                    // TODO: Should we return a bool or the builder?
                     return this;
                 }
             }
