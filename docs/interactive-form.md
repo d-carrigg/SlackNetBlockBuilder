@@ -24,6 +24,8 @@ var blocks = BlockBuilder.Create()
     .Build();
 ```
 
+![Interactive Form Example](../images/interactive-form.png)
+
 ## Handling Form Submission
 
 ```csharp

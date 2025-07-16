@@ -20,6 +20,13 @@ public class IndexModel : PageModel
     public void OnGet()
     {
     }
+    
+    public string[] Examples { get; } = new[]
+    {
+        "Interactive Form",
+        "Message Before Update",
+        "Message After Update",
+    };
 
     public async Task<IActionResult> OnGetJson(string name)
     {
@@ -41,39 +48,54 @@ public class IndexModel : PageModel
         var builder = BlockBuilder.Create();
         return exampleName switch
         {
-            "InteractiveForm" => GetInteractiveFormExample(builder),
+            "Interactive Form" => GetInteractiveFormExample(builder),
+            "Message Before Update" => GetMessageBeforeUpdateExample(builder),
+            "Message After Update" => GetMessageAfterUpdateExample(builder),
+            
             _ => throw new ArgumentException($"Unknown example: {exampleName}", nameof(exampleName))
         };
     }
 
     private static List<Block> GetInteractiveFormExample(IBlockBuilder builder)
     {
+        
         return builder
             .AddHeader("Request Form")
+            .AddInput<PlainTextInput>("Title", input => input
+                .ActionId("title_input")
+                .Placeholder("Enter title")
+            )
+            .AddInput<PlainTextInput>("Description", input => input
+                .ActionId("description_input")
+                .Set(x => x.Multiline = true)
+                .Optional())
+            .AddInput<StaticSelectMenu>("Priority", input => input
+                .ActionId("priority_select")
+                .Placeholder("Select priority")
+                .AddOption("Low", "low")
+                .AddOption("Medium", "medium")
+                .AddOption("High", "high"))
             .AddActions(actions => actions
                 .AddButton("submit", "Submit")
                 .AddButton("cancel", "Cancel"))
             .Build();
-        
-        // return builder
-        //     .AddHeader("Request Form")
-        //     .AddInput<PlainTextInput>("Title", input => input
-        //         .ActionId("title_input")
-        //         .Placeholder("Enter title")
-        //     )
-        //     .AddInput<PlainTextInput>("Description", input => input
-        //         .ActionId("description_input")
-        //         .Set(x => x.Multiline = true)
-        //         .Optional())
-        //     .AddInput<StaticSelectMenu>("Priority", input => input
-        //         .ActionId("priority_select")
-        //         .Placeholder("Select priority")
-        //         .AddOption("Low", "low")
-        //         .AddOption("Medium", "medium")
-        //         .AddOption("High", "high"))
-        //     .AddActions(actions => actions
-        //         .AddButton("submit", "Submit")
-        //         .AddButton("cancel", "Cancel"))
-        //     .Build();
+    }
+    
+    private static List<Block> GetMessageBeforeUpdateExample(IBlockBuilder builder)
+    {
+        return builder
+            .AddSection("Please approve this request")
+            .AddActions(actions => actions
+                .AddButton("approve", "Approve")
+                .AddButton("reject", "Reject"))
+            .Build();
+    }
+    
+    private static List<Block> GetMessageAfterUpdateExample(IBlockBuilder builder)
+    {
+        return builder
+            .RemoveActions() // Remove buttons
+            .AddSection("✅ Request approved!")
+            .Build();
     }
 }

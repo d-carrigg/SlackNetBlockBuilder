@@ -18,6 +18,11 @@ var response = await slackApi.Chat.PostMessage(new Message
     Blocks = blocks
 });
 
+```
+
+![Message Before Update](../images/message-before-update.png)
+
+```csharp
 // Update after button click
 var updatedBlocks = BlockBuilder.From(response.Message.Blocks)
     .RemoveActions() // Remove buttons
@@ -31,3 +36,5 @@ await slackApi.Chat.Update(new MessageUpdate
     Blocks = updatedBlocks
 });
 ```
+
+![Message After Update](../images/message-after-update.png)

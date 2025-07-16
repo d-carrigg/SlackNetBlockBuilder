@@ -11,12 +11,27 @@
 
 
 <div class="examples">
-    <button type="button" onclick="getExampleJson('InteractiveForm')">Interactive Form</button>
     
-    
-    <div class="output">
+    <div class="row justify-content-between mb-1">
+        <div class="w-auto">
+            @foreach (var example in Model.Examples)
+            {
+                <button type="button" class="btn btn-outline-dark" onclick="getExampleJson('@example')">@example</button>
+            }
+        </div>
+      
+        <div class="w-auto">
+            
+            <button type="button" class="btn btn-outline-secondary" onclick="copyToClipboard()">Copy</button>
+        </div>
+     
+    </div>
+   
+
+
+    <div class="output rounded-1">
         <textarea id="output-block" class="font-monospace bg-light p-3 w-100">
-            <span class="text-muted">Click on the button to get the example JSON.</span>
+             Click on the button to get the example JSON.
             
         </textarea>
     </div>
@@ -37,7 +52,27 @@
      <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/javascript/javascript.min.js"></script>
      <script type="text/javascript">
+
+         let editor = {};
+         
+         document.addEventListener('DOMContentLoaded', function () {
+             const outputBlock = document.getElementById('output-block');
+             
+             editor = CodeMirror.fromTextArea(outputBlock, {
+                 lineNumbers: true,
+                 mode: 'javascript',
+                 theme: 'dracula',
+                 readOnly: true,
+                 tabSize: 2,
+                 indentUnit: 2,
+                 lineWrapping: true
+             });
+      
+         });
        
+         function copyToClipboard() {
+             navigator.clipboard.writeText(editor.getValue());
+         }
       
          function getExampleJson(name) {
              fetch(`?handler=Json&name=${name}`)
@@ -49,15 +84,7 @@
                  })
                  .then(data => {
                      console.log(data);
-                     const editor = CodeMirror.fromTextArea(
-                         document.getElementById('output-block'),
-                         {
-                             mode: 'application/json',
-                             theme: 'dracula',
-                             lineNumbers: true,
-                             readOnly: true, // Make it read-only for display
-                         }
-                     );
+                     
                      
                     editor.setValue(data);
                         
