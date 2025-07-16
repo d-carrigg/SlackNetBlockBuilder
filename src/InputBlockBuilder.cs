@@ -74,4 +74,28 @@ public sealed class InputBlockBuilder<TElement> : InputElementBuilder<TElement>
         ParentBlock.Optional = optional;
         return this;
     }
+    
+    /// <summary>
+    /// Allows applying custom modifications to the underlying <see cref="ParentBlock"/>.
+    /// </summary>
+    /// <param name="modifier">An action that modifies the <see cref="ParentBlock"/>.</param>
+    /// <returns>The same builder instance so calls can be chained.</returns>
+    public new InputBlockBuilder<TElement> Set(Action<TElement> modifier)
+    {
+        ArgumentNullException.ThrowIfNull(modifier);
+        modifier(Element);
+        return this;
+    }
+
+    /// <summary>
+    /// Sets an identifier for this action. Should be unique within the block.
+    /// Maximum length 255 characters.
+    /// </summary>
+    /// <param name="actionId">The action ID.</param>
+    /// <returns>The same builder instance so calls can be chained.</returns>
+    public new InputBlockBuilder<TElement> ActionId(string actionId)
+    {
+        Element.ActionId = actionId;
+        return this;
+    }
 }
