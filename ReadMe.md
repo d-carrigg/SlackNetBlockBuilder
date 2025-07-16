@@ -465,34 +465,8 @@ Constraints on blocks are referenced from [Slack's Block Kit documentation](http
 
 ## Further Examples
 
-I'm working on adding examples to provide a more comprehensive overview of the library's capabilities. Generally
-speaking
-anything that can be done with the SlackNet API Blocks can be done with this library, so if you have any specific use
-cases in mind,
-you can follow these guidelines:
-
-1. Remove blocks with the `Remove` method, set block properties with the `Set` method, and add new blocks with the `Add` methods.
-   There are many built in extensions for adding blocks (e.g `AddSection`, `AddHeader`, `AddActions`, etc.) but you can
-   also use the generic `Add` method
-   if you need greater control.
-   ```csharp
-    builder.Remove("block_id")
-        .Modify("block_id", block => block
-            .Text("New Text"))
-        .AddSection(section => section
-            .Text("New Section"));
-   ```
-2. Complex blocks that have child elements take a lambda function as a parameter to configure the block.
-   ```csharp
-    builder.AddActions(actions => actions
-        .Button(button => button
-            .Text("Click Me")
-            .ActionId("button_click")
-            .Primary())
-        .Button(button => button
-            .Text("Cancel")
-            .ActionId("cancel_button")));
-   ```
+For more details see the documentation on [GitHub Pages](https://d-carrigg.github.io/SlackNetBlockBuilder/) or check out the [examples](/examples)
+directory in the repository.
 
 ## License
 
