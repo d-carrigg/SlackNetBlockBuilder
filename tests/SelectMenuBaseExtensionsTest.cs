@@ -584,7 +584,7 @@ public class SelectMenuBaseExtensionsTest
         var builder = new InputElementBuilder<ExternalMultiSelectMenu>(new ExternalMultiSelectMenu());
 
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => builder.InitialOptions((IList<Option>)null));
+        Assert.Throws<ArgumentNullException>(() => builder.InitialOptions((IList<Option>)null!));
     }
 
     [Fact]
@@ -603,7 +603,7 @@ public class SelectMenuBaseExtensionsTest
             .Placeholder("Select options")
             .InitialOptions(options)
             .MaxSelectedItems(5)
-            .FocusOnLoad(true);
+            .FocusOnLoad();
 
         // Assert
         Assert.Same(builder, result);
@@ -613,5 +613,4 @@ public class SelectMenuBaseExtensionsTest
         Assert.True(builder.Element.FocusOnLoad);
     }
 }
-
 
