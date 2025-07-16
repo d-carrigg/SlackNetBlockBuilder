@@ -98,7 +98,7 @@ jobs:
 
     # Pack step: Run always to ensure no errors in the pack step
     - name: Pack NuGet package
-      run: dotnet pack --configuration Release --no-build --output ./artifacts
+      run: dotnet pack --configuration Release --no-build --output ${{ github.workspace }}/artifacts
 
     # Upload Package Artifact: Only run for tags
     - name: Upload NuGet Package artifact
@@ -106,7 +106,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: nugetPackage
-        path: artifacts/*.nupkg
+        path: ${{ github.workspace }}/artifacts/*.nupkg
         retention-days: 1 # Keep artifact only for a short time
 
   publish:
