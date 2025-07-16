@@ -24,8 +24,116 @@ Install-Package SlackNetBlockBuilder
 
 ## Getting Started
 
-To help get you started with the BlockBuilder, here are some examples that show how to create messages,
-and how that compares to the traditional approach of creating blocks manually.
+Here are some examples to help you get started with SlackNetBlockBuilder:
+
+### Simple Message
+
+```csharp
+using SlackNet;
+using SlackNet.Blocks;
+using SlackNet.WebApi;
+
+// Create a new block builder
+var blocks = BlockBuilder.Create()
+    .AddSection("Hello, world!")
+    .AddDivider()
+    .AddSection(section => section
+        .Text("This is a section with some formatted text")
+        .Accessory(button => button
+            .Text("Click Me")
+            .ActionId("button_click")
+            .Primary()))
+    .Build();
+
+// Use with SlackNet to send a message
+await slackApi.Chat.PostMessage(new Message
+{
+    Channel = channelId,
+    Blocks = blocks
+});
+```
+
+### Interactive Actions
+
+```csharp
+var blocks = BlockBuilder.Create()
+    .AddSection("Please select an option:")
+    .AddActions(actions => actions
+        .Button(button => button
+            .Text("Approve")
+            .ActionId("approve_button")
+            .Primary())
+        .Button(button => button
+            .Text("Reject")
+            .ActionId("reject_button")
+            .Danger())
+        .StaticSelect(select => select
+            .Placeholder("Choose an option")
+            .ActionId("select_option")
+            .AddOption("Option 1", "value1")
+            .AddOption("Option 2", "value2")
+            .AddOption("Option 3", "value3")))
+    .Build();
+```
+
+### Forms with Input Elements
+
+```csharp
+var blocks = BlockBuilder.Create()
+    .AddHeader("Submit Request Form")
+    .AddInput<PlainTextInput>("Title", input => input
+        .ActionId("title_input")
+        .Placeholder("Enter a title")
+        .Required())
+    .AddInput<PlainTextInput>("Description", input => input
+        .ActionId("description_input")
+        .Multiline()
+        .Placeholder("Enter a detailed description")
+        .Optional())
+    .AddInput<DatePicker>("Due Date", input => input
+        .ActionId("due_date_input")
+        .Placeholder("Select a date")
+        .Optional())
+    .AddActions(actions => actions
+        .Button(button => button
+            .Text("Submit")
+            .ActionId("submit_form")
+            .Primary())
+        .Button(button => button
+            .Text("Cancel")
+            .ActionId("cancel_form")))
+    .Build();
+```
+
+### Updating Messages
+
+```csharp
+// When handling an interaction payload
+public async Task HandleInteraction(InteractionPayload payload)
+{
+    // Create a new block builder from the existing blocks
+    var updatedBlocks = BlockBuilder.From(payload.Message.Blocks)
+        // Remove a specific block by ID
+        .Remove("status_block")
+        // Add a new status section
+        .AddSection(section => section
+            .BlockId("status_block")
+            .Text("✅ Request approved!"))
+        .Build();
+    
+    // Update the message
+    await slackApi.Chat.Update(new MessageUpdate
+    {
+        Channel = payload.Channel.Id,
+        Ts = payload.Message.Ts,
+        Blocks = updatedBlocks
+    });
+}
+```
+
+## Comparison with Traditional Approach
+
+The following examples show how SlackNetBlockBuilder compares to the traditional approach of creating blocks manually.
 
 ### Simple Message Creation
 
@@ -264,8 +372,6 @@ var blocks = new List<Block>
 ```
 
 ### Updating Messages
-
-One of the powerful features of SlackNetBlockBuilder is the ability to easily update existing messages:
 
 #### With SlackNetBlockBuilder:
 

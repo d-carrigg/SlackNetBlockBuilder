@@ -132,10 +132,15 @@ public sealed class BlockBuilder : IBlockBuilder
     /// </summary>
     private int GetFocusedElementsCount(Block block)
     {
+        // input blocks can exist directly in a form or as a part of 
+        // an actions block. We need to check both.
+        // other blocks don't focus on load
         return block switch 
         {
-            InputBlock inputBlock => IsElementFocused(inputBlock.Element) ? 1 : 0,
-            ActionsBlock ab => ab.Elements.OfType<IInputBlockElement>().Count(IsElementFocused),
+            InputBlock iBlock => IsElementFocused(iBlock.Element) ? 1 : 0,
+            ActionsBlock aBlock => aBlock.Elements
+                .OfType<IInputBlockElement>()
+                .Count(IsElementFocused),
             _ => 0
         };
     }
@@ -234,7 +239,8 @@ public sealed class BlockBuilder : IBlockBuilder
     /// </summary>
     /// <param name="actionId">The ActionId of the element to remove.</param>
     /// <returns>True if an element was removed, false otherwise.</returns>
-    public bool RemoveAction(string actionId) => RemoveAction(a => a.ActionId == actionId);
+    public bool RemoveAction(string actionId) =>
+        RemoveAction(a => a.ActionId == actionId);
 
     /// <inheritdoc />
     public IBlockBuilder AddBlock(Block block)

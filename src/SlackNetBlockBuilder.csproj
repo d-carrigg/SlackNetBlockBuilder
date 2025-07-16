@@ -8,28 +8,29 @@
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
 
         <!-- NuGet Package specific properties -->
-        <Version>0.0.2-alpha</Version> <!-- Or your desired starting version -->
+        <Version>0.5.1-beta</Version> 
         <Authors>Darin Carrigg</Authors>
         <Description>A fluent builder library for creating Slack Block Kit layouts using SlackNet.</Description>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression> <!-- Ensure you have a LICENSE file or adjust -->
-        <PackageProjectUrl>https://github.com/d-carrigg/SlackNetBlockBuilder</PackageProjectUrl> <!-- Replace with your actual repo URL if different -->
-        <RepositoryUrl>https://github.com/d-carrigg/SlackNetBlockBuilder.git</RepositoryUrl> <!-- Replace with your actual repo URL if different -->
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/d-carrigg/SlackNetBlockBuilder.git</RepositoryUrl> 
         <RepositoryType>git</RepositoryType>
         <PackageTags>slack;block kit;blocks;builder;SlackNet</PackageTags>
-        <PackageReadmeFile>ReadMe.md</PackageReadmeFile> <!-- Copied from root during build -->
+        <PackageReadmeFile>ReadMe.md</PackageReadmeFile>       <!-- Copied from root during build -->
+        <Copyright>Darin Carrigg (c) 2025</Copyright>
+ 
 
     </PropertyGroup>
     
     <!--Errors/Warnings adjustments-->
     <PropertyGroup>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <!-- Enable more warning waves -->
-        <AnalysisLevel>latest</AnalysisLevel>
-        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-
-        <!-- Enable .NET analyzers -->
+        <!-- We want all warnings -->
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <AnalysisMode>All</AnalysisMode>
+        <AnalysisLevel>latest</AnalysisLevel>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+        
+        <!-- We want to treat all warnings as errors -->
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 
         <!-- CA1054: SlackNetBlockBuilder uses string-based URIs for ASP.NET routing (~/{...}), not full System.Uri instances -->
         <NoWarn>CA1054</NoWarn>
@@ -37,10 +38,10 @@
 
     <ItemGroup>
       <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" />
-      <PackageReference Include="SlackNet" Version="0.15.5" />
+      <PackageReference Include="SlackNet" Version="0.16.1" />
     </ItemGroup>
     
-    <!--Only include this file if it exists-->
+    <!--Only included in CI builds to generate package docs-->
     <ItemGroup Condition="Exists('ReadMe.md')">
         <None Include="ReadMe.md" Pack="true" PackagePath="\"/>
     </ItemGroup>
