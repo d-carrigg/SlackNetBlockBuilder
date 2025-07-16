@@ -41,8 +41,8 @@ jobs:
       
     # print out all generated coverage files
     - name: List Coverage Files
-      run: find . -name "*.cobertura.xml" -print
-
+      run: echo ${{ github.workspace }} && cd ${{ github.workspace }} && find . -type f -name "*.cobertura.xml" -print
+        
     - name: Combine Coverage Reports # This is because one report is produced per project, and we want one result for all of them.
       uses: danielpalme/ReportGenerator-GitHub-Action@5.2.4
       with:
