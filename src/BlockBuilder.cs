@@ -215,7 +215,7 @@ public sealed class BlockBuilder : IBlockBuilder
     /// </summary>
     /// <param name="predicate">A function to test each action element for a condition.</param>
     /// <returns>True if an element was removed, false otherwise.</returns>
-    public bool RemoveAction(Predicate<IActionElement> predicate)
+    public BlockBuilder RemoveAction(Predicate<IActionElement> predicate)
     {
         ArgumentNullException.ThrowIfNull(predicate);
         var actionsBlocks = _blocks.OfType<ActionsBlock>();
@@ -227,19 +227,21 @@ public sealed class BlockBuilder : IBlockBuilder
             {
                 if(predicate(subBlock))
                 {
-                    return actionsBlock.Elements.Remove(subBlock);
+                    var wasRemoved = actionsBlock.Elements.Remove(subBlock);
+                    // TODO: Should we return a bool or the builder?
+                    return this;
                 }
             }
         }
 
-        return false;
+        return this;
     }
     /// <summary>
     /// Finds the first <see cref="ActionsBlock"/> and removes the first element within it that matches the specified action ID.
     /// </summary>
     /// <param name="actionId">The ActionId of the element to remove.</param>
     /// <returns>True if an element was removed, false otherwise.</returns>
-    public bool RemoveAction(string actionId) =>
+    public BlockBuilder RemoveAction(string actionId) =>
         RemoveAction(a => a.ActionId == actionId);
 
     /// <inheritdoc />

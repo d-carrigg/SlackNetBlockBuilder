@@ -209,10 +209,10 @@ public class InputBlockBuilderTest
         
         // Act
         builder
+            .BlockId("date_block")
             .DispatchAction(true)
             .Hint("Choose your preferred date")
             .Optional(true)
-            .BlockId("date_block")
             .InitialDate(testDate)
             .Placeholder("Click to select")
             .FocusOnLoad(true);
