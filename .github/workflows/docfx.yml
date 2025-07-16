@@ -1,9 +1,6 @@
 name: Deploy DocFX to GitHub Pages
 
 on:
-  push:
-    branches:
-      - feature/api-reference
   release:
     types:
       - published
