@@ -6,5 +6,67 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+
+
+<div class="examples">
+    <button type="button" onclick="getExampleJson('InteractiveForm')">Interactive Form</button>
+    
+    
+    <div class="output">
+        <textarea id="output-block" class="font-monospace bg-light p-3 w-100">
+            <span class="text-muted">Click on the button to get the example JSON.</span>
+            
+        </textarea>
+    </div>
+</div>
+
+ 
+ 
+ @section Scripts
+ { 
+     <link
+         rel="stylesheet"
+         href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css"
+     />
+     <link
+         rel="stylesheet"
+         href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/dracula.min.css"
+     />
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/javascript/javascript.min.js"></script>
+     <script type="text/javascript">
+       
+      
+         function getExampleJson(name) {
+             fetch(`?handler=Json&name=${name}`)
+                 .then(response => {
+                     if (!response.ok) {
+                         throw new Error('Network response was not ok');
+                     }
+                        return response.text();
+                 })
+                 .then(data => {
+                     console.log(data);
+                     const editor = CodeMirror.fromTextArea(
+                         document.getElementById('output-block'),
+                         {
+                             mode: 'application/json',
+                             theme: 'dracula',
+                             lineNumbers: true,
+                             readOnly: true, // Make it read-only for display
+                         }
+                     );
+                     
+                    editor.setValue(data);
+                        
+                 })
+                 .catch(error => {
+                     console.error('There was a problem with the fetch operation:', error);
+                 });
+         }
+         
+     </script>
+ }
+ 

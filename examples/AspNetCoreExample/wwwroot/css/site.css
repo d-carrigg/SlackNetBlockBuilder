@@ -20,3 +20,14 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/* Custom CSS to integrate with Bootstrap layout */
+.CodeMirror {
+  height: auto; /* Allow height to adjust to content or parent */
+  min-height: 800px; /* Or a fixed height */
+  border: none; /* Remove CodeMirror's default border if using a card */
+}
+.CodeMirror-scroll {
+  height: auto; /* Ensure scroll area expands */
+  min-height: 800px;
+}
