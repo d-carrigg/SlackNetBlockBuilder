@@ -38,6 +38,10 @@ jobs:
     # Run tests for all triggers (push, pull_request, tag)
     - name: "Restore/Build/Test"
       run: dotnet test --configuration Release --verbosity normal --logger trx --collect:"XPlat Code Coverage"
+      
+    # print out all generated coverage files
+    - name: List Coverage Files
+      run: find . -name "*.cobertura.xml" -print
 
     - name: Combine Coverage Reports # This is because one report is produced per project, and we want one result for all of them.
       uses: danielpalme/ReportGenerator-GitHub-Action@5.2.4
