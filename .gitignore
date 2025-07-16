@@ -12,3 +12,6 @@ TestResults/
 Coverage/
 # Ignore readme file in the src directory
 src/ReadMe.md
+
+# ignore api-reference
+api-reference/
