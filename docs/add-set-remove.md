@@ -4,7 +4,7 @@ The BlockBuilder provides three core methods for custom modifications when the p
 
 ## Add<T> Method
 
-The `Add<T>` method allows you to add any block type directly to the builder with custom configuration.
+The `Add<T>` method allows you to add any block type directly to the builder.
 
 ### Syntax
 ```csharp
@@ -52,8 +52,6 @@ builder.Add<VideoBlock>(video =>
 
 The `Set` method is available on various builders and allows direct modification of the underlying element when extension methods aren't available.
 
-### On ActionElementBuilder
-
 ```csharp
 // Modify button properties directly
 var actionsBuilder = ActionsBlockBuilder.Create();
@@ -70,11 +68,7 @@ actionsBuilder.AddButton("chained_button", button =>
     button.Set(btn => btn.ActionId = "first_id")
           .Set(btn => btn.Text = new PlainText { Text = "Button Text" })
           .Set(btn => btn.ActionId = "final_id"));
-```
 
-### On InputElementBuilder
-
-```csharp
 // Configure input elements with custom properties
 var builder = BlockBuilder.Create();
 builder.AddInput<PlainTextInput>("Enter text", input => 
@@ -87,52 +81,12 @@ builder.AddInput<PlainTextInput>("Enter text", input =>
         element.MaxLength = 500;
     }));
 
-// Set focus and other properties
-builder.AddInput<DatePicker>("Select date", input => 
-    input.Set(picker => 
-    {
-        picker.FocusOnLoad = true;
-        picker.InitialDate = DateTime.Today;
-        picker.Placeholder = new PlainText { Text = "Choose date" };
-    }));
-```
-
-### On InputBlockBuilder
-
-```csharp
-// Modify both the input element and the parent block
+// Combine Set with other methods
 builder.AddInput<PlainTextInput>("User Input", input => 
     input.Set(element => element.Placeholder = "Enter value")
          .BlockId("custom_input_block")
          .Optional(true)
          .Hint("This field is optional"));
-```
-
-### Complex Set Examples
-
-```csharp
-// Configure select menu with custom options
-actionsBuilder.AddStaticSelectMenu("menu_1", menu => 
-    menu.Set(m => 
-    {
-        m.Placeholder = new PlainText { Text = "Choose option" };
-        m.Options = new List<Option>
-        {
-            new Option { Text = "Option 1", Value = "opt1" },
-            new Option { Text = "Option 2", Value = "opt2" }
-        };
-        m.InitialOption = m.Options.First();
-        m.FocusOnLoad = true;
-    }));
-
-// Configure time picker with custom settings
-actionsBuilder.AddTimePicker("time_1", timePicker => 
-    timePicker.Set(tp => 
-    {
-        tp.Placeholder = new PlainText { Text = "Select time" };
-        tp.InitialTime = TimeSpan.Parse("14:30");
-        tp.FocusOnLoad = false;
-    }));
 ```
 
 ## Remove Methods
@@ -219,5 +173,3 @@ var updatedBlocks = BlockBuilder.From(existingBlocks)
 - **Add<T>**: When you need to create blocks with properties that don't have dedicated extension methods
 - **Set**: When you need to modify element properties that aren't covered by existing extension methods
 - **Remove**: When updating existing messages or cleaning up dynamically generated content
-
-These methods provide full access to the underlying Slack Block Kit objects while maintaining the fluent builder pattern.

@@ -6,13 +6,11 @@ UI elements with a clean, chainable API.
 *This project is not affiliated with Slack or SlackNet. I just needed a better way to create blocks for my Slack apps.*
 
 > [!NOTE]
-> This package is currently in beta. The code works, but breaking changes may occur until the v1 release.
+> This package is currently in beta. The code passes all tests, but breaking changes may occur until the v1 release.
 
 ## Installation
 
 [![NuGet](https://img.shields.io/nuget/vpre/SlackNetBlockBuilder)](https://www.nuget.org/packages/SlackNetBlockBuilder/) [![Documentation](https://img.shields.io/badge/Documentation-GitHub%20Pages-blue)](https://d-carrigg.github.io/SlackNetBlockBuilder/)
-
-
 
 Install the package via NuGet:
 
@@ -21,10 +19,10 @@ dotnet add package SlackNetBlockBuilder
 ```
 
 Visual Studio
+
 ```
 Install-Package SlackNetBlockBuilder
 ```
-
 
 ## Getting Started
 
@@ -444,11 +442,8 @@ public async Task HandleInteraction(InteractionPayload payload)
 ## Validation
 
 The library includes validation to ensure that the blocks you create are valid according to Slack's Block Kit
-guidelines.
-This was added because I got sick of getting 400 errors from Slack, and then having to manually check the blocks to see
-what was wrong.
-Right now, validation throws InvalidOperationException, but a future release will use a dedicated exception type for
-validation errors.
+guidelines. This allows errors to be caught locally without requiring a network call. Right now, validation throws
+InvalidOperationException, but a future release may use a dedicated exception type for validation errors.
 
 Example:
 
@@ -465,7 +460,8 @@ Constraints on blocks are referenced from [Slack's Block Kit documentation](http
 
 ## Further Examples
 
-For more details see the documentation on [GitHub Pages](https://d-carrigg.github.io/SlackNetBlockBuilder/) or check out the [examples](/examples)
+For more details see the documentation on [GitHub Pages](https://d-carrigg.github.io/SlackNetBlockBuilder/) or check out
+the [examples](/examples)
 directory in the repository.
 
 ## License

@@ -3,8 +3,9 @@
 A fluent builder extension for [SlackNet](https://github.com/SlackNet/SlackNet) that simplifies creating Slack Block Kit UI elements with a clean, chainable API.
 
 > [!NOTE]
-> This package is currently in beta. The code works, but breaking changes may occur until the v1 release.
-
+> This package is currently in beta. The code passes all tests, but breaking changes may occur until the v1 release.
+> 
+> 
 ## Installation
 
 [![NuGet](https://img.shields.io/nuget/vpre/SlackNetBlockBuilder)](https://www.nuget.org/packages/SlackNetBlockBuilder/)
@@ -32,8 +33,7 @@ var blocks = BlockBuilder.Create()
 
 ## Key Features
 
-- **Fluent API**: Chain methods for intuitive block creation
-- **Type Safety**: Compile-time validation of block structures
+- **Fluent API**: Chain methods for easy block creation
 - **Validation**: Runtime validation against Slack's Block Kit guidelines
 - **Update Support**: Easily modify existing blocks with `BlockBuilder.From()`
 - **Complete Coverage**: Support for all Slack Block Kit elements
@@ -49,7 +49,7 @@ var blocks = BlockBuilder.Create()
     .AddInput<PlainTextInput>("Title", input => input
         .ActionId("title_input")
         .Placeholder("Enter a title")
-        .Required())
+        .MaxLength(100))
     .AddActions(actions => actions
         .Button(button => button
             .Text("Submit")
