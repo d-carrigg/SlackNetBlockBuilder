@@ -37,7 +37,7 @@ public interface IBlockBuilder
     /// Applies a modifier to all blocks that match the specified predicate.
     /// </summary>
     /// <param name="predicate">A function to test each block for a condition.</param>
-    /// <param name="modifier"> n action to modify the block if it matches the predicate.</param>
+    /// <param name="modifier">An action to modify the block if it matches the predicate.</param>
     /// <returns></returns>
     IBlockBuilder Modify(Predicate<Block> predicate, Action<Block> modifier);
 
