@@ -1,6 +1,3 @@
----
-outputFileName: index.md
----
 # SlackNetBlockBuilder
 
 A fluent builder extension for [SlackNet](https://github.com/SlackNet/SlackNet) that simplifies creating Slack Block Kit

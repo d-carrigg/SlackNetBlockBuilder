@@ -41,6 +41,11 @@
       "_appTitle": "Slack Net Block Builder",
       "_enableSearch": true,
       "pdf": true
+      
+    },
+    "sitemap": {
+      "baseUrl": "https://d-carrigg.github.io/SlackNetBlockBuilder",
+      "changefreq": "weekly"
     }
   }
 }
