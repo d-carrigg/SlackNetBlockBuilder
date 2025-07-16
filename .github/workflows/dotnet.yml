@@ -32,13 +32,6 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
-        
-
-    - name: Restore Dependencies
-      run: dotnet restore
-      
-    - name: Build Solution
-      run: dotnet build --configuration Release --no-restore --verbosity minimal
 
     # Run tests for all triggers (push, pull_request, tag)
     - name: "Restore/Build/Test"
@@ -63,7 +56,7 @@ jobs:
       with:
         name: coverage
         path: ${{ github.workspace }}/Cobertura.xml
-        retention-days: 5
+        retention-days: 14
 
     - name: Publish Code Coverage Report
       uses: irongut/CodeCoverageSummary@v1.3.0
@@ -105,7 +98,7 @@ jobs:
 
     # Pack step: Run always to ensure no errors in the pack step
     - name: Pack NuGet package
-      run: dotnet pack --configuration Release --no-build --output ./artifacts
+      run: dotnet pack --configuration Release --no-build --output ${{ github.workspace }}/artifacts
 
     # Upload Package Artifact: Only run for tags
     - name: Upload NuGet Package artifact
@@ -113,7 +106,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: nugetPackage
-        path: ./artifacts/*.nupkg
+        path: ${{ github.workspace }}/artifacts/*.nupkg
         retention-days: 1 # Keep artifact only for a short time
 
   publish:
@@ -133,7 +126,8 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: nugetPackage
-        path: ./artifacts
+        path: ${{ github.workspace }}/artifacts
+        
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
@@ -142,14 +136,16 @@ jobs:
 
     - name: Publish to NuGet
       run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+      working-directory: ${{ github.workspace }}
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
 
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v2
       with:
-        files: ./artifacts/*.nupkg
+        files: ${{ github.workspace }}/artifacts/*.nupkg
         # The release name will be the tag name (e.g., v1.0.0)
         # The body can be customized, here it's empty by default
         # Set generate_release_notes: true to auto-generate notes based on commits since last tag
         generate_release_notes: true
+        
