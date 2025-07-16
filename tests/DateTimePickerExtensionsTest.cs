@@ -167,7 +167,6 @@ public class DateTimePickerExtensionsTest
         
         // Assert
         Assert.Equal(testDate, datePicker.InitialDate);
-       
         Assert.Equal("Select a date", datePicker.Placeholder.Text);
         Assert.True(datePicker.FocusOnLoad);
     }
