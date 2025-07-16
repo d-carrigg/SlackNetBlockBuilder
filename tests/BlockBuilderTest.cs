@@ -179,23 +179,7 @@ public class BlockBuilderTest
         Assert.True(textInput.FocusOnLoad);
     }
 
-    [Fact]
-    public void Build_WithMultipleFocusedElements_ThrowsException()
-    {
-        // Arrange
-        var builder = BlockBuilder.Create();
 
-        // Add two input blocks with focused elements
-        builder.AddInput<PlainTextInput>("Label 1", input => input
-            .Set(x => x.FocusOnLoad = true));
-
-        builder.AddInput<PlainTextInput>("Label 2", input => input
-            .Set(x => x.FocusOnLoad = true));
-
-        // Act & Assert
-        var exception = Assert.Throws<InvalidOperationException>(() => builder.Build());
-        Assert.Equal("Only one block can have FocusOnLoad set to true", exception.Message);
-    }
 
     [Fact]
     public void Build_WithFocusedElementInActionsBlock_ValidatesFocus()
@@ -643,5 +627,436 @@ public class BlockBuilderTest
         public string Type { get; }
         public string ActionId { get; set; }
     }
-}
+    
+    [Fact]
+    public void Build_WithAllInputElementTypes_FocusOnLoadValidation()
+    {
+        // Test all input element types that have FocusOnLoad property
+        var testCases = new[]
+        {
+            // Date and time elements
+            typeof(DatePicker),
+            typeof(TimePicker),
+            typeof(DateTimePicker),
+            
+            // Input elements
+            typeof(EmailTextInput),
+            typeof(RichTextInput),
+            typeof(UrlTextInput),
+            typeof(PlainTextInput),
+            typeof(NumberInput),
+            
+            // Groups
+            typeof(CheckboxGroup),
+            typeof(RadioButtonGroup),
+            
+            // Single selects
+            typeof(StaticSelectMenu),
+            typeof(ExternalSelectMenu),
+            typeof(UserSelectMenu),
+            typeof(ChannelSelectMenu),
+            typeof(ConversationSelectMenu),
+            
+            // Multi selects
+            typeof(StaticMultiSelectMenu),
+            typeof(ExternalMultiSelectMenu),
+            typeof(UserMultiSelectMenu),
+            typeof(ChannelMultiSelectMenu),
+            typeof(ConversationMultiSelectMenu)
+        };
 
+        foreach (var elementType in testCases)
+        {
+            // Test that each element type can be created and have FocusOnLoad set to true
+            var builder = BlockBuilder.Create();
+            
+            // Create the element using reflection
+            var element = Activator.CreateInstance(elementType);
+            
+            // Set FocusOnLoad to true using reflection
+            var focusProperty = elementType.GetProperty("FocusOnLoad");
+            if (focusProperty != null)
+            {
+                focusProperty.SetValue(element, true);
+                
+                // Create an InputBlock with this element
+                var inputBlock = new InputBlock
+                {
+                    Label = new PlainText { Text = $"Test {elementType.Name}" },
+                    Element = (IInputBlockElement)element
+                };
+                
+                builder.AddBlock(inputBlock);
+                
+                // This should build successfully with one focused element
+                var result = builder.Build();
+                Assert.Single(result);
+            }
+        }
+    }
+    
+    [Fact]
+    public void Build_WithMultipleFocusedElements_ThrowsException()
+    {
+        // Test that multiple focused elements of different types throw exception
+        var builder = BlockBuilder.Create();
+        
+        // Add two different types of focused elements
+        var datePicker = new DatePicker { FocusOnLoad = true };
+        var textInput = new PlainTextInput { FocusOnLoad = true };
+        
+        builder.AddBlock(new InputBlock
+        {
+            Label = new PlainText { Text = "Date" },
+            Element = datePicker
+        });
+        
+        builder.AddBlock(new InputBlock
+        {
+            Label = new PlainText { Text = "Text" },
+            Element = textInput
+        });
+        
+        // Act & Assert
+        var exception = Assert.Throws<InvalidOperationException>(() => builder.Build());
+        Assert.Equal("Only one block can have FocusOnLoad set to true", exception.Message);
+    }
+    
+    [Fact]
+    public void Build_WithFocusedElementInActionsBlock_CountsCorrectly()
+    {
+        // Test that focused elements in ActionsBlock are counted
+        var builder = BlockBuilder.Create();
+        
+        var focusedSelect = new StaticSelectMenu 
+        { 
+            FocusOnLoad = true,
+            ActionId = "test_select",
+            Placeholder = new PlainText { Text = "Select option" }
+        };
+        
+        var actionsBlock = new ActionsBlock();
+        actionsBlock.Elements.Add(focusedSelect);
+        
+        builder.AddBlock(actionsBlock);
+        
+        // This should build successfully
+        var result = builder.Build();
+        Assert.Single(result);
+    }
+    
+    [Fact]
+    public void Build_WithMultipleFocusedElementsInActionsBlock_ThrowsException()
+    {
+        // Test that multiple focused elements in ActionsBlock throw exception
+        var builder = BlockBuilder.Create();
+        
+        var focusedSelect1 = new StaticSelectMenu 
+        { 
+            FocusOnLoad = true,
+            ActionId = "test_select1",
+            Placeholder = new PlainText { Text = "Select option 1" }
+        };
+        
+        var focusedSelect2 = new UserSelectMenu 
+        { 
+            FocusOnLoad = true,
+            ActionId = "test_select2",
+            Placeholder = new PlainText { Text = "Select option 2" }
+        };
+        
+        var actionsBlock = new ActionsBlock();
+        actionsBlock.Elements.Add(focusedSelect1);
+        actionsBlock.Elements.Add(focusedSelect2);
+        
+        builder.AddBlock(actionsBlock);
+        
+        // Act & Assert
+        var exception = Assert.Throws<InvalidOperationException>(() => builder.Build());
+        Assert.Equal("Only one block can have FocusOnLoad set to true", exception.Message);
+    }
+    
+    [Fact]
+    public void Build_WithEmailTextInput_FocusOnLoadValidation()
+    {
+        // Test EmailTextInput specifically
+        var builder = BlockBuilder.Create();
+        var emailInput = new EmailTextInput { FocusOnLoad = true };
+        
+        builder.AddBlock(new InputBlock
+        {
+            Label = new PlainText { Text = "Email" },
+            Element = emailInput
+        });
+        
+        var result = builder.Build();
+        Assert.Single(result);
+    }
+    
+    [Fact]
+    public void Build_WithRichTextInput_FocusOnLoadValidation()
+    {
+        // Test RichTextInput specifically
+        var builder = BlockBuilder.Create();
+        var richTextInput = new RichTextInput { FocusOnLoad = true };
+        
+        builder.AddBlock(new InputBlock
+        {
+            Label = new PlainText { Text = "Rich Text" },
+            Element = richTextInput
+        });
+        
+        var result = builder.Build();
+        Assert.Single(result);
+    }
+    
+    [Fact]
+    public void Build_WithUrlTextInput_FocusOnLoadValidation()
+    {
+        // Test UrlTextInput specifically
+        var builder = BlockBuilder.Create();
+        var urlInput = new UrlTextInput { FocusOnLoad = true };
+        
+        builder.AddBlock(new InputBlock
+        {
+            Label = new PlainText { Text = "URL" },
+            Element = urlInput
+        });
+        
+        var result = builder.Build();
+        Assert.Single(result);
+    }
+    
+    [Fact]
+    public void Build_WithNumberInput_FocusOnLoadValidation()
+    {
+        // Test NumberInput specifically
+        var builder = BlockBuilder.Create();
+        var numberInput = new NumberInput { FocusOnLoad = true };
+        
+        builder.AddBlock(new InputBlock
+        {
+            Label = new PlainText { Text = "Number" },
+            Element = numberInput
+        });
+        
+        var result = builder.Build();
+        Assert.Single(result);
+    }
+    
+    [Fact]
+    public void Build_WithTextInput_FocusOnLoadValidation()
+    {
+        // Test TextInput specifically
+        var builder = BlockBuilder.Create();
+ 
+        builder.AddInput<PlainTextInput>("Text Input", input => input.Set(x => x.FocusOnLoad = true));
+        
+        var result = builder.Build();
+        Assert.Single(result);
+    }
+    
+    [Fact]
+    public void Build_WithCheckboxGroup_FocusOnLoadValidation()
+    {
+        // Test CheckboxGroup specifically
+        var builder = BlockBuilder.Create();
+        var checkboxGroup = new CheckboxGroup { FocusOnLoad = true };
+        
+        builder.AddBlock(new InputBlock
+        {
+            Label = new PlainText { Text = "Checkbox" },
+            Element = checkboxGroup
+        });
+        
+        var result = builder.Build();
+        Assert.Single(result);
+    }
+    
+    [Fact]
+    public void Build_WithRadioButtonGroup_FocusOnLoadValidation()
+    {
+        // Test RadioButtonGroup specifically
+        var builder = BlockBuilder.Create();
+        var radioGroup = new RadioButtonGroup { FocusOnLoad = true };
+        
+        builder.AddBlock(new InputBlock
+        {
+            Label = new PlainText { Text = "Radio" },
+            Element = radioGroup
+        });
+        
+        var result = builder.Build();
+        Assert.Single(result);
+    }
+    
+    [Fact]
+    public void Build_WithExternalSelectMenu_FocusOnLoadValidation()
+    {
+        // Test ExternalSelectMenu specifically
+        var builder = BlockBuilder.Create();
+        var externalSelect = new ExternalSelectMenu { FocusOnLoad = true };
+        
+        builder.AddBlock(new InputBlock
+        {
+            Label = new PlainText { Text = "External Select" },
+            Element = externalSelect
+        });
+        
+        var result = builder.Build();
+        Assert.Single(result);
+    }
+    
+    [Fact]
+    public void Build_WithChannelSelectMenu_FocusOnLoadValidation()
+    {
+        // Test ChannelSelectMenu specifically
+        var builder = BlockBuilder.Create();
+        var channelSelect = new ChannelSelectMenu { FocusOnLoad = true };
+        
+        builder.AddBlock(new InputBlock
+        {
+            Label = new PlainText { Text = "Channel Select" },
+            Element = channelSelect
+        });
+        
+        var result = builder.Build();
+        Assert.Single(result);
+    }
+    
+    [Fact]
+    public void Build_WithConversationSelectMenu_FocusOnLoadValidation()
+    {
+        // Test ConversationSelectMenu specifically
+        var builder = BlockBuilder.Create();
+        var conversationSelect = new ConversationSelectMenu { FocusOnLoad = true };
+        
+        builder.AddBlock(new InputBlock
+        {
+            Label = new PlainText { Text = "Conversation Select" },
+            Element = conversationSelect
+        });
+        
+        var result = builder.Build();
+        Assert.Single(result);
+    }
+    
+    [Fact]
+    public void Build_WithStaticMultiSelectMenu_FocusOnLoadValidation()
+    {
+        // Test StaticMultiSelectMenu specifically
+        var builder = BlockBuilder.Create();
+        var staticMultiSelect = new StaticMultiSelectMenu { FocusOnLoad = true };
+        
+        builder.AddBlock(new InputBlock
+        {
+            Label = new PlainText { Text = "Static Multi Select" },
+            Element = staticMultiSelect
+        });
+        
+        var result = builder.Build();
+        Assert.Single(result);
+    }
+    
+    [Fact]
+    public void Build_WithExternalMultiSelectMenu_FocusOnLoadValidation()
+    {
+        // Test ExternalMultiSelectMenu specifically
+        var builder = BlockBuilder.Create();
+        var externalMultiSelect = new ExternalMultiSelectMenu { FocusOnLoad = true };
+        
+        builder.AddBlock(new InputBlock
+        {
+            Label = new PlainText { Text = "External Multi Select" },
+            Element = externalMultiSelect
+        });
+        
+        var result = builder.Build();
+        Assert.Single(result);
+    }
+    
+    [Fact]
+    public void Build_WithUserMultiSelectMenu_FocusOnLoadValidation()
+    {
+        // Test UserMultiSelectMenu specifically
+        var builder = BlockBuilder.Create();
+        var userMultiSelect = new UserMultiSelectMenu { FocusOnLoad = true };
+        
+        builder.AddBlock(new InputBlock
+        {
+            Label = new PlainText { Text = "User Multi Select" },
+            Element = userMultiSelect
+        });
+        
+        var result = builder.Build();
+        Assert.Single(result);
+    }
+    
+    [Fact]
+    public void Build_WithChannelMultiSelectMenu_FocusOnLoadValidation()
+    {
+        // Test ChannelMultiSelectMenu specifically
+        var builder = BlockBuilder.Create();
+        var channelMultiSelect = new ChannelMultiSelectMenu { FocusOnLoad = true };
+        
+        builder.AddBlock(new InputBlock
+        {
+            Label = new PlainText { Text = "Channel Multi Select" },
+            Element = channelMultiSelect
+        });
+        
+        var result = builder.Build();
+        Assert.Single(result);
+    }
+    
+    [Fact]
+    public void Build_WithConversationMultiSelectMenu_FocusOnLoadValidation()
+    {
+        // Test ConversationMultiSelectMenu specifically
+        var builder = BlockBuilder.Create();
+        var conversationMultiSelect = new ConversationMultiSelectMenu { FocusOnLoad = true };
+        
+        builder.AddBlock(new InputBlock
+        {
+            Label = new PlainText { Text = "Conversation Multi Select" },
+            Element = conversationMultiSelect
+        });
+        
+        var result = builder.Build();
+        Assert.Single(result);
+    }
+    
+    [Fact]
+    public void Build_WithTimePicker_FocusOnLoadValidation()
+    {
+        // Test TimePicker specifically
+        var builder = BlockBuilder.Create();
+        var timePicker = new TimePicker { FocusOnLoad = true };
+        
+        builder.AddBlock(new InputBlock
+        {
+            Label = new PlainText { Text = "Time Picker" },
+            Element = timePicker
+        });
+        
+        var result = builder.Build();
+        Assert.Single(result);
+    }
+    
+    [Fact]
+    public void Build_WithDateTimePicker_FocusOnLoadValidation()
+    {
+        // Test DateTimePicker specifically
+        var builder = BlockBuilder.Create();
+        var dateTimePicker = new DateTimePicker { FocusOnLoad = true };
+        
+        builder.AddBlock(new InputBlock
+        {
+            Label = new PlainText { Text = "Date Time Picker" },
+            Element = dateTimePicker
+        });
+        
+        var result = builder.Build();
+        Assert.Single(result);
+    }
+}

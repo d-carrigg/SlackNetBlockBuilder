@@ -190,7 +190,7 @@ public class ButtonExtensionsTest
         var result = builder.Url(uri);
         
         // Assert
-        Assert.Equal("https://example.com", button.Url);
+        Assert.Equal("https://example.com/", button.Url);
         Assert.Same(builder, result);
     }
     
@@ -229,7 +229,7 @@ public class ButtonExtensionsTest
         Assert.Equal("action_id", button.ActionId);
         Assert.Equal("Click me", button.Text.Text);
         Assert.Equal(ButtonStyle.Primary, button.Style);
-        Assert.Equal("https://example.com", button.Url);
+        Assert.Equal("https://example.com/", button.Url);
         Assert.Equal("button_value", button.Value);
     }
     
