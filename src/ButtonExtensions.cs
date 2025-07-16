@@ -18,7 +18,7 @@ public static class ButtonExtensions
         => 
             builder is null ? throw new ArgumentNullException(nameof(builder)) :
             string.IsNullOrEmpty(text) ? throw new ArgumentNullException(nameof(text)) :
-            builder.Set(x => x.Text = text);
+            builder.Modify(x => x.Text = text);
 
     /// <summary>
     /// Sets the URL to open when the button is clicked.

@@ -5,7 +5,7 @@ name: .NET Build, Test, and Publish
 
 on:
   push:
-    branches: [ "main", "feature/*", "release/*" ]
+    branches: [ "main", "feature/*", "release/*", "chore/*" ] 
     tags: [ 'v*.*.*' ] # Trigger on version tags like v1.0.0
   pull_request:
     branches: [ "main" ]

@@ -33,7 +33,7 @@ public sealed class InputBlockBuilder<TElement> : InputElementBuilder<TElement>
     /// </summary>
     /// <param name="blockId">The block ID.</param>
     /// <returns>The same builder instance so calls can be chained.</returns>
-    public InputElementBuilder<TElement> BlockId(string blockId)
+    public InputBlockBuilder<TElement> BlockId(string blockId)
     {
         ParentBlock.BlockId = blockId;
         return this;
@@ -46,7 +46,7 @@ public sealed class InputBlockBuilder<TElement> : InputElementBuilder<TElement>
     /// </summary>
     /// <param name="dispatch">True to dispatch actions.</param>
     /// <returns>The same builder instance so calls can be chained.</returns>
-    public InputElementBuilder<TElement> DispatchAction(bool dispatch = true)
+    public InputBlockBuilder<TElement> DispatchAction(bool dispatch = true)
     {
         ParentBlock.DispatchAction = dispatch;
         return this;
@@ -58,7 +58,7 @@ public sealed class InputBlockBuilder<TElement> : InputElementBuilder<TElement>
     /// </summary>
     /// <param name="hint">The hint text.</param>
     /// <returns>The same builder instance so calls can be chained.</returns>
-    public InputElementBuilder<TElement> Hint(string hint)
+    public InputBlockBuilder<TElement> Hint(string hint)
     {
         ParentBlock.Hint = hint;
         return this;
@@ -69,9 +69,33 @@ public sealed class InputBlockBuilder<TElement> : InputElementBuilder<TElement>
     /// </summary>
     /// <param name="optional">True if the input is optional.</param>
     /// <returns>The same builder instance so calls can be chained.</returns>
-    public InputElementBuilder<TElement> Optional(bool optional = true)
+    public InputBlockBuilder<TElement> Optional(bool optional = true)
     {
         ParentBlock.Optional = optional;
+        return this;
+    }
+    
+    /// <summary>
+    /// Allows applying custom modifications to the underlying <see cref="ParentBlock"/>.
+    /// </summary>
+    /// <param name="modifier">An action that modifies the <see cref="ParentBlock"/>.</param>
+    /// <returns>The same builder instance so calls can be chained.</returns>
+    public override InputBlockBuilder<TElement> Modify(Action<TElement> modifier)
+    {
+        ArgumentNullException.ThrowIfNull(modifier);
+        modifier(Element);
+        return this;
+    }
+
+    /// <summary>
+    /// Sets an identifier for this action. Should be unique within the block.
+    /// Maximum length 255 characters.
+    /// </summary>
+    /// <param name="actionId">The action ID.</param>
+    /// <returns>The same builder instance so calls can be chained.</returns>
+    public override InputBlockBuilder<TElement> ActionId(string actionId)
+    {
+        Element.ActionId = actionId;
         return this;
     }
 }

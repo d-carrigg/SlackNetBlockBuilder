@@ -28,7 +28,7 @@ public class InputElementBuilder<TElement>
     /// </summary>
     /// <param name="modifier">An action that modifies the <see cref="Element"/>.</param>
     /// <returns>The same builder instance so calls can be chained.</returns>
-    public InputElementBuilder<TElement> Set(Action<TElement> modifier)
+    public virtual InputElementBuilder<TElement> Modify(Action<TElement> modifier)
     {
         ArgumentNullException.ThrowIfNull(modifier);
         modifier(Element);
@@ -41,7 +41,7 @@ public class InputElementBuilder<TElement>
     /// </summary>
     /// <param name="actionId">The action ID.</param>
     /// <returns>The same builder instance so calls can be chained.</returns>
-    public InputElementBuilder<TElement> ActionId(string actionId)
+    public virtual InputElementBuilder<TElement> ActionId(string actionId)
     {
         Element.ActionId = actionId;
         return this;

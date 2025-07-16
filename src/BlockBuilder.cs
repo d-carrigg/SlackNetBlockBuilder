@@ -11,6 +11,14 @@ public interface IBlockBuilder
     /// <summary>
     /// Add a block to the builder
     /// </summary>
+    /// <param name="modifier">An action which is run over the created element</param>
+    /// <typeparam name="TBlock">The type of block to add</typeparam>
+    /// <returns>The same instance so calls can be chained</returns>
+    IBlockBuilder Add<TBlock>(Action<TBlock> modifier) where TBlock : Block, new();
+    
+    /// <summary>
+    /// Add a block to the builder
+    /// </summary>
     /// <param name="block">The block to add</param>
     /// <returns>The same instance so calls can be chained</returns>
     IBlockBuilder AddBlock(Block block);
@@ -22,14 +30,30 @@ public interface IBlockBuilder
     /// <param name="blocks">The blocks to add</param>
     /// <returns>The same instance so calls can be chained</returns>
     IBlockBuilder AddBlocks(IEnumerable<Block> blocks);
+    
+    
+    
+    /// <summary>
+    /// Applies a modifier to all blocks that match the specified predicate.
+    /// </summary>
+    /// <param name="predicate">A function to test each block for a condition.</param>
+    /// <param name="modifier">An action to modify the block if it matches the predicate.</param>
+    /// <returns></returns>
+    IBlockBuilder Modify(Predicate<Block> predicate, Action<Block> modifier);
 
     /// <summary>
-    /// Add a block to the builder
+    /// Removes all blocks that match the specified predicate.
     /// </summary>
-    /// <param name="modifier">An action which is run over the created element</param>
-    /// <typeparam name="TBlock">The type of block to add</typeparam>
-    /// <returns>The same instance so calls can be chained</returns>
-    IBlockBuilder Add<TBlock>(Action<TBlock> modifier) where TBlock : Block, new();
+    /// <param name="predicate">A function to test each block for a condition.</param>
+    /// <returns>The number of blocks removed.</returns>
+    public IBlockBuilder Remove(Predicate<Block> predicate);
+
+    /// <summary>
+    /// Finds the first <see cref="ActionsBlock"/> and removes the first element within it that matches the predicate.
+    /// </summary>
+    /// <param name="predicate">A function to test each action element for a condition.</param>
+    /// <returns>True if an element was removed, false otherwise.</returns>
+    public IBlockBuilder RemoveAction(Predicate<IActionElement> predicate);
 
     /// <summary>
     /// Combine all blocks into a list of blocks
@@ -120,13 +144,88 @@ public sealed class BlockBuilder : IBlockBuilder
             throw new InvalidOperationException("Only one block can have FocusOnLoad set to true");
         }
         
-        return _blocks;
+        return _blocks.ToList();
+    }
+    
+        
+    /// <inheritdoc />
+    public IBlockBuilder Add<TBlock>(Action<TBlock> modifier) where TBlock : Block, new()
+    {
+        ArgumentNullException.ThrowIfNull(modifier);
+        var element = new TBlock();
+        modifier(element);
+        _blocks.Add(element);
+        return this;
+    }
+    
+    
+    /// <inheritdoc />
+    public IBlockBuilder AddBlock(Block block)
+    {
+        ArgumentNullException.ThrowIfNull(block);
+        _blocks.Add(block);
+        return this;
+    }
+
+    /// <inheritdoc />
+    public IBlockBuilder AddBlocks(IEnumerable<Block> blocks)
+    {
+        ArgumentNullException.ThrowIfNull(blocks);
+        _blocks.AddRange(blocks);
+        return this;
+    }
+
+    /// <inheritdoc />
+    public IBlockBuilder Modify(Predicate<Block> predicate, Action<Block> modifier)
+    {
+        ArgumentNullException.ThrowIfNull(predicate);
+        ArgumentNullException.ThrowIfNull(modifier);
+        
+        foreach (var block in _blocks.Where(b => predicate(b)))
+        {
+            modifier(block);
+        }
+        
+        return this;
+    }
+ 
+
+    /// <inheritdoc />
+    public IBlockBuilder Remove(Predicate<Block> predicate)
+    {
+        _ = _blocks.RemoveAll(predicate);
+        return this;
+    }
+
+
+    
+    /// <inheritdoc />
+    public IBlockBuilder RemoveAction(Predicate<IActionElement> predicate)
+    {
+        ArgumentNullException.ThrowIfNull(predicate);
+        var actionsBlocks = _blocks.OfType<ActionsBlock>();
+        
+ 
+        foreach (var actionsBlock in actionsBlocks)
+        {
+            foreach (var subBlock in actionsBlock.Elements)
+            {
+                if(predicate(subBlock))
+                {
+                    var wasRemoved = actionsBlock.Elements.Remove(subBlock);
+                    return this;
+                }
+            }
+        }
+
+        return this;
     }
 
     /// <summary>
     /// Calculates the total number of elements across all blocks that have FocusOnLoad set to true. (Internal Helper)
     /// </summary>
     private int GetFocusedElementsCount() => _blocks.Sum(GetFocusedElementsCount);
+    
     /// <summary>
     /// Calculates the number of focused elements within a single block. (Internal Helper)
     /// </summary>
@@ -185,91 +284,5 @@ public sealed class BlockBuilder : IBlockBuilder
                 _ => false
             };
         return isFocused;
-    }
-
-    
-    /// <summary>
-    /// Removes all blocks that match the specified predicate.
-    /// </summary>
-    /// <param name="predicate">A function to test each block for a condition.</param>
-    /// <returns>The number of blocks removed.</returns>
-    public int Remove(Predicate<Block> predicate)
-    {
-        return _blocks.RemoveAll(predicate);
-    }
-
-    /// <summary>
-    /// Removes the first block that matches the specified block ID.
-    /// </summary>
-    /// <param name="blockId">The BlockId of the block to remove.</param>
-    /// <returns>True if a block was removed, false otherwise.</returns>
-    public bool Remove(string blockId)
-    {
-        if(string.IsNullOrEmpty(blockId))
-            throw new ArgumentException("BlockId cannot be null or empty", nameof(blockId));
-        return Remove(b => b.BlockId == blockId) > 0;
-    }
-    
-    /// <summary>
-    /// Finds the first <see cref="ActionsBlock"/> and removes the first element within it that matches the predicate.
-    /// </summary>
-    /// <param name="predicate">A function to test each action element for a condition.</param>
-    /// <returns>True if an element was removed, false otherwise.</returns>
-    public bool RemoveAction(Predicate<IActionElement> predicate)
-    {
-        ArgumentNullException.ThrowIfNull(predicate);
-        var actionsBlocks = _blocks.OfType<ActionsBlock>();
-        
- 
-        foreach (var actionsBlock in actionsBlocks)
-        {
-            foreach (var subBlock in actionsBlock.Elements)
-            {
-                if(predicate(subBlock))
-                {
-                    return actionsBlock.Elements.Remove(subBlock);
-                }
-            }
-        }
-
-        return false;
-    }
-    /// <summary>
-    /// Finds the first <see cref="ActionsBlock"/> and removes the first element within it that matches the specified action ID.
-    /// </summary>
-    /// <param name="actionId">The ActionId of the element to remove.</param>
-    /// <returns>True if an element was removed, false otherwise.</returns>
-    public bool RemoveAction(string actionId) =>
-        RemoveAction(a => a.ActionId == actionId);
-
-    /// <inheritdoc />
-    public IBlockBuilder AddBlock(Block block)
-    {
-        ArgumentNullException.ThrowIfNull(block);
-        _blocks.Add(block);
-        return this;
-    }
-    
-    /// <summary>
-    /// Adds a new block of the specified type, configured via an action.
-    /// </summary>
-    /// <typeparam name="TBlock">The type of block to add. Must have a parameterless constructor.</typeparam>
-    /// <param name="modifier">An action that configures the newly created block instance.</param>
-    /// <returns>The same builder instance so calls can be chained.</returns>
-    public IBlockBuilder Add<TBlock>(Action<TBlock> modifier) where TBlock : Block, new()
-    {
-        ArgumentNullException.ThrowIfNull(modifier);
-        var element = new TBlock();
-        modifier(element);
-        _blocks.Add(element);
-        return this;
-    }
-
-    /// <inheritdoc />
-    public IBlockBuilder AddBlocks(IEnumerable<Block> blocks)
-    {
-        ArgumentNullException.ThrowIfNull(blocks);
-        _blocks.AddRange(blocks);
-        return this;
     }
 }

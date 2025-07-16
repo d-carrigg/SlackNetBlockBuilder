@@ -175,7 +175,12 @@ public class SectionBuilder
         }
         
         // Corrected validation based on Slack docs: field length applies to text
-        if (fields.Any(f => (f is PlainText pt ? pt.Text.Length : (f is Markdown md ? md.Text.Length : 0)) > MaxFieldsLength))
+        if (fields.Any(f => (f switch
+            {
+                PlainText pt => pt.Text?.Length,
+                Markdown md => md.Text?.Length,
+                _ => 0
+            }) > MaxFieldsLength))
         {
             throw new ArgumentException($"Each field's text in a section block can have at most {MaxFieldsLength} characters");
         }

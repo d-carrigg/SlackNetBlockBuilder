@@ -21,7 +21,7 @@ public static class CheckboxGroupExtensions
         string value,
         string text, PlainText? description = null) => 
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
-        builder.Set(x =>
+        builder.Modify(x =>
         x.Options.Add(new Option { Text = text, Value = value, Description = description }));
 
     /// <summary>
@@ -34,7 +34,7 @@ public static class CheckboxGroupExtensions
         bool focus = true)
         => 
             builder is null ? throw new ArgumentNullException(nameof(builder)) :
-            builder.Set(x => x.FocusOnLoad = focus);
+            builder.Modify(x => x.FocusOnLoad = focus);
 
     /// <summary>
     /// Pre-selects options in the checkbox group.
@@ -46,7 +46,7 @@ public static class CheckboxGroupExtensions
     public static InputElementBuilder<CheckboxGroup> InitialOptions(this InputElementBuilder<CheckboxGroup> builder,
         Func<IList<Option>, IList<Option>> selector) => 
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
-        builder.Set(x => x.InitialOptions = selector(x.Options));
+        builder.Modify(x => x.InitialOptions = selector(x.Options));
 
     /// <summary>
     /// Pre-selects options in the checkbox group by their values.

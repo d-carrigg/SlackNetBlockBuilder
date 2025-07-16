@@ -9,6 +9,21 @@ namespace SlackNet.Blocks;
 [PublicAPI]
 public static class BlockBuilderExtensions
 {
+    /// <summary>
+    /// Removes the first block that matches the specified block ID.
+    /// </summary>
+    /// <param name="builder">The block builder instance.</param>
+    /// <param name="blockId">The BlockId of the block to remove.</param>
+    /// <returns>True if a block was removed, false otherwise.</returns>
+    public static IBlockBuilder Remove(this IBlockBuilder builder, string blockId)
+    {
+        if(string.IsNullOrEmpty(blockId))
+            throw new ArgumentException("BlockId cannot be null or empty", nameof(blockId));
+        
+        ArgumentNullException.ThrowIfNull(builder);
+        
+        return builder.Remove(b => b.BlockId == blockId);
+    }
     
     /// <summary>
     /// Add a group of actions to the builder
@@ -27,7 +42,27 @@ public static class BlockBuilderExtensions
         builder.AddBlock(block.Build());
         return builder;
     }
+    
+    
+    /// <summary>
+    /// Removes all action blocks from the builder.
+    /// </summary>
+    /// <param name="builder">The builder instance.</param>
+    /// <returns>The same builder instance so calls can be chained.</returns>
+    public static IBlockBuilder RemoveActions(this IBlockBuilder builder) => 
+        builder is null ? throw new ArgumentNullException(nameof(builder)) :
+        builder.Remove(block => block is ActionsBlock);
 
+    /// <summary>
+    /// Finds the first <see cref="ActionsBlock"/> and removes the first element within it that matches the specified action ID.
+    /// </summary>
+    /// <param name="builder">The builder instance.</param>
+    /// <param name="actionId">The ActionId of the element to remove.</param>
+    /// <returns>True if an element was removed, false otherwise.</returns>
+    public static IBlockBuilder RemoveAction(this IBlockBuilder builder, string actionId) =>
+        builder is null ? throw new ArgumentNullException(nameof(builder)) :
+        builder.RemoveAction(a => a.ActionId == actionId);
+    
     /// <summary>
     /// Add a call block to the builder
     /// </summary>

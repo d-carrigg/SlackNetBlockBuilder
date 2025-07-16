@@ -20,7 +20,7 @@ public static class RadioButtonGroupExtensions
         string value,
         string text, PlainText? description = null) => 
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
-        builder.Set(x =>
+        builder.Modify(x =>
         x.Options.Add(new Option { Text = text, Value = value, Description = description }));
 
     /// <summary>
@@ -34,7 +34,7 @@ public static class RadioButtonGroupExtensions
         this InputElementBuilder<RadioButtonGroup> builder,
         string value) => 
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
-        builder.Set(x => x.InitialOption = x.Options.FirstOrDefault(o => o.Value == value));
+        builder.Modify(x => x.InitialOption = x.Options.FirstOrDefault(o => o.Value == value));
 
     /// <summary>
     /// Indicates whether the element will be set to autofocus within the view object.
@@ -47,5 +47,5 @@ public static class RadioButtonGroupExtensions
         this InputElementBuilder<RadioButtonGroup> builder,
         bool focus = true) => 
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
-        builder.Set(x => x.FocusOnLoad = focus);
+        builder.Modify(x => x.FocusOnLoad = focus);
 }

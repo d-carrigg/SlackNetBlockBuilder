@@ -3,12 +3,14 @@
 A fluent builder extension for [SlackNet](https://github.com/SlackNet/SlackNet) that simplifies creating Slack Block Kit
 UI elements with a clean, chainable API.
 
-*This project is not affiliated with Slack or SlackNet.*
+*This project is not affiliated with Slack or SlackNet. I just needed a better way to create blocks for my Slack apps.*
+
+> [!NOTE]
+> This package is currently in beta. The code passes all tests, but breaking changes may occur until the v1 release.
 
 ## Installation
 
-[![NuGet](https://img.shields.io/nuget/vpre/SlackNetBlockBuilder)](https://www.nuget.org/packages/SlackNetBlockBuilder/)
-
+[![NuGet](https://img.shields.io/nuget/vpre/SlackNetBlockBuilder)](https://www.nuget.org/packages/SlackNetBlockBuilder/) [![Documentation](https://img.shields.io/badge/Documentation-GitHub%20Pages-blue)](https://d-carrigg.github.io/SlackNetBlockBuilder/)
 
 Install the package via NuGet:
 
@@ -17,10 +19,10 @@ dotnet add package SlackNetBlockBuilder
 ```
 
 Visual Studio
+
 ```
 Install-Package SlackNetBlockBuilder
 ```
-
 
 ## Getting Started
 
@@ -440,11 +442,8 @@ public async Task HandleInteraction(InteractionPayload payload)
 ## Validation
 
 The library includes validation to ensure that the blocks you create are valid according to Slack's Block Kit
-guidelines.
-This was added because I got sick of getting 400 errors from Slack, and then having to manually check the blocks to see
-what was wrong.
-Right now, validation throws InvalidOperationException, but a future release will use a dedicated exception type for
-validation errors.
+guidelines. This allows errors to be caught locally without requiring a network call. Right now, validation throws
+InvalidOperationException, but a future release may use a dedicated exception type for validation errors.
 
 Example:
 
@@ -461,34 +460,9 @@ Constraints on blocks are referenced from [Slack's Block Kit documentation](http
 
 ## Further Examples
 
-I'm working on adding examples to provide a more comprehensive overview of the library's capabilities. Generally
-speaking
-anything that can be done with the SlackNet API Blocks can be done with this library, so if you have any specific use
-cases in mind,
-you can follow these guidelines:
-
-1. Remove blocks with the `Remove` method, set block properties with the `Set` method, and add new blocks with the `Add` methods.
-   There are many built in extensions for adding blocks (e.g `AddSection`, `AddHeader`, `AddActions`, etc.) but you can
-   also use the generic `Add` method
-   if you need greater control.
-   ```csharp
-    builder.Remove("block_id")
-        .Modify("block_id", block => block
-            .Text("New Text"))
-        .AddSection(section => section
-            .Text("New Section"));
-   ```
-2. Complex blocks that have child elements take a lambda function as a parameter to configure the block.
-   ```csharp
-    builder.AddActions(actions => actions
-        .Button(button => button
-            .Text("Click Me")
-            .ActionId("button_click")
-            .Primary())
-        .Button(button => button
-            .Text("Cancel")
-            .ActionId("cancel_button")));
-   ```
+For more details see the documentation on [GitHub Pages](https://d-carrigg.github.io/SlackNetBlockBuilder/) or check out
+the [examples](/examples)
+directory in the repository.
 
 ## License
 

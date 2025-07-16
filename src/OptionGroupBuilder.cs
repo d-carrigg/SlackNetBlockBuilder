@@ -42,6 +42,9 @@ public sealed class OptionGroupBuilder
     /// <returns>The same builder instance so calls can be chained.</returns>
     public OptionGroupBuilder AddOption(Option option)
     {
+        if (option == null)
+            throw new ArgumentNullException(nameof(option), "Option cannot be null.");
+        Element.Options ??= new List<Option>();
         Element.Options.Add(option);
         return this;
     }
