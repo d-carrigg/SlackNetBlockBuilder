@@ -16,7 +16,7 @@ public class ActionsBlockBuilderTest
         for (int i = 0; i <= ActionsBlockBuilder.MaxElements; i++)
         {
             var index = i;
-            builder.AddButton($"button_{i}", button => button.Set(b => b.Text = $"Button {index}"));
+            builder.AddButton($"button_{i}", button => button.Modify(b => b.Text = $"Button {index}"));
         }
 
         // Act & Assert
@@ -42,7 +42,7 @@ public class ActionsBlockBuilderTest
 
         // Act
         builder.AddButton("button_1", button => button
-            .Set(b => b.Text = "Click me")
+            .Modify(b => b.Text = "Click me")
             .ConfirmationDialog(dialog =>
             {
                 dialog.Title = "Confirm";
@@ -68,7 +68,7 @@ public class ActionsBlockBuilderTest
 
         // Act
         builder.AddElement("custom_1", customButton, button =>
-            button.Set(b => b.Style = ButtonStyle.Primary));
+            button.Modify(b => b.Style = ButtonStyle.Primary));
 
         var block = builder.Build();
 
@@ -111,8 +111,8 @@ public class ActionsBlockBuilderTest
 
         // Act
         builder
-            .AddButton("button_1", button => button.Set(b => b.Text = "Button 1"))
-            .AddDatePicker("date_1", date => date.Set(d => d.InitialDate = DateTime.Parse("2024-01-01")))
+            .AddButton("button_1", button => button.Modify(b => b.Text = "Button 1"))
+            .AddDatePicker("date_1", date => date.Modify(d => d.InitialDate = DateTime.Parse("2024-01-01")))
             .AddCheckboxGroup("check_1", check => check.AddOption("opt1", "Option 1"));
 
         var block = builder.Build();
@@ -140,15 +140,15 @@ public class ActionsBlockBuilderTest
         {
             case nameof(UserSelectMenu):
                 builder.AddUserSelectMenu(actionId, menu =>
-                    menu.Set(m => m.Placeholder = "Select user"));
+                    menu.Modify(m => m.Placeholder = "Select user"));
                 break;
             case nameof(ConversationSelectMenu):
                 builder.AddConversationSelectMenu(actionId, menu =>
-                    menu.Set(m => m.Placeholder = "Select conversation"));
+                    menu.Modify(m => m.Placeholder = "Select conversation"));
                 break;
             case nameof(ChannelSelectMenu):
                 builder.AddChannelSelectMenu(actionId, menu =>
-                    menu.Set(m => m.Placeholder = "Select channel"));
+                    menu.Modify(m => m.Placeholder = "Select channel"));
                 break;
         }
 
@@ -171,8 +171,8 @@ public class ActionsBlockBuilderTest
 
         // Act
         builder.AddTimePicker("time_picker_1", timePicker => timePicker
-            .Set(tp => tp.Placeholder = new PlainText { Text = "Select time" })
-            .Set(tp => tp.InitialTime = TimeSpan.Parse("14:30")));
+            .Modify(tp => tp.Placeholder = new PlainText { Text = "Select time" })
+            .Modify(tp => tp.InitialTime = TimeSpan.Parse("14:30")));
 
         var result = builder.Build();
 
@@ -192,7 +192,7 @@ public class ActionsBlockBuilderTest
 
         // Act
         builder.AddDateTimePicker("datetime_picker_1", dateTimePicker => dateTimePicker
-            .Set(dtp => dtp.InitialDateTime = DateTime.Parse("2024-01-01")));
+            .Modify(dtp => dtp.InitialDateTime = DateTime.Parse("2024-01-01")));
 
         var result = builder.Build();
 
@@ -211,7 +211,7 @@ public class ActionsBlockBuilderTest
 
         // Act
         builder.AddRadioButtonGroup("radio_group_1", radioGroup => radioGroup
-            .Set(rg => rg.Options = new List<Option>
+            .Modify(rg => rg.Options = new List<Option>
             {
                 new Option { Text = "Option 1", Value = "value1" },
                 new Option { Text = "Option 2", Value = "value2" }
@@ -236,8 +236,8 @@ public class ActionsBlockBuilderTest
 
         // Act
         builder.AddExternalSelectMenu("external_select_1", externalSelect => externalSelect
-            .Set(es => es.Placeholder = new PlainText { Text = "Select external option" })
-            .Set(es => es.MinQueryLength = 3));
+            .Modify(es => es.Placeholder = new PlainText { Text = "Select external option" })
+            .Modify(es => es.MinQueryLength = 3));
 
         var result = builder.Build();
 
@@ -257,13 +257,13 @@ public class ActionsBlockBuilderTest
 
         // Act
         builder.AddMultiStaticSelectMenu("multi_static_select_1", multiStaticSelect => multiStaticSelect
-            .Set(mss => mss.Placeholder = new PlainText { Text = "Select multiple options" })
-            .Set(mss => mss.Options = new List<Option>
+            .Modify(mss => mss.Placeholder = new PlainText { Text = "Select multiple options" })
+            .Modify(mss => mss.Options = new List<Option>
             {
                 new Option { Text = "Option A", Value = "a" },
                 new Option { Text = "Option B", Value = "b" }
             })
-            .Set(mss => mss.MaxSelectedItems = 5));
+            .Modify(mss => mss.MaxSelectedItems = 5));
 
         var result = builder.Build();
 
@@ -284,9 +284,9 @@ public class ActionsBlockBuilderTest
 
         // Act
         builder.AddMultiExternalSelectMenu("multi_external_select_1", multiExternalSelect => multiExternalSelect
-            .Set(mes => mes.Placeholder = new PlainText { Text = "Select multiple external options" })
-            .Set(mes => mes.MinQueryLength = 2)
-            .Set(mes => mes.MaxSelectedItems = 10));
+            .Modify(mes => mes.Placeholder = new PlainText { Text = "Select multiple external options" })
+            .Modify(mes => mes.MinQueryLength = 2)
+            .Modify(mes => mes.MaxSelectedItems = 10));
 
         var result = builder.Build();
 
@@ -307,8 +307,8 @@ public class ActionsBlockBuilderTest
 
         // Act
         builder.AddMultiUserSelectMenu("multi_user_select_1", multiUserSelect => multiUserSelect
-            .Set(mus => mus.Placeholder = new PlainText { Text = "Select multiple users" })
-            .Set(mus => mus.MaxSelectedItems = 3));
+            .Modify(mus => mus.Placeholder = new PlainText { Text = "Select multiple users" })
+            .Modify(mus => mus.MaxSelectedItems = 3));
 
         var result = builder.Build();
 
@@ -328,9 +328,9 @@ public class ActionsBlockBuilderTest
 
         // Act
         builder.AddMultiConversationSelectMenu("multi_conversation_select_1", multiConversationSelect => multiConversationSelect
-            .Set(mcs => mcs.Placeholder = new PlainText { Text = "Select multiple conversations" })
-            .Set(mcs => mcs.MaxSelectedItems = 5)
-            .Set(mcs => mcs.DefaultToCurrentConversation = true));
+            .Modify(mcs => mcs.Placeholder = new PlainText { Text = "Select multiple conversations" })
+            .Modify(mcs => mcs.MaxSelectedItems = 5)
+            .Modify(mcs => mcs.DefaultToCurrentConversation = true));
 
         var result = builder.Build();
 
@@ -351,8 +351,8 @@ public class ActionsBlockBuilderTest
 
         // Act
         builder.AddMultiChannelSelectMenu("multi_channel_select_1", multiChannelSelect => multiChannelSelect
-            .Set(mcs => mcs.Placeholder = new PlainText { Text = "Select multiple channels" })
-            .Set(mcs => mcs.MaxSelectedItems = 7));
+            .Modify(mcs => mcs.Placeholder = new PlainText { Text = "Select multiple channels" })
+            .Modify(mcs => mcs.MaxSelectedItems = 7));
 
         var result = builder.Build();
 
@@ -374,15 +374,15 @@ public class ActionsBlockBuilderTest
 
         // Act - Add all the previously uncovered element types
         builder
-            .AddTimePicker("time_1", tp => tp.Set(x => x.Placeholder = new PlainText { Text = "Time" }))
-            .AddDateTimePicker("datetime_1", dtp => dtp.Set(x => x.InitialDateTime = DateTime.Parse("2024-01-01")))
-            .AddRadioButtonGroup("radio_1", rg => rg.Set(x => x.Options = new List<Option> { new Option { Text = "Radio", Value = "r1" } }))
-            .AddExternalSelectMenu("external_1", es => es.Set(x => x.Placeholder = new PlainText { Text = "External" }))
-            .AddMultiStaticSelectMenu("multi_static_1", mss => mss.Set(x => x.Placeholder = new PlainText { Text = "Multi Static" }))
-            .AddMultiExternalSelectMenu("multi_external_1", mes => mes.Set(x => x.Placeholder = new PlainText { Text = "Multi External" }))
-            .AddMultiUserSelectMenu("multi_user_1", mus => mus.Set(x => x.Placeholder = new PlainText { Text = "Multi User" }))
-            .AddMultiConversationSelectMenu("multi_conv_1", mcs => mcs.Set(x => x.Placeholder = new PlainText { Text = "Multi Conversation" }))
-            .AddMultiChannelSelectMenu("multi_channel_1", mcs => mcs.Set(x => x.Placeholder = new PlainText { Text = "Multi Channel" }));
+            .AddTimePicker("time_1", tp => tp.Modify(x => x.Placeholder = new PlainText { Text = "Time" }))
+            .AddDateTimePicker("datetime_1", dtp => dtp.Modify(x => x.InitialDateTime = DateTime.Parse("2024-01-01")))
+            .AddRadioButtonGroup("radio_1", rg => rg.Modify(x => x.Options = new List<Option> { new Option { Text = "Radio", Value = "r1" } }))
+            .AddExternalSelectMenu("external_1", es => es.Modify(x => x.Placeholder = new PlainText { Text = "External" }))
+            .AddMultiStaticSelectMenu("multi_static_1", mss => mss.Modify(x => x.Placeholder = new PlainText { Text = "Multi Static" }))
+            .AddMultiExternalSelectMenu("multi_external_1", mes => mes.Modify(x => x.Placeholder = new PlainText { Text = "Multi External" }))
+            .AddMultiUserSelectMenu("multi_user_1", mus => mus.Modify(x => x.Placeholder = new PlainText { Text = "Multi User" }))
+            .AddMultiConversationSelectMenu("multi_conv_1", mcs => mcs.Modify(x => x.Placeholder = new PlainText { Text = "Multi Conversation" }))
+            .AddMultiChannelSelectMenu("multi_channel_1", mcs => mcs.Modify(x => x.Placeholder = new PlainText { Text = "Multi Channel" }));
 
         var result = builder.Build();
 
@@ -426,7 +426,7 @@ public class ActionsBlockBuilderTest
         var longActionId = new string('a', ActionsBlockBuilder.MaxActionIdLength + 1); // 256 characters
         
         // Act
-        builder.AddButton(longActionId, button => button.Set(b => b.Text = "Click me"));
+        builder.AddButton(longActionId, button => button.Modify(b => b.Text = "Click me"));
         
         // Assert
         var exception = Assert.Throws<InvalidOperationException>(() => builder.Build());
@@ -441,7 +441,7 @@ public class ActionsBlockBuilderTest
         var maxLengthActionId = new string('a', ActionsBlockBuilder.MaxActionIdLength); // 255 characters
         
         // Act
-        builder.AddButton(maxLengthActionId, button => button.Set(b => b.Text = "Click me"));
+        builder.AddButton(maxLengthActionId, button => button.Modify(b => b.Text = "Click me"));
         var actionsBlock = builder.Build();
         
         // Assert

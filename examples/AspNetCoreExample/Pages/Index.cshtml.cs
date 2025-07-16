@@ -67,7 +67,7 @@ public class IndexModel : PageModel
             )
             .AddInput<PlainTextInput>("Description", input => input
                 .ActionId("description_input")
-                .Set(x => x.Multiline = true)
+                .Modify(x => x.Multiline = true)
                 .Optional())
             .AddInput<StaticSelectMenu>("Priority", input => input
                 .ActionId("priority_select")

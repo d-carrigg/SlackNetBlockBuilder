@@ -167,7 +167,7 @@ public class BlockBuilderTest
 
         // Add input block with focused element
         builder.AddInput<PlainTextInput>("Label", input => input
-            .Set(x => x.FocusOnLoad = true));
+            .Modify(x => x.FocusOnLoad = true));
 
         // Act
         var blocks = builder.Build();
@@ -190,7 +190,7 @@ public class BlockBuilderTest
         // Add actions block with focused element
         builder.AddActions(actions => actions.AddElement<DatePicker>("",
             picker => picker.FocusOnLoad()));
-        builder.AddInput<PlainTextInput>("Label", input => input.Set(x => x.FocusOnLoad = true));
+        builder.AddInput<PlainTextInput>("Label", input => input.Modify(x => x.FocusOnLoad = true));
 
         // Act & Assert
         Assert.Throws<InvalidOperationException>(() => builder.Build());
@@ -202,8 +202,8 @@ public class BlockBuilderTest
         // Arrange
         var builder = BlockBuilder.Create();
 
-        builder.AddInput<PlainTextInput>("Label 1", input => input.Set(x => x.FocusOnLoad = false));
-        builder.AddInput<PlainTextInput>("Label 2", input => input.Set(x => x.FocusOnLoad = false));
+        builder.AddInput<PlainTextInput>("Label 1", input => input.Modify(x => x.FocusOnLoad = false));
+        builder.AddInput<PlainTextInput>("Label 2", input => input.Modify(x => x.FocusOnLoad = false));
 
         // Act
         var blocks = builder.Build();
@@ -443,7 +443,7 @@ public class BlockBuilderTest
             builder.AddContext(context => context.AddText($"Context text {iLocal}"));
             builder.AddActions(actions => actions.AddButton($"Button {iLocal}", $"button-{iLocal}"));
             builder.AddInput<PlainTextInput>($"Label {iLocal}",
-                input => input.Set(x => x.ActionId = $"input-{iLocal}"));
+                input => input.Modify(x => x.ActionId = $"input-{iLocal}"));
             builder.AddDivider();
 
             var blocks = builder.Build();
@@ -608,7 +608,7 @@ public class BlockBuilderTest
 
         // Add a mock input element that doesn't have FocusOnLoad property
         var mockElement = new TestInputElement(); // This would be an element without FocusOnLoad
-        builder.AddInput<TestInputElement>("test", e => e.Set(x => x.TestProperty = "test"));
+        builder.AddInput<TestInputElement>("test", e => e.Modify(x => x.TestProperty = "test"));
 
         // Should not throw and should not count as focused
         var blocks = builder.Build();
@@ -846,7 +846,7 @@ public class BlockBuilderTest
         // Test TextInput specifically
         var builder = BlockBuilder.Create();
  
-        builder.AddInput<PlainTextInput>("Text Input", input => input.Set(x => x.FocusOnLoad = true));
+        builder.AddInput<PlainTextInput>("Text Input", input => input.Modify(x => x.FocusOnLoad = true));
         
         var result = builder.Build();
         Assert.Single(result);

@@ -123,14 +123,14 @@ public class ActionElementBuilderTest
     }
 
     [Fact]
-    public void Set_WithValidModifier_ModifiesElement()
+    public void Modify_WithValidModifier_ModifiesElement()
     {
         // Arrange
         var button = new Button();
         var builder = new ActionElementBuilder<Button>(button);
         
         // Act
-        var result = builder.Set(btn =>
+        var result = builder.Modify(btn =>
         {
             btn.ActionId = "modified_id";
             btn.Text = new PlainText { Text = "Modified Text" };
@@ -143,18 +143,18 @@ public class ActionElementBuilderTest
     }
 
     [Fact]
-    public void Set_WithNullModifier_ThrowsArgumentNullException()
+    public void Modify_WithNullModifier_ThrowsArgumentNullException()
     {
         // Arrange
         var button = new Button();
         var builder = new ActionElementBuilder<Button>(button);
         
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => builder.Set(null));
+        Assert.Throws<ArgumentNullException>(() => builder.Modify(null));
     }
 
     [Fact]
-    public void Set_WithMultipleModifications_AppliesAllModifications()
+    public void Modify_WithMultipleModifications_AppliesAllModifications()
     {
         // Arrange
         var button = new Button();
@@ -162,9 +162,9 @@ public class ActionElementBuilderTest
         
         // Act
         var result = builder
-            .Set(btn => btn.ActionId = "first_id")
-            .Set(btn => btn.Text = new PlainText { Text = "Button Text" })
-            .Set(btn => btn.ActionId = "final_id");
+            .Modify(btn => btn.ActionId = "first_id")
+            .Modify(btn => btn.Text = new PlainText { Text = "Button Text" })
+            .Modify(btn => btn.ActionId = "final_id");
         
         // Assert
         Assert.Same(builder, result);
@@ -182,13 +182,13 @@ public class ActionElementBuilderTest
         // Act
         var result = builder
             .ActionId("chained_id")
-            .Set(btn => btn.Text = new PlainText { Text = "Chained Button" })
+            .Modify(btn => btn.Text = new PlainText { Text = "Chained Button" })
             .ConfirmationDialog(dialog =>
             {
                 dialog.Title = new PlainText { Text = "Confirm Action" };
                 dialog.Text = new PlainText { Text = "Please confirm" };
             })
-            .Set(btn => btn.Style = ButtonStyle.Primary);
+            .Modify(btn => btn.Style = ButtonStyle.Primary);
         
         // Assert
         Assert.Same(builder, result);

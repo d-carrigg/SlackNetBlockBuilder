@@ -20,7 +20,7 @@ public static class InputBuilderExtensions
         string placeholder) where TElement : PlainTextInput
         => 
             builder is null ? throw new ArgumentNullException(nameof(builder)) :
-                builder.Set(x => x.Placeholder = placeholder);
+                builder.Modify(x => x.Placeholder = placeholder);
     
     
     /// <summary>
@@ -35,7 +35,7 @@ public static class InputBuilderExtensions
         bool multiline = true) where TElement : PlainTextInput
         => 
             builder is null ? throw new ArgumentNullException(nameof(builder)) :
-                builder.Set(x => x.Multiline = multiline);
+                builder.Modify(x => x.Multiline = multiline);
     
  
     /// <summary>
@@ -50,7 +50,7 @@ public static class InputBuilderExtensions
         int minLength) where TElement : PlainTextInput
         => 
             builder is null ? throw new ArgumentNullException(nameof(builder)) :
-                builder.Set(x => x.MinLength = minLength);
+                builder.Modify(x => x.MinLength = minLength);
     /// <summary>
     ///  Sets the maximum length of input that the user must provide.
     /// </summary>
@@ -63,6 +63,6 @@ public static class InputBuilderExtensions
         int maxLength) where TElement : PlainTextInput
         => 
             builder is null ? throw new ArgumentNullException(nameof(builder)) :
-                builder.Set(x => x.MaxLength = maxLength);
+                builder.Modify(x => x.MaxLength = maxLength);
     
 }

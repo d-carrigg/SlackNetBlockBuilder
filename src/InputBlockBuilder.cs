@@ -80,7 +80,7 @@ public sealed class InputBlockBuilder<TElement> : InputElementBuilder<TElement>
     /// </summary>
     /// <param name="modifier">An action that modifies the <see cref="ParentBlock"/>.</param>
     /// <returns>The same builder instance so calls can be chained.</returns>
-    public new InputBlockBuilder<TElement> Set(Action<TElement> modifier)
+    public override InputBlockBuilder<TElement> Modify(Action<TElement> modifier)
     {
         ArgumentNullException.ThrowIfNull(modifier);
         modifier(Element);
@@ -93,7 +93,7 @@ public sealed class InputBlockBuilder<TElement> : InputElementBuilder<TElement>
     /// </summary>
     /// <param name="actionId">The action ID.</param>
     /// <returns>The same builder instance so calls can be chained.</returns>
-    public new InputBlockBuilder<TElement> ActionId(string actionId)
+    public override InputBlockBuilder<TElement> ActionId(string actionId)
     {
         Element.ActionId = actionId;
         return this;

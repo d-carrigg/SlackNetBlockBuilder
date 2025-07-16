@@ -1,4 +1,4 @@
-# Add/Set/Remove Functionality
+# Add/Modify/Remove Functionality
 
 The BlockBuilder provides three core methods for custom modifications when the prebuilt extension methods don't meet your needs:
 
@@ -48,31 +48,31 @@ builder.Add<VideoBlock>(video =>
 });
 ```
 
-## Set Method
+## Modify Method
 
-The `Set` method is available on various builders and allows direct modification of the underlying element when extension methods aren't available.
+The `Modify` method is available on various builders and allows direct modification of the underlying element when extension methods aren't available.
 
 ```csharp
 // Modify button properties directly
 var actionsBuilder = ActionsBlockBuilder.Create();
 actionsBuilder.AddButton("my_button", button => 
-    button.Set(btn => 
+    button.Modify(btn => 
     {
         btn.Text = new PlainText { Text = "Custom Button" };
         btn.Style = ButtonStyle.Primary;
         btn.Value = "custom_value";
     }));
 
-// Chain multiple Set calls
+// Chain multiple Modify calls
 actionsBuilder.AddButton("chained_button", button => 
-    button.Set(btn => btn.ActionId = "first_id")
-          .Set(btn => btn.Text = new PlainText { Text = "Button Text" })
-          .Set(btn => btn.ActionId = "final_id"));
+    button.Modify(btn => btn.ActionId = "first_id")
+          .Modify(btn => btn.Text = new PlainText { Text = "Button Text" })
+          .Modify(btn => btn.ActionId = "final_id"));
 
 // Configure input elements with custom properties
 var builder = BlockBuilder.Create();
 builder.AddInput<PlainTextInput>("Enter text", input => 
-    input.Set(element => 
+    input.Modify(element => 
     {
         element.ActionId = "text_input_1";
         element.Placeholder = "Type here...";
@@ -81,9 +81,9 @@ builder.AddInput<PlainTextInput>("Enter text", input =>
         element.MaxLength = 500;
     }));
 
-// Combine Set with other methods
+// Combine Modify with other methods
 builder.AddInput<PlainTextInput>("User Input", input => 
-    input.Set(element => element.Placeholder = "Enter value")
+    input.Modify(element => element.Placeholder = "Enter value")
          .BlockId("custom_input_block")
          .Optional(true)
          .Hint("This field is optional"));
@@ -155,7 +155,7 @@ var updatedBlocks = BlockBuilder.From(existingBlocks)
     // Add new actions with custom configuration
     .AddActions(actions => 
         actions.AddButton("view_details", button => 
-            button.Set(btn => 
+            button.Modify(btn => 
             {
                 btn.Text = new PlainText { Text = "View Details" };
                 btn.Style = ButtonStyle.Primary;
@@ -171,5 +171,5 @@ var updatedBlocks = BlockBuilder.From(existingBlocks)
 ## When to Use Each Method
 
 - **Add<T>**: When you need to create blocks with properties that don't have dedicated extension methods
-- **Set**: When you need to modify element properties that aren't covered by existing extension methods
+- **Modify**: When you need to modify element properties that aren't covered by existing extension methods
 - **Remove**: When updating existing messages or cleaning up dynamically generated content

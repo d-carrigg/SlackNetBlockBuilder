@@ -22,7 +22,7 @@ public static class SelectMenuBaseExtensions
         string placeholder) where TElement : SelectMenuBase
         => 
             builder is null ? throw new ArgumentNullException(nameof(builder)) :
-            builder.Set(x => x.Placeholder = placeholder);
+            builder.Modify(x => x.Placeholder = placeholder);
 
     /// <summary>
     /// Indicates whether the element will be set to autofocus within the view object.
@@ -37,7 +37,7 @@ public static class SelectMenuBaseExtensions
         bool focus = true) where TElement : SelectMenuBase
         => 
             builder is null ? throw new ArgumentNullException(nameof(builder)) :
-            builder.Set(x => x.FocusOnLoad = focus);
+            builder.Modify(x => x.FocusOnLoad = focus);
 
 
     /// <summary>
@@ -53,7 +53,7 @@ public static class SelectMenuBaseExtensions
         string value,
         string text, PlainText? description = null) where TElement : StaticSelectMenuBase =>
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
-        builder.Set(x =>
+        builder.Modify(x =>
             x.Options.Add(new Option { Text = text, Value = value, Description = description }));
 
 
@@ -68,7 +68,7 @@ public static class SelectMenuBaseExtensions
     public static InputElementBuilder<TElement> AddOptionGroup<TElement>(this InputElementBuilder<TElement> builder,
         string label, IList<Option> options) where TElement : StaticSelectMenuBase =>
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
-        builder.Set(x =>
+        builder.Modify(x =>
             x.OptionGroups.Add(new OptionGroup { Label = label, Options = options }));
 
     /// <summary>
@@ -86,7 +86,7 @@ public static class SelectMenuBaseExtensions
         ArgumentNullException.ThrowIfNull(groupBuilder);
         var group = new OptionGroup { Label = label };
         groupBuilder(new OptionGroupBuilder(group));
-        return builder.Set(x => x.OptionGroups.Add(group));
+        return builder.Modify(x => x.OptionGroups.Add(group));
     }
 
 
@@ -102,7 +102,7 @@ public static class SelectMenuBaseExtensions
         this InputElementBuilder<StaticSelectMenu> builder,
         string value) => 
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
-        builder.Set(x => x.InitialOption = x.Options.FirstOrDefault(o => o.Value == value));
+        builder.Modify(x => x.InitialOption = x.Options.FirstOrDefault(o => o.Value == value));
 
     // Static Multi Select
     /// <summary>
@@ -116,7 +116,7 @@ public static class SelectMenuBaseExtensions
         this InputElementBuilder<TElement> builder,
         Func<IList<Option>, IList<Option>> selector) where TElement : StaticMultiSelectMenu =>
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
-        builder.Set(x => x.InitialOptions = selector(x.Options));
+        builder.Modify(x => x.InitialOptions = selector(x.Options));
 
     /// <summary>
     /// Sets the initially selected options in a <see cref="StaticMultiSelectMenu"/> by their values.
@@ -156,7 +156,7 @@ public static class SelectMenuBaseExtensions
         this InputElementBuilder<TElement> builder,
         int maxItems) where TElement : StaticMultiSelectMenu =>
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
-        builder.Set(x => x.MaxSelectedItems = maxItems);
+        builder.Modify(x => x.MaxSelectedItems = maxItems);
 
     // User Select menu
     /// <summary>
@@ -169,7 +169,7 @@ public static class SelectMenuBaseExtensions
         this InputElementBuilder<UserSelectMenu> builder,
         string userId) => 
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
-        builder.Set(x => x.InitialUser = userId);
+        builder.Modify(x => x.InitialUser = userId);
 
 
     // External Select menu base
@@ -186,7 +186,7 @@ public static class SelectMenuBaseExtensions
         where TElement : ExternalSelectMenuBase
         => 
             builder is null ? throw new ArgumentNullException(nameof(builder)) :
-            builder.Set(x => x.MinQueryLength = minQueryLength);
+            builder.Modify(x => x.MinQueryLength = minQueryLength);
 
     // External Select Menu
     /// <summary>
@@ -199,7 +199,7 @@ public static class SelectMenuBaseExtensions
         this InputElementBuilder<ExternalSelectMenu> builder,
         Option option) => 
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
-        builder.Set(x => x.InitialOption = option);
+        builder.Modify(x => x.InitialOption = option);
 
     // Conversation Select Menu
     /// <summary>
@@ -212,7 +212,7 @@ public static class SelectMenuBaseExtensions
         this InputElementBuilder<ConversationSelectMenu> builder,
         string conversationId) => 
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
-        builder.Set(x => x.InitialConversation = conversationId);
+        builder.Modify(x => x.InitialConversation = conversationId);
 
     /// <summary>
     /// Pre-populates the select menu with the conversation that the user was viewing when they opened the modal, if available.
@@ -225,7 +225,7 @@ public static class SelectMenuBaseExtensions
         this InputElementBuilder<ConversationSelectMenu> builder,
         bool defaultToCurrentConversation = true) =>
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
-        builder.Set(x => x.DefaultToCurrentConversation = defaultToCurrentConversation);
+        builder.Modify(x => x.DefaultToCurrentConversation = defaultToCurrentConversation);
 
     /// <summary>
     /// Configures the filter for conversations shown in the menu.
@@ -241,7 +241,7 @@ public static class SelectMenuBaseExtensions
         ArgumentNullException.ThrowIfNull(createFilter);
         var filter = builder.Element.Filter ?? new ConversationFilter();
         createFilter(filter);
-        return builder.Set(x => x.Filter = filter);
+        return builder.Modify(x => x.Filter = filter);
     }
 
     /// <summary>
@@ -288,7 +288,7 @@ public static class SelectMenuBaseExtensions
         this InputElementBuilder<ChannelSelectMenu> builder,
         string channelId) =>
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
-        builder.Set(x => x.InitialChannel = channelId);
+        builder.Modify(x => x.InitialChannel = channelId);
 
     // Static Multi Select Menu
     
@@ -304,7 +304,7 @@ public static class SelectMenuBaseExtensions
         IList<Option> initialOptions) => 
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
         initialOptions is null ? throw new ArgumentNullException(nameof(initialOptions)) :
-        builder.Set(x => x.InitialOptions = initialOptions);
+        builder.Modify(x => x.InitialOptions = initialOptions);
 
     // user multi select menu
 
@@ -318,7 +318,7 @@ public static class SelectMenuBaseExtensions
         this InputElementBuilder<UserMultiSelectMenu> builder,
         params string[] userIds) => 
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
-        builder.Set(x => x.InitialUsers = userIds);
+        builder.Modify(x => x.InitialUsers = userIds);
 
     /// <summary>
     /// Specifies the maximum number of items that can be selected in a <see cref="UserMultiSelectMenu"/>.
@@ -331,7 +331,7 @@ public static class SelectMenuBaseExtensions
         this InputElementBuilder<UserMultiSelectMenu> builder,
         int maxItems) => 
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
-        builder.Set(x => x.MaxSelectedItems = maxItems);
+        builder.Modify(x => x.MaxSelectedItems = maxItems);
 
     // conversation multi select menu
 
@@ -345,7 +345,7 @@ public static class SelectMenuBaseExtensions
         this InputElementBuilder<ConversationMultiSelectMenu> builder,
         params string[] conversationIds) =>
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
-        builder.Set(x => x.InitialConversations = conversationIds);
+        builder.Modify(x => x.InitialConversations = conversationIds);
 
     /// <summary>
     /// Pre-populates the select menu with the conversation that the user was viewing when they opened the modal, if available.
@@ -358,7 +358,7 @@ public static class SelectMenuBaseExtensions
         this InputElementBuilder<ConversationMultiSelectMenu> builder,
         bool defaultToCurrentConversation = true) =>
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
-        builder.Set(x => x.DefaultToCurrentConversation = defaultToCurrentConversation);
+        builder.Modify(x => x.DefaultToCurrentConversation = defaultToCurrentConversation);
 
     /// <summary>
     /// Configures the filter for conversations shown in the menu.
@@ -374,7 +374,7 @@ public static class SelectMenuBaseExtensions
         ArgumentNullException.ThrowIfNull(createFilter);
         var filter = builder.Element.Filter ?? new ConversationFilter();
         createFilter(filter);
-        return builder.Set(x => x.Filter = filter);
+        return builder.Modify(x => x.Filter = filter);
     }
 
     /// <summary>
@@ -423,7 +423,7 @@ public static class SelectMenuBaseExtensions
         this InputElementBuilder<ConversationMultiSelectMenu> builder,
         int maxItems) => 
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
-        builder.Set(x => x.MaxSelectedItems = maxItems);
+        builder.Modify(x => x.MaxSelectedItems = maxItems);
 
     // channel multi select menu
     /// <summary>
@@ -436,7 +436,7 @@ public static class SelectMenuBaseExtensions
         this InputElementBuilder<ChannelMultiSelectMenu> builder,
         params string[] channelIds) => 
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
-        builder.Set(x => x.InitialChannels = channelIds);
+        builder.Modify(x => x.InitialChannels = channelIds);
 
     /// <summary>
     /// Specifies the maximum number of items that can be selected in a <see cref="ChannelMultiSelectMenu"/>.
@@ -449,5 +449,5 @@ public static class SelectMenuBaseExtensions
         this InputElementBuilder<ChannelMultiSelectMenu> builder,
         int maxItems) => 
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
-        builder.Set(x => x.MaxSelectedItems = maxItems);
+        builder.Modify(x => x.MaxSelectedItems = maxItems);
 }

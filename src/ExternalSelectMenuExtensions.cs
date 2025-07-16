@@ -20,5 +20,5 @@ public static class ExternalSelectMenuExtensions
         this InputElementBuilder<TElement> builder,
         int maxItems) where TElement : ExternalMultiSelectMenu =>
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
-            builder.Set(x => x.MaxSelectedItems = maxItems);
+            builder.Modify(x => x.MaxSelectedItems = maxItems);
 }

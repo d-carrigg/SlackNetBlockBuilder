@@ -255,7 +255,7 @@ public class InputBlockBuilderTest
         var builder = new InputBlockBuilder<DatePicker>(datePicker, "Label");
         
         // Act
-        var result = builder.Set(x => x.ActionId = "custom_action");
+        var result = builder.Modify(x => x.ActionId = "custom_action");
         
         // Assert
         Assert.Equal("custom_action", datePicker.ActionId);

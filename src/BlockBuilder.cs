@@ -34,7 +34,7 @@ public interface IBlockBuilder
     
     
     /// <summary>
-    /// Sets all blocks that match the specified predicate using the specified modifier.
+    /// Applies a modifier to all blocks that match the specified predicate.
     /// </summary>
     /// <param name="predicate">A function to test each block for a condition.</param>
     /// <param name="modifier"> n action to modify the block if it matches the predicate.</param>
@@ -188,6 +188,7 @@ public sealed class BlockBuilder : IBlockBuilder
         
         return this;
     }
+ 
 
     /// <inheritdoc />
     public IBlockBuilder Remove(Predicate<Block> predicate)
