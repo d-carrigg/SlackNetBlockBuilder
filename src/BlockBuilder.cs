@@ -244,6 +244,16 @@ public sealed class BlockBuilder : IBlockBuilder
     public BlockBuilder RemoveAction(string actionId) =>
         RemoveAction(a => a.ActionId == actionId);
 
+    /// <summary>
+    /// Removes all action blocks from the builder.
+    /// </summary>
+    /// <returns>The same builder instance so calls can be chained.</returns>
+    public BlockBuilder RemoveActions() 
+    {
+        _blocks.RemoveAll(b => b is ActionsBlock);
+        return this;
+    }
+
     /// <inheritdoc />
     public IBlockBuilder AddBlock(Block block)
     {
