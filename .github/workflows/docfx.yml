@@ -6,7 +6,7 @@ on:
       - feature/api-reference
   release:
     types:
-      - released
+      - published
 
 concurrency:
   group: pages

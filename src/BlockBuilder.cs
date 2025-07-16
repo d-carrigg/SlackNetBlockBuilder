@@ -43,7 +43,7 @@ public interface IBlockBuilder
     /// </summary>
     /// <param name="predicate">A function to test each action element for a condition.</param>
     /// <returns>True if an element was removed, false otherwise.</returns>
-    public BlockBuilder RemoveAction(Predicate<IActionElement> predicate);
+    public IBlockBuilder RemoveAction(Predicate<IActionElement> predicate);
 
     /// <summary>
     /// Combine all blocks into a list of blocks
@@ -175,7 +175,7 @@ public sealed class BlockBuilder : IBlockBuilder
 
     
     /// <inheritdoc />
-    public BlockBuilder RemoveAction(Predicate<IActionElement> predicate)
+    public IBlockBuilder RemoveAction(Predicate<IActionElement> predicate)
     {
         ArgumentNullException.ThrowIfNull(predicate);
         var actionsBlocks = _blocks.OfType<ActionsBlock>();

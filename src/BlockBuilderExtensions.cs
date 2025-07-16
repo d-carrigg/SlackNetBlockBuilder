@@ -59,7 +59,7 @@ public static class BlockBuilderExtensions
     /// <param name="builder">The builder instance.</param>
     /// <param name="actionId">The ActionId of the element to remove.</param>
     /// <returns>True if an element was removed, false otherwise.</returns>
-    public static BlockBuilder RemoveAction(this IBlockBuilder builder, string actionId) =>
+    public static IBlockBuilder RemoveAction(this IBlockBuilder builder, string actionId) =>
         builder is null ? throw new ArgumentNullException(nameof(builder)) :
         builder.RemoveAction(a => a.ActionId == actionId);
     
