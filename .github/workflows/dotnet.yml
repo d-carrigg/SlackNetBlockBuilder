@@ -99,7 +99,6 @@ jobs:
     # Pack step: Run always to ensure no errors in the pack step
     - name: Pack NuGet package
       run: dotnet pack --configuration Release --no-build --output ./artifacts
-      working-directory: ${{ github.workspace }}
 
     # Upload Package Artifact: Only run for tags
     - name: Upload NuGet Package artifact
