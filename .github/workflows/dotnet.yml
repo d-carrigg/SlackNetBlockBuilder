@@ -42,7 +42,7 @@ jobs:
 
     # Run tests for all triggers (push, pull_request, tag)
     - name: "Restore/Build/Test"
-      run: dotnet test --configuration Release --verbosity normal --logger trx --collect:"XPlat Code Coverage"
+      run: pwd && dotnet test --configuration Release --verbosity normal --logger trx --collect:"XPlat Code Coverage"
       
         
     - name: Combine Coverage Reports # This is because one report is produced per project, and we want one result for all of them.
