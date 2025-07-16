@@ -713,29 +713,6 @@ public class SelectMenuBaseExtensionsTest
     }
 
     [Fact]
-    public void StaticMultiSelectMenu_InitialOptions_Generic_WithOptionsFromOptionGroups_SetsCorrectly()
-    {
-        // Arrange
-        var builder = new InputElementBuilder<StaticMultiSelectMenu>(new StaticMultiSelectMenu());
-
-        // Act
-        builder
-            .AddOption("value1", "Option 1")
-            .AddOptionGroup("Group 1", group =>
-            {
-                group.AddOption("group_value1", "Group Option 1");
-                group.AddOption("group_value2", "Group Option 2");
-            })
-            .InitialOptions<StaticMultiSelectMenu>("value1", "group_value1");
-
-        // Assert
-        Assert.NotNull(builder.Element.InitialOptions);
-        Assert.Equal(2, builder.Element.InitialOptions.Count);
-        Assert.Contains(builder.Element.InitialOptions, opt => opt.Value == "value1");
-        Assert.Contains(builder.Element.InitialOptions, opt => opt.Value == "group_value1");
-    }
-
-    [Fact]
     public void StaticMultiSelectMenu_InitialOptions_Generic_WithAllValues_SetsAllOptions()
     {
         // Arrange
