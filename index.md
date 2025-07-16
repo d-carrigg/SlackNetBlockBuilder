@@ -3,7 +3,7 @@
 A fluent builder extension for [SlackNet](https://github.com/SlackNet/SlackNet) that simplifies creating Slack Block Kit UI elements with a clean, chainable API.
 
 > [!NOTE]
-> This package is currently in beta. The code works but naming may change until production release.
+> This package is currently in beta. The code works, but breaking changes may occur until the v1 release.
 
 ## Installation
 

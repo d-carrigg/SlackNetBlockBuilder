@@ -6,11 +6,11 @@ UI elements with a clean, chainable API.
 *This project is not affiliated with Slack or SlackNet. I just needed a better way to create blocks for my Slack apps.*
 
 > [!NOTE]
-> This package is currently in beta. The code works but I may change naming until production release.
+> This package is currently in beta. The code works, but breaking changes may occur until the v1 release.
 
 ## Installation
 
-[![NuGet](https://img.shields.io/nuget/vpre/SlackNetBlockBuilder)](https://www.nuget.org/packages/SlackNetBlockBuilder/) ![Documentation](https://img.shields.io/badge/Documentation?link=https%3A%2F%2Fd-carrigg.github.io%2FSlackNetBlockBuilder%2F)
+[![NuGet](https://img.shields.io/nuget/vpre/SlackNetBlockBuilder)](https://www.nuget.org/packages/SlackNetBlockBuilder/) [![Documentation](https://img.shields.io/badge/Documentation-GitHub%20Pages-blue)](https://d-carrigg.github.io/SlackNetBlockBuilder/)
 
 
 
