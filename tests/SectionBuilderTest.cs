@@ -585,6 +585,59 @@ public class SectionBuilderTest
         Assert.Same(section1, section2);
     }
     
+    [Fact]
+    public void Build_WithBlockIdExceedingMaxLength_ThrowsInvalidOperationException()
+    {
+        // Arrange
+        var builder = new SectionBuilder();
+        builder.Text("Hello world");
+        
+        // Get the underlying SectionBlock and set a long BlockId directly
+        var sectionBlock = builder.Build();
+        var longBlockId = new string('a', SectionBuilder.MaxBlockIdLength + 1); // 256 characters
+        sectionBlock.BlockId = longBlockId;
+        
+        // Create a new builder with the modified section block
+        var newBuilder = new SectionBuilder();
+        newBuilder.Text("Hello world");
+        
+        // Use reflection to set the private _sectionBlock field
+        var field = typeof(SectionBuilder).GetField("_sectionBlock", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        field?.SetValue(newBuilder, sectionBlock);
+        
+        // Act & Assert
+        var exception = Assert.Throws<InvalidOperationException>(() => newBuilder.Build());
+        Assert.Equal($"The block id can only be up to {SectionBuilder.MaxBlockIdLength} characters long", exception.Message);
+    }
+    
+    [Fact]
+    public void Build_WithBlockIdAtMaxLength_BuildsSuccessfully()
+    {
+        // Arrange
+        var builder = new SectionBuilder();
+        builder.Text("Hello world");
+        
+        // Get the underlying SectionBlock and set a max length BlockId directly
+        var sectionBlock = builder.Build();
+        var maxLengthBlockId = new string('a', SectionBuilder.MaxBlockIdLength); // 255 characters
+        sectionBlock.BlockId = maxLengthBlockId;
+        
+        // Create a new builder with the modified section block
+        var newBuilder = new SectionBuilder();
+        newBuilder.Text("Hello world");
+        
+        // Use reflection to set the private _sectionBlock field
+        var field = typeof(SectionBuilder).GetField("_sectionBlock", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        field?.SetValue(newBuilder, sectionBlock);
+        
+        // Act
+        var result = newBuilder.Build();
+        
+        // Assert
+        Assert.Equal(maxLengthBlockId, result.BlockId);
+        Assert.Equal("Hello world", result.Text.Text);
+    }
+
     // === Constants Tests ===
     
     [Fact]
