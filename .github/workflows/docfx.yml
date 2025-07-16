@@ -3,8 +3,10 @@ name: Deploy DocFX to GitHub Pages
 on:
   push:
     branches:
-      - main # Or your default branch
       - feature/api-reference
+  release: 
+    types:
+      - released
 
 jobs:
   build-and-deploy:
