@@ -15,10 +15,9 @@
         <RepositoryUrl>https://github.com/d-carrigg/SlackNetBlockBuilder.git</RepositoryUrl> 
         <RepositoryType>git</RepositoryType>
         <PackageTags>slack;block kit;blocks;builder;SlackNet</PackageTags>
-        <PackageReadmeFile>ReadMe.md</PackageReadmeFile>
+        <PackageReadmeFile>ReadMe.md</PackageReadmeFile>       <!-- Copied from root during build -->
         <Copyright>Darin Carrigg (c) 2025</Copyright>
-        <!-- Copied from root during build -->
-        <PackageLicenseUrl>https://github.com/d-carrigg/SlackNetBlockBuilder?tab=MIT-1-ov-file#readme</PackageLicenseUrl>
+ 
 
     </PropertyGroup>
     
