@@ -1,4 +1,10 @@
 - name: Getting Started
   href: getting-started.md
-- name: Examples
-  href: examples/
+- name: Interactive Forms
+  href: interactive-form.md
+- name: Interactive Messages
+  href: interactive-message-handling.md
+- name: Updating Messages
+  href: message-updating.md
+- name: Modal Dialogs
+  href: modal-dialog.md

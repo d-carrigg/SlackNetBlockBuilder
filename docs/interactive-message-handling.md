@@ -19,6 +19,7 @@ public async Task HandleInteraction(InteractionPayload payload)
 private async Task HandleApproval(InteractionPayload payload)
 {
     var updatedBlocks = BlockBuilder.From(payload.Message.Blocks)
+        .RemoveActions() // remove the submit and cancel buttons
         .AddSection("✅ Approved!")
         .Build();
 
