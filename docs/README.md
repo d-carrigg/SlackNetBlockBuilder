@@ -1,21 +1,21 @@
 # SlackNetBlockBuilder Documentation
 
-This directory contains detailed documentation for the SlackNetBlockBuilder library.
+SlackNetBlockBuilder is a fluent builder extension for [SlackNet](https://github.com/SlackNet/SlackNet) that simplifies creating Slack Block Kit UI elements.
 
-## Documentation Structure
+## Quick Start
 
-- `getting-started.md` - Guide for getting started with SlackNetBlockBuilder
-- `api/` - API documentation for all components
-  - `block-builder.md` - Documentation for the main BlockBuilder class
-  - `extensions/` - Documentation for extension methods
-  - `components/` - Documentation for individual block components
-- `examples/` - Example code and use cases
-- `advanced/` - Advanced usage scenarios and best practices
+```csharp
+var blocks = BlockBuilder.Create()
+    .AddHeader("Hello World")
+    .AddSection("Some text content")
+    .AddDivider()
+    .AddActions(actions => actions
+        .AddButton("approve", "Approve")
+        .AddButton("reject", "Reject"))
+    .Build();
+```
 
-## Contributing to Documentation
+## Files
 
-When contributing to the documentation, please follow these guidelines:
-- Use Markdown format for all documentation files
-- Include code examples where appropriate
-- Keep the documentation up-to-date with the latest API changes
-- Follow the existing structure and style 
+- `getting-started.md` - Installation and basic usage
+- `api/block-builder.md` - API reference
