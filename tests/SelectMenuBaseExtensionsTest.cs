@@ -612,5 +612,148 @@ public class SelectMenuBaseExtensionsTest
         Assert.Equal(5, builder.Element.MaxSelectedItems);
         Assert.True(builder.Element.FocusOnLoad);
     }
-}
 
+    [Fact]
+    public void StaticMultiSelectMenu_InitialOptions_Generic_WithStringArray_SetsCorrectly()
+    {
+        // Arrange
+        var builder = new InputElementBuilder<StaticMultiSelectMenu>(new StaticMultiSelectMenu());
+
+        // Act
+        builder
+            .AddOption("value1", "Option 1")
+            .AddOption("value2", "Option 2")
+            .AddOption("value3", "Option 3")
+            .InitialOptions<StaticMultiSelectMenu>("value1", "value3");
+
+        // Assert
+        Assert.NotNull(builder.Element.InitialOptions);
+        Assert.Equal(2, builder.Element.InitialOptions.Count);
+        Assert.Contains(builder.Element.InitialOptions, opt => opt.Value == "value1");
+        Assert.Contains(builder.Element.InitialOptions, opt => opt.Value == "value3");
+    }
+
+    [Fact]
+    public void StaticMultiSelectMenu_InitialOptions_Generic_WithEmptyArray_SetsEmptyList()
+    {
+        // Arrange
+        var builder = new InputElementBuilder<StaticMultiSelectMenu>(new StaticMultiSelectMenu());
+
+        // Act
+        builder
+            .AddOption("value1", "Option 1")
+            .AddOption("value2", "Option 2")
+            .InitialOptions<StaticMultiSelectMenu>();
+
+        // Assert
+        Assert.NotNull(builder.Element.InitialOptions);
+        Assert.Empty(builder.Element.InitialOptions);
+    }
+
+    [Fact]
+    public void StaticMultiSelectMenu_InitialOptions_Generic_WithNonExistentValues_FiltersCorrectly()
+    {
+        // Arrange
+        var builder = new InputElementBuilder<StaticMultiSelectMenu>(new StaticMultiSelectMenu());
+
+        // Act
+        builder
+            .AddOption("value1", "Option 1")
+            .AddOption("value2", "Option 2")
+            .InitialOptions<StaticMultiSelectMenu>("value1", "nonexistent", "value2");
+
+        // Assert
+        Assert.NotNull(builder.Element.InitialOptions);
+        Assert.Equal(2, builder.Element.InitialOptions.Count);
+        Assert.Contains(builder.Element.InitialOptions, opt => opt.Value == "value1");
+        Assert.Contains(builder.Element.InitialOptions, opt => opt.Value == "value2");
+    }
+
+    [Fact]
+    public void StaticMultiSelectMenu_InitialOptions_Generic_WithNullBuilder_ThrowsArgumentNullException()
+    {
+        // Arrange
+        InputElementBuilder<StaticMultiSelectMenu> builder = null!;
+
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>(() => builder.InitialOptions<StaticMultiSelectMenu>("value1", "value2"));
+    }
+
+    [Fact]
+    public void StaticMultiSelectMenu_InitialOptions_Generic_ReturnsBuilderForChaining()
+    {
+        // Arrange
+        var builder = new InputElementBuilder<StaticMultiSelectMenu>(new StaticMultiSelectMenu());
+
+        // Act
+        builder.AddOption("value1", "Option 1");
+        var result = builder.InitialOptions<StaticMultiSelectMenu>("value1");
+
+        // Assert
+        Assert.Same(builder, result);
+    }
+
+    [Fact]
+    public void StaticMultiSelectMenu_InitialOptions_Generic_WithDuplicateValues_NoDuplicatesInResult()
+    {
+        // Arrange
+        var builder = new InputElementBuilder<StaticMultiSelectMenu>(new StaticMultiSelectMenu());
+
+        // Act
+        builder
+            .AddOption("value1", "Option 1")
+            .AddOption("value2", "Option 2")
+            .InitialOptions<StaticMultiSelectMenu>("value1", "value1", "value2");
+
+        // Assert
+        Assert.NotNull(builder.Element.InitialOptions);
+        Assert.Equal(2, builder.Element.InitialOptions.Count);
+        Assert.Contains(builder.Element.InitialOptions, opt => opt.Value == "value1");
+        Assert.Contains(builder.Element.InitialOptions, opt => opt.Value == "value2");
+    }
+
+    [Fact]
+    public void StaticMultiSelectMenu_InitialOptions_Generic_WithOptionsFromOptionGroups_SetsCorrectly()
+    {
+        // Arrange
+        var builder = new InputElementBuilder<StaticMultiSelectMenu>(new StaticMultiSelectMenu());
+
+        // Act
+        builder
+            .AddOption("value1", "Option 1")
+            .AddOptionGroup("Group 1", group =>
+            {
+                group.AddOption("group_value1", "Group Option 1");
+                group.AddOption("group_value2", "Group Option 2");
+            })
+            .InitialOptions<StaticMultiSelectMenu>("value1", "group_value1");
+
+        // Assert
+        Assert.NotNull(builder.Element.InitialOptions);
+        Assert.Equal(2, builder.Element.InitialOptions.Count);
+        Assert.Contains(builder.Element.InitialOptions, opt => opt.Value == "value1");
+        Assert.Contains(builder.Element.InitialOptions, opt => opt.Value == "group_value1");
+    }
+
+    [Fact]
+    public void StaticMultiSelectMenu_InitialOptions_Generic_WithAllValues_SetsAllOptions()
+    {
+        // Arrange
+        var builder = new InputElementBuilder<StaticMultiSelectMenu>(new StaticMultiSelectMenu());
+
+        // Act
+        builder
+            .AddOption("value1", "Option 1")
+            .AddOption("value2", "Option 2")
+            .AddOption("value3", "Option 3")
+            .InitialOptions<StaticMultiSelectMenu>("value1", "value2", "value3");
+
+        // Assert
+        Assert.NotNull(builder.Element.InitialOptions);
+        Assert.Equal(3, builder.Element.InitialOptions.Count);
+        Assert.Contains(builder.Element.InitialOptions, opt => opt.Value == "value1");
+        Assert.Contains(builder.Element.InitialOptions, opt => opt.Value == "value2");
+        Assert.Contains(builder.Element.InitialOptions, opt => opt.Value == "value3");
+    }
+ 
+}
