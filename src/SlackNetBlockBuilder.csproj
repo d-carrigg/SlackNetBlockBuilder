@@ -39,7 +39,7 @@
 
     <ItemGroup>
       <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" />
-      <PackageReference Include="SlackNet" Version="0.16.2" />
+      <PackageReference Include="SlackNet" Version="0.16.*" />
     </ItemGroup>
     
     <!--Only included in CI builds to generate package docs-->
