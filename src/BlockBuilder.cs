@@ -38,7 +38,7 @@ public interface IBlockBuilder
     /// </summary>
     /// <param name="predicate">A function to test each block for a condition.</param>
     /// <param name="modifier">An action to modify the block if it matches the predicate.</param>
-    /// <returns></returns>
+    /// <returns>The same instance so calls can be chained.</returns>
     IBlockBuilder Modify(Predicate<Block> predicate, Action<Block> modifier);
 
     /// <summary>
@@ -171,6 +171,9 @@ public sealed class BlockBuilder : IBlockBuilder
     public IBlockBuilder AddBlocks(IEnumerable<Block> blocks)
     {
         ArgumentNullException.ThrowIfNull(blocks);
+        // throw if any of the blocks are null
+        if (blocks.Any(b => b == null))
+            throw new ArgumentException("Blocks collection cannot contain null values", nameof(blocks));
         _blocks.AddRange(blocks);
         return this;
     }

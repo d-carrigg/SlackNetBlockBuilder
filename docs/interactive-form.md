@@ -31,10 +31,11 @@ var blocks = BlockBuilder.Create()
 ```csharp
 public async Task HandleFormSubmission(InteractionPayload payload)
 {
-    var title = payload.State.Values["title_input"]["title_input"].Value;
-    var description = payload.State.Values["description_input"]["description_input"].Value;
-    var priority = payload.State.Values["priority_select"]["priority_select"].SelectedOption.Value;
+   var fields = payload.State.Values.SelectMany(b => b.Value);
+   var title = fields.First(kv => kv.Key == "title_input").Value.Value;
+   var description = fields.First(kv => kv.Key == "description_input").Value.Value;
+   var priority = fields.First(kv => kv.Key == "priority_select").Value.SelectedOption.Value;
     
-    // Process form data...
+   // Process form data...
 }
 ```
