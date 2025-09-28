@@ -431,7 +431,7 @@ public class RichTextListBuilderTest
     }
     
     [Fact]
-    public void ModifyingAfterBuild_DoesNotAffectPreviousBuilds()
+    public void ModifyingAfterBuild_AffectsPreviousBuilds_WhenBuildReturnsSameInstance()
     {
         // Arrange
         var builder = new RichTextListBuilder(RichTextListStyle.Bullet);

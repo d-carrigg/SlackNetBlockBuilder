@@ -32,7 +32,7 @@ public class IndexModel : PageModel
     {
         if (string.IsNullOrEmpty(name))
         {
-            name = "InteractiveForm"; // Default example
+            name = "Interactive Form";// Default example
         }
 
         var blocks = GetBlocks(name);
